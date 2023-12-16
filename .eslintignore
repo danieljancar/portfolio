@@ -1,0 +1,7 @@
+# Ignore specific folders and their contents in any subdirectory
+dist/
+coverage/
+temp/
+output/
+node_modules/
+.angular/
