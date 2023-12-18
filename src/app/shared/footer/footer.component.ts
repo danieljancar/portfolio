@@ -1,14 +1,16 @@
-import {Component} from '@angular/core';
-import {DateUtil} from "../../utils/date.util";
-import {NgIcon, provideIcons} from "@ng-icons/core";
-import {bootstrapGithub, bootstrapLinkedin, bootstrapStackOverflow} from "@ng-icons/bootstrap-icons";
+import { Component } from '@angular/core';
+import { DateUtil } from '../../utils/date.util';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  bootstrapGithub,
+  bootstrapLinkedin,
+  bootstrapStackOverflow,
+} from '@ng-icons/bootstrap-icons';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [
-    NgIcon
-  ],
+  imports: [NgIcon],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
   viewProviders: [

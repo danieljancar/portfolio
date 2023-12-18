@@ -1,0 +1,193 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.1.3",
+  "deps": {
+    "@angular/animations": "^17.0.0",
+    "@angular/common": "^17.0.0",
+    "@angular/compiler": "^17.0.0",
+    "@angular/core": "^17.0.0",
+    "@angular/forms": "^17.0.0",
+    "@angular/platform-browser": "^17.0.0",
+    "@angular/platform-browser-dynamic": "^17.0.0",
+    "@angular/router": "^17.0.0",
+    "@ng-icons/bootstrap-icons": "^26.3.0",
+    "@ng-icons/core": "^26.3.0",
+    "date-fns": "^3.0.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.14.2",
+    "@angular-devkit/build-angular": "^17.0.7",
+    "@angular-eslint/builder": "17.1.1",
+    "@angular-eslint/eslint-plugin": "17.1.1",
+    "@angular-eslint/eslint-plugin-template": "17.1.1",
+    "@angular-eslint/schematics": "17.1.1",
+    "@angular-eslint/template-parser": "17.1.1",
+    "@angular/cli": "^17.0.7",
+    "@angular/compiler-cli": "^17.0.0",
+    "@types/jasmine": "~5.1.0",
+    "@typescript-eslint/eslint-plugin": "6.13.1",
+    "@typescript-eslint/parser": "6.13.1",
+    "daisyui": "^4.4.20",
+    "eslint": "^8.54.0",
+    "jasmine-core": "~5.1.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "prettier": "^3.1.1",
+    "tailwindcss": "^3.3.6",
+    "typescript": "~5.2.2"
+  },
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {},
+    "nonProjectFiles": [
+      {
+        "file": ".editorconfig",
+        "hash": "6686520031028425313"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "17953122028477348290"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "16953310687313025518"
+      },
+      {
+        "file": ".github/ISSUE_TEMPLATE/bug.md",
+        "hash": "714881225569291784"
+      },
+      {
+        "file": ".github/ISSUE_TEMPLATE/feature.md",
+        "hash": "16370606597408417400"
+      },
+      {
+        "file": ".github/pull_request_template.md",
+        "hash": "221875362996524120"
+      },
+      {
+        "file": ".github/workflows/format.yml",
+        "hash": "16762132465299689566"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "13044518069027839699"
+      },
+      {
+        "file": ".husky/pre-commit",
+        "hash": "14203088509171443698"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "5742516129830791937"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "14582387424053831190"
+      },
+      {
+        "file": ".releaserc",
+        "hash": "9445525499013101052"
+      },
+      {
+        "file": "CODE_OF_CONDUCT.md",
+        "hash": "2299104202278882904"
+      },
+      {
+        "file": "CONTRIBUTING.md",
+        "hash": "2375220814614394517"
+      },
+      {
+        "file": "DCO.md",
+        "hash": "12201353153101221926"
+      },
+      {
+        "file": "LICENSE",
+        "hash": "15553496959705771468"
+      },
+      {
+        "file": "README.md",
+        "hash": "5825357285049858794"
+      },
+      {
+        "file": "SECURITY.md",
+        "hash": "18046351261863556606"
+      },
+      {
+        "file": "angular.json",
+        "hash": "7688711316351782051"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "16444103069423105363"
+      },
+      {
+        "file": "package.json",
+        "hash": "2498779457415579838"
+      },
+      {
+        "file": "src/app/app.component.html",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/app.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/app.component.spec.ts",
+        "hash": "12190752887311730316"
+      },
+      {
+        "file": "src/app/app.component.ts",
+        "hash": "16141057226750964319"
+      },
+      {
+        "file": "src/app/app.config.ts",
+        "hash": "11713316320723186868"
+      },
+      {
+        "file": "src/app/app.routes.ts",
+        "hash": "12397496131277534773"
+      },
+      {
+        "file": "src/assets/.gitkeep",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/favicon.ico",
+        "hash": "3988961587069885523"
+      },
+      {
+        "file": "src/index.html",
+        "hash": "1883197969409270776"
+      },
+      {
+        "file": "src/main.ts",
+        "hash": "8060102740304671444"
+      },
+      {
+        "file": "src/styles.scss",
+        "hash": "4015939721940510992"
+      },
+      {
+        "file": "tailwind.config.js",
+        "hash": "11237225661762799322"
+      },
+      {
+        "file": "tsconfig.app.json",
+        "hash": "11674506502668556549"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "17253915707932103253"
+      },
+      {
+        "file": "tsconfig.spec.json",
+        "hash": "11901043454877211451"
+      }
+    ]
+  }
+}
