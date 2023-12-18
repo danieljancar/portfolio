@@ -1,0 +1,25 @@
+{
+  "name": "legal.json",
+  "description": "Metadata for some legal documents.",
+  "version": "1.0.0",
+  "created": "18-12-2023",
+  "edited": "18-12-2023",
+  "files": [
+    {
+      "name": "Terms of Service",
+      "description": "Terms of service for the website.",
+      "version": "1.0.0",
+      "created": "18-12-2023",
+      "edited": "18-12-2023",
+      "file": "terms.md"
+    },
+    {
+      "name": "Privacy Policy",
+      "description": "Privacy policy for the website.",
+      "version": "1.0.0",
+      "created": "18-12-2023",
+      "edited": "18-12-2023",
+      "file": "privacy.md"
+    }
+  ]
+}
