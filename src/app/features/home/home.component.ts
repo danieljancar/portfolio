@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WelcomeComponent } from './welcome/welcome.component';
-import {AboutMeComponent} from "./about-me/about-me.component";
-import {LatestBlogComponent} from "./latest-blog/latest-blog.component";
+import { AboutMeComponent } from './about-me/about-me.component';
+import { LatestBlogComponent } from './latest-blog/latest-blog.component';
 
 @Component({
   selector: 'app-home',

@@ -74,7 +74,7 @@
       },
       {
         "file": ".gitignore",
-        "hash": "13044518069027839699"
+        "hash": "10583335689880331791"
       },
       {
         "file": ".husky/pre-commit",
@@ -118,19 +118,43 @@
       },
       {
         "file": "angular.json",
-        "hash": "7688711316351782051"
+        "hash": "7766189759088317137"
+      },
+      {
+        "file": "content/blog/blog.json",
+        "hash": "2706065840239851885"
+      },
+      {
+        "file": "content/blog/nestjs-authentication-with-passport-jwt-and-mongodb.jpg",
+        "hash": "15708041154263928717"
+      },
+      {
+        "file": "content/blog/nestjs-authentication-with-passport-jwt-and-mongodb.md",
+        "hash": "12421910196082111836"
+      },
+      {
+        "file": "content/legal/legal.json",
+        "hash": "3897830673593749872"
+      },
+      {
+        "file": "content/legal/privacy.md",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "content/legal/terms.md",
+        "hash": "3244421341483603138"
       },
       {
         "file": "package-lock.json",
-        "hash": "16444103069423105363"
+        "hash": "11477267255011319578"
       },
       {
         "file": "package.json",
-        "hash": "2498779457415579838"
+        "hash": "4684741203975050416"
       },
       {
         "file": "src/app/app.component.html",
-        "hash": "3244421341483603138"
+        "hash": "7717708677327846096"
       },
       {
         "file": "src/app/app.component.scss",
@@ -142,7 +166,7 @@
       },
       {
         "file": "src/app/app.component.ts",
-        "hash": "16141057226750964319"
+        "hash": "7019256919022136004"
       },
       {
         "file": "src/app/app.config.ts",
@@ -150,19 +174,191 @@
       },
       {
         "file": "src/app/app.routes.ts",
-        "hash": "12397496131277534773"
+        "hash": "7139675418499966841"
       },
       {
-        "file": "src/assets/.gitkeep",
+        "file": "src/app/features/author/author.component.html",
+        "hash": "2302610859996816715"
+      },
+      {
+        "file": "src/app/features/author/author.component.scss",
         "hash": "3244421341483603138"
       },
       {
+        "file": "src/app/features/author/author.component.spec.ts",
+        "hash": "4880837873154715153"
+      },
+      {
+        "file": "src/app/features/author/author.component.ts",
+        "hash": "7693458938083670179"
+      },
+      {
+        "file": "src/app/features/blog-detail/blog-detail.component.html",
+        "hash": "9203842980273896807"
+      },
+      {
+        "file": "src/app/features/blog-detail/blog-detail.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/features/blog-detail/blog-detail.component.spec.ts",
+        "hash": "13415334653933205850"
+      },
+      {
+        "file": "src/app/features/blog-detail/blog-detail.component.ts",
+        "hash": "3426073433292208463"
+      },
+      {
+        "file": "src/app/features/blog-overview/blog-overview.component.html",
+        "hash": "13034588592177353404"
+      },
+      {
+        "file": "src/app/features/blog-overview/blog-overview.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/features/blog-overview/blog-overview.component.spec.ts",
+        "hash": "1391263752067679811"
+      },
+      {
+        "file": "src/app/features/blog-overview/blog-overview.component.ts",
+        "hash": "8930283398849656578"
+      },
+      {
+        "file": "src/app/features/home/about-me/about-me.component.html",
+        "hash": "5928048172556840138"
+      },
+      {
+        "file": "src/app/features/home/about-me/about-me.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/features/home/about-me/about-me.component.spec.ts",
+        "hash": "7956992124214180111"
+      },
+      {
+        "file": "src/app/features/home/about-me/about-me.component.ts",
+        "hash": "16067900387879606197"
+      },
+      {
+        "file": "src/app/features/home/home.component.html",
+        "hash": "18109857728796497021"
+      },
+      {
+        "file": "src/app/features/home/home.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/features/home/home.component.spec.ts",
+        "hash": "12966160379306897241"
+      },
+      {
+        "file": "src/app/features/home/home.component.ts",
+        "hash": "9425906262095595314"
+      },
+      {
+        "file": "src/app/features/home/latest-blog/latest-blog.component.html",
+        "hash": "9132451519016575191"
+      },
+      {
+        "file": "src/app/features/home/latest-blog/latest-blog.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/features/home/latest-blog/latest-blog.component.spec.ts",
+        "hash": "12996672840797543820"
+      },
+      {
+        "file": "src/app/features/home/latest-blog/latest-blog.component.ts",
+        "hash": "9803464420430582495"
+      },
+      {
+        "file": "src/app/features/home/welcome/welcome.component.html",
+        "hash": "3118802795417475282"
+      },
+      {
+        "file": "src/app/features/home/welcome/welcome.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/features/home/welcome/welcome.component.spec.ts",
+        "hash": "5872287750816811555"
+      },
+      {
+        "file": "src/app/features/home/welcome/welcome.component.ts",
+        "hash": "16619044905289578386"
+      },
+      {
+        "file": "src/app/shared/footer/footer.component.html",
+        "hash": "12910237239630403134"
+      },
+      {
+        "file": "src/app/shared/footer/footer.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/shared/footer/footer.component.spec.ts",
+        "hash": "16138689727067120207"
+      },
+      {
+        "file": "src/app/shared/footer/footer.component.ts",
+        "hash": "15806337187849452746"
+      },
+      {
+        "file": "src/app/shared/navbar/navbar.component.html",
+        "hash": "14420701480814056611"
+      },
+      {
+        "file": "src/app/shared/navbar/navbar.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/shared/navbar/navbar.component.spec.ts",
+        "hash": "18270617408196843066"
+      },
+      {
+        "file": "src/app/shared/navbar/navbar.component.ts",
+        "hash": "7281889891179981650"
+      },
+      {
+        "file": "src/app/utils/date.util.ts",
+        "hash": "16702617011226414474"
+      },
+      {
+        "file": "src/assets/icons/about.txt",
+        "hash": "16601303280808879884"
+      },
+      {
+        "file": "src/assets/icons/android-chrome-192x192.png",
+        "hash": "3311590804018916876"
+      },
+      {
+        "file": "src/assets/icons/android-chrome-512x512.png",
+        "hash": "2044620687654359573"
+      },
+      {
+        "file": "src/assets/icons/apple-touch-icon.png",
+        "hash": "392619697230890659"
+      },
+      {
+        "file": "src/assets/icons/favicon-16x16.png",
+        "hash": "9336874224479258289"
+      },
+      {
+        "file": "src/assets/icons/favicon-32x32.png",
+        "hash": "4993799396425508659"
+      },
+      {
+        "file": "src/assets/images/space-1.jpg",
+        "hash": "3378244064938206070"
+      },
+      {
         "file": "src/favicon.ico",
-        "hash": "3988961587069885523"
+        "hash": "7418272642385342341"
       },
       {
         "file": "src/index.html",
-        "hash": "1883197969409270776"
+        "hash": "9260854158935045376"
       },
       {
         "file": "src/main.ts",
@@ -174,7 +370,7 @@
       },
       {
         "file": "tailwind.config.js",
-        "hash": "11237225661762799322"
+        "hash": "13635340954894420133"
       },
       {
         "file": "tsconfig.app.json",

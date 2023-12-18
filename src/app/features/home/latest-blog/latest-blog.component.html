@@ -1,10 +1,22 @@
-<div class="hero min-w-full py-5 bg-transparent">
+<div class="hero min-w-full bg-transparent">
   <div class="hero-content text-left">
     <div class="">
       <h1 class="text-5xl font-bold">
         Latest <span class="text-primary">Blogs</span>
       </h1>
-
+      <p class="py-6 text-2xl font-bold break-words">
+        I regularly write about web development, programming, and tech. It's a great way to learn and grow as a
+        developer since you can't write about something you don't understand.
+      </p>
+    </div>
+  </div>
+</div>
+<div class="flex justify-center flex-col" style="align-items: center">
+  <div *ngFor="let blog of latestBlog" class="card bg-base-100 shadow-xl max-w-7xl w-full transition duration-400 hover:scale-105" style="margin-bottom: 20px">
+    <div class="card-body">
+      <p>Posted {{ blog.created | relativeTime }}</p>
+      <h2 class="card-title">{{ blog.title }}</h2>
+      <p>{{ blog.description }}</p>
     </div>
   </div>
 </div>
