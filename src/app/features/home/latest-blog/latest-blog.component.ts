@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import * as blogData from '../../../content/blog/blog.json';
 import { Blog } from '../../../types/blog.type';
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgOptimizedImage } from '@angular/common';
 import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
 
 @Component({
   selector: 'app-latest-blog',
   standalone: true,
-  imports: [NgForOf, RelativeTimePipe],
+  imports: [NgForOf, RelativeTimePipe, NgOptimizedImage],
   templateUrl: './latest-blog.component.html',
   styleUrls: ['./latest-blog.component.scss'],
 })

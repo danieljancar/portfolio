@@ -65,7 +65,7 @@ export class DateUtil {
     }
 
     const hours = Math.floor(minutes / 60);
-    if (hours < 24) {
+    if (hours < 48) {
       return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
     }
 
