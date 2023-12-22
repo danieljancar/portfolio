@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import {NgIcon} from "@ng-icons/core";
+import { NgIcon } from '@ng-icons/core';
 
 @Component({
   selector: 'app-blog-detail',
   standalone: true,
-    imports: [
-        NgIcon
-    ],
+  imports: [NgIcon],
   templateUrl: './blog-detail.component.html',
   styleUrl: './blog-detail.component.scss',
 })
