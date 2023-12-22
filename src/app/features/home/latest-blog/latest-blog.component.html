@@ -6,37 +6,52 @@
           Latest <span class="text-primary">Blogs</span>
         </h1>
         <p class="py-6 text-2xl font-bold break-words">
-          I regularly write about web development, programming, and tech, which helps me to learn and grow as a
-          developer since I have to research and understand the topics I write about.
+          I regularly write about web development, programming, and tech, which
+          helps me to learn and grow as a developer since I have to research and
+          understand the topics I write about.
         </p>
       </div>
     </div>
   </div>
   <div class="flex flex-wrap justify-center xl:gap-x-4 lg:gap-x-3.5 mx-3 mb-7">
-    @for (blog of latestBlog;track $index) {
+    @for (blog of latestBlog; track $index) {
       <div
         [routerLink]="['/blog', blog.slug]"
         class="card bg-base-100 shadow-xl my-3 lg:mb-0 lg:w-1/3 xl:w-1/4 hover:cursor-pointer duration-100 hover:opacity-80"
-        aria-label="Blog post" role="article">
+        aria-label="Blog post"
+        role="article"
+      >
         <figure>
-          <img [src]="'assets/blog/' + blog.banner" [alt]="blog.bannerAlt"/>
+          <img [src]="'assets/blog/' + blog.banner" [alt]="blog.bannerAlt" />
         </figure>
         <div class="card-body">
           <div class="flex flex-wrap gap-2">
-            @for (tag of blog.tags;track $index) {
+            @for (tag of blog.tags; track $index) {
               <span class="badge badge-outline badge-info">{{ tag }}</span>
             }
           </div>
           <h2 class="card-title">{{ blog.title }}</h2>
           <p>{{ blog.description }}</p>
-          <time class="text-xs text-secondary">{{ blog.created | date:"mediumDate" }}</time>
+          <time class="text-xs text-secondary">{{
+            blog.created | date: 'mediumDate'
+          }}</time>
         </div>
       </div>
     } @empty {
-      <p class="flex align-middle justify-center" role="alert" aria-live="polite">
-        <ng-icon class="text-2xl mr-1" name="bootstrapEmojiExpressionlessFill" aria-hidden="true"></ng-icon>
+      <p
+        class="flex align-middle justify-center"
+        role="alert"
+        aria-live="polite"
+      >
+        <ng-icon
+          class="text-2xl mr-1"
+          name="bootstrapEmojiExpressionlessFill"
+          aria-hidden="true"
+        ></ng-icon>
         Hmm, seems like there's nothing here.
-        <button class="ml-1 link-primary" (click)="reloadBlogs()">Try again</button>
+        <button class="ml-1 link-primary" (click)="reloadBlogs()">
+          Try again
+        </button>
       </p>
     }
   </div>

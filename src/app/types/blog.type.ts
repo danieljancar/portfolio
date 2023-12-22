@@ -1,4 +1,4 @@
-import {Author} from './author.type';
+import { Author } from './author.type';
 
 export type Blog = {
   slug: string;
