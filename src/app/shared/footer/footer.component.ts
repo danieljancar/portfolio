@@ -3,7 +3,7 @@ import { DateUtil } from '../../utils/date.util';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   bootstrapGithub,
-  bootstrapLinkedin,
+  bootstrapLinkedin, bootstrapMedium,
   bootstrapStackOverflow,
 } from '@ng-icons/bootstrap-icons';
 
@@ -18,6 +18,7 @@ import {
       bootstrapGithub,
       bootstrapLinkedin,
       bootstrapStackOverflow,
+      bootstrapMedium
     }),
   ],
 })

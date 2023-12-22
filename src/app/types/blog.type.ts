@@ -1,15 +1,17 @@
-import { Author } from './author.type';
+import {Author} from './author.type';
 
 export type Blog = {
-  created: string;
+  slug: string;
   title: string;
   description: string;
   edited: string;
   tags: string[];
   content: string;
+  created: string;
   banner: string;
   bannerAlt: string;
   bannerSource: string;
+  bannerAiGenerated: boolean;
   author: string;
 };
 
