@@ -27,9 +27,6 @@ jobs:
       - name: Build
         run: ng build --base-href "https://danieljancar.dev"
 
-      - name: Create .nojekyll file
-        run: touch dist/portfolio/browser/.nojekyll
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
