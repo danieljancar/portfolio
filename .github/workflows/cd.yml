@@ -27,5 +27,8 @@ jobs:
       - name: Build
         run: ng build --base-href "https://danieljancar.dev"
 
+      - name: Install gh-pages
+        run: npm install -g angular-cli-ghpages
+
       - name: Deploy
-        run: npx angular-cli-ghpages --dir=dist/portfolio/browser
+        run: ngh --dir=dist/portfolio/browser
