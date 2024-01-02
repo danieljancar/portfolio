@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Continuous Deployment to GitHub Pages
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,8 +27,5 @@ jobs:
       - name: Build
         run: ng build --base-href "https://danieljancar.dev"
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/portfolio/browser
+      - name: Deploy
+        run: npx angular-cli-ghpages --dir=dist/portfolio/
