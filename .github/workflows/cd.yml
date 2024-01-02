@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,15 +24,14 @@ jobs:
       - name: Install Angular CLI
         run: npm install -g @angular/cli
 
-      - name: Install angular-cli-ghpages
-        run: npm install -g angular-cli-ghpages
-
       - name: Build
-        run: ng build --base-href https://danieljancar.dev
+        run: ng build --base-href "https://danieljancar.dev"
 
-      - name: Deploy
-        run: ngh --dir=dist/portfolio/
+      - name: Create .nojekyll file
+        run: touch dist/portfolio/browser/.nojekyll
 
-      - name: Cleanup
-        if: always()
-        run: rm -rf node_modules
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/portfolio/browser
