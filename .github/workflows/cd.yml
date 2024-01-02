@@ -28,4 +28,4 @@ jobs:
         run: ng build --base-href "https://danieljancar.dev"
 
       - name: Deploy
-        run: npx angular-cli-ghpages --dir=dist/portfolio/
+        run: npx angular-cli-ghpages --dir=dist/portfolio/browser
