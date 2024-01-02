@@ -1,4 +1,4 @@
-name: GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -6,27 +6,29 @@ on:
       - master
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: 20
+          node-version: '20'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
+      - name: Install angular-cli-ghpages
+        run: npm install -g angular-cli-ghpages
+
       - name: Build
-        run: npm run build
+        run: ng build --base-href https://danieljancar.dev
 
       - name: Deploy
-        if: success()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist/angular-github-actions
-          enable_jekyll: true
+        run: ngh --dir=dist/portfolio/
+
+      - name: Cleanup
+        if: always()
+        run: rm -rf node_modules
