@@ -1,5 +1,28 @@
-<div class="container">
-  <div>
-    <h1>{{ blogData?.title }}</h1>
+<div class="flex justify-center">
+  <div class="mx-5 my-9 w-full max-w-6xl">
+    <div class="mx-5 my-9">
+      <div class="flex justify-between">
+        <h1 class="text-3xl">{{ blogData?.title }}</h1>
+      </div>
+      <div class="divider"></div>
+      <div class="mb-8">
+        <div class="relative h-96 bg-center bg-cover overflow-hidden mb-2">
+          <img [src]="'assets/blog/' + blogData?.banner" [alt]="blogData?.bannerAlt"
+               class="absolute inset-0 w-full h-full object-cover object-center">
+        </div>
+        <div class="flex justify-end align-middle">
+          @if (blogData?.bannerAiGenerated) {
+            <div class="tooltip" data-tip="This image was AI generated">
+              <ng-icon class="text-xl mr-3" name="bootstrapRobot"/>
+            </div>
+          }
+          <div class="tooltip" data-tip="Go to image source">
+            <a [href]="blogData?.bannerSource" target="_blank" rel="noopener noreferrer">
+              <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight"/>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

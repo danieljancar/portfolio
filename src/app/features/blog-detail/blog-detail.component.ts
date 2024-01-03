@@ -4,14 +4,26 @@ import { Blog, BlogsJson } from '../../types/blog.type';
 import * as blogData from '../../content/blog/blog.json';
 import { MarkdownComponent, provideMarkdown } from 'ngx-markdown';
 import { HttpClient } from '@angular/common/http';
+import { NgOptimizedImage } from '@angular/common';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  bootstrapBoxArrowUpRight,
+  bootstrapRobot,
+} from '@ng-icons/bootstrap-icons';
 
 @Component({
   selector: 'app-blog-detail',
   templateUrl: './blog-detail.component.html',
   styleUrls: ['./blog-detail.component.scss'],
   providers: [provideMarkdown({ loader: HttpClient })],
+  viewProviders: [
+    provideIcons({
+      bootstrapBoxArrowUpRight,
+      bootstrapRobot,
+    }),
+  ],
   standalone: true,
-  imports: [MarkdownComponent],
+  imports: [MarkdownComponent, NgOptimizedImage, NgIcon],
 })
 export class BlogDetailComponent implements OnInit {
   blogData: Blog | undefined;
