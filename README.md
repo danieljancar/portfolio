@@ -53,7 +53,14 @@ http://localhost:4200
 
 # Deployment
 
-The deployment process is automated with Github Actions. When a commit is pushed to the `master` branch, the project is built and deployed to the `gh-pages` branch. The website is then hosted on Github Pages.
+The website is hosted on GitHub Pages. To deploy the website, run the following command:
+
+```bash
+ng build --base-href https://danieljancar.dev
+ngh --dir=dist/portfolio/browser
+```
+
+This will build the project and deploy it to the `gh-pages` branch. Also make sure to always have the latest version of the production build in the `master` branch.
 
 # Contributing
 
