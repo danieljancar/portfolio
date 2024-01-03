@@ -20,6 +20,14 @@
       "created": "18-12-2023",
       "edited": "18-12-2023",
       "file": "privacy.md"
+    },
+    {
+      "name": "Cookie Policy",
+      "description": "Cookie policy for the website.",
+      "version": "1.0.0",
+      "created": "18-12-2023",
+      "edited": "18-12-2023",
+      "file": "cookie.md"
     }
   ]
 }
