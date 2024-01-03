@@ -1,22 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { bootstrapConeStriped } from '@ng-icons/bootstrap-icons';
 import { ActivatedRoute } from '@angular/router';
+import { Blog, BlogsJson } from '../../types/blog.type';
+import * as blogData from '../../content/blog/blog.json';
 
 @Component({
   selector: 'app-blog-detail',
-  standalone: true,
-  imports: [NgIcon],
-  viewProviders: [provideIcons({ bootstrapConeStriped })],
   templateUrl: './blog-detail.component.html',
-  styleUrl: './blog-detail.component.scss',
+  styleUrls: ['./blog-detail.component.scss'],
+  standalone: true,
 })
 export class BlogDetailComponent implements OnInit {
-  public mdFile: string | null = '';
+  blogData: Blog | undefined;
 
   constructor(private route: ActivatedRoute) {}
 
-  ngOnInit() {
-    this.mdFile = this.route.snapshot.paramMap.get('blogId');
+  ngOnInit(): void {
+    const blogId = this.route.snapshot.paramMap.get('blogId');
+    if (blogId) {
+      this.loadBlogData(blogId);
+    }
+  }
+
+  private loadBlogData(blogId: string): void {
+    const blogs: Blog[] = (blogData as BlogsJson).blogs;
+    this.blogData = blogs.find(blog => blog.slug === blogId);
   }
 }
