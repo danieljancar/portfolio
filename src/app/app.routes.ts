@@ -11,14 +11,15 @@ export const routes: Routes = [
   },
   {
     path: 'blog',
+
     component: BlogOverviewComponent,
   },
   {
-    path: 'blog/:id',
+    path: 'blog/:blogId',
     component: BlogDetailComponent,
   },
   {
-    path: 'author/:id',
+    path: 'author/:authorId',
     component: AuthorComponent,
   },
   {
