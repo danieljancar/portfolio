@@ -19,12 +19,7 @@
       "description": "Successful authentication is a crucial part of many applications, especially when it comes to security.",
       "created": "2024-01-01T11:23:32",
       "edited": "2024-01-01T11:23:55",
-      "tags": [
-        "nestjs",
-        "passport",
-        "jwt",
-        "mongodb"
-      ],
+      "tags": ["nestjs", "passport", "jwt", "mongodb"],
       "content": "nestjs-authentication-with-passport-jwt-and-mongodb.md",
       "readTime": "10",
       "banner": "nestjs-authentication-with-passport-jwt-and-mongodb.png",
@@ -39,11 +34,7 @@
       "description": "Angular 17 is out now! In this article, I will show you the new features and changes you need to know.",
       "created": "2023-12-22T18:33:12",
       "edited": "2023-12-22T18:33:12",
-      "tags": [
-        "angular",
-        "angular-17",
-        "breaking-changes"
-      ],
+      "tags": ["angular", "angular-17", "breaking-changes"],
       "content": "nestjs-authentication-with-passport-jwt-and-mongodb.md",
       "readTime": "5",
       "banner": "angular-17-new-features-you-need-to-know.png",
@@ -58,10 +49,7 @@
       "description": "Prettier is a great tool to format your code. In this article, I will show you how to use Prettier as a Github Action.",
       "created": "2023-12-22T18:33:12",
       "edited": "2023-12-22T18:33:12",
-      "tags": [
-        "prettier",
-        "github-actions"
-      ],
+      "tags": ["prettier", "github-actions"],
       "content": "nestjs-authentication-with-passport-jwt-and-mongodb.md",
       "readTime": "5",
       "banner": "how-to-use-prettier-as-a-github-action.png",
