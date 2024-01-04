@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as blogData from '../../../content/blog/blog.json';
+import * as blogData from '../../../content/blog.json';
 import { Blog } from '../../../types/blog.type';
 import { CommonModule, NgForOf, NgOptimizedImage } from '@angular/common';
 import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';

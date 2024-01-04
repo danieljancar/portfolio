@@ -8,6 +8,7 @@ export type Blog = {
   tags: string[];
   content: string;
   created: string;
+  readTime: string;
   banner: string;
   bannerAlt: string;
   bannerSource: string;
