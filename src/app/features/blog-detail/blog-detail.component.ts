@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MarkdownComponent, provideMarkdown } from 'ngx-markdown';
-import { HttpClient } from '@angular/common/http';
+import { MarkdownComponent } from 'ngx-markdown';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { IntroductionComponent } from './introduction/introduction.component';
 import { Blog, BlogsJson } from '../../types/blog.type';
 import * as blogData from '../../content/blog.json';
 import { Author } from '../../types/author.type';
+import { MarkdownRendererComponent } from './markdown-renderer/markdown-renderer.component';
 
 @Component({
   selector: 'app-blog-detail',
   templateUrl: './blog-detail.component.html',
   styleUrls: ['./blog-detail.component.scss'],
-  providers: [provideMarkdown({ loader: HttpClient })],
   standalone: true,
   imports: [
     MarkdownComponent,
@@ -21,6 +20,7 @@ import { Author } from '../../types/author.type';
     NgIcon,
     DatePipe,
     IntroductionComponent,
+    MarkdownRendererComponent,
   ],
 })
 export class BlogDetailComponent implements OnInit {
@@ -38,14 +38,6 @@ export class BlogDetailComponent implements OnInit {
     }
   }
 
-  private loadBlogData(blogId: string): void {
-    const blogs: Blog[] = (blogData as BlogsJson).blogs;
-    this.blog = blogs.find(blog => blog.slug === blogId);
-    if (this.blog) {
-      this.getAuthor(this.blog.author);
-    }
-  }
-
   public async getAuthor(username: string | undefined) {
     const authors: Author[] = (blogData as BlogsJson).authors;
     const author = authors.find(author => author.username === username);
@@ -53,5 +45,13 @@ export class BlogDetailComponent implements OnInit {
       this.authorName = author.name;
     }
     return author;
+  }
+
+  private loadBlogData(blogId: string): void {
+    const blogs: Blog[] = (blogData as BlogsJson).blogs;
+    this.blog = blogs.find(blog => blog.slug === blogId);
+    if (this.blog) {
+      this.getAuthor(this.blog.author);
+    }
   }
 }

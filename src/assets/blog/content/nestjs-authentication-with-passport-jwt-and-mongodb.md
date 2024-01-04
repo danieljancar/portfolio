@@ -1,15 +1,58 @@
-# Introduction
+# Test markdown file to test ngx-markdown
 
-Basic secure authentication is a key component of many applications. The most common way to implement authentication is to use a username and password. However, this is not the most secure way to authenticate a user. A more secure way is to use a token-based authentication system. In this article, we will learn how to implement token-based authentication using Passport and JWT in a NestJS application. We will also use MongoDB as our database.
+## Test
 
-```ts
-import { Module } from '@nestjs/common';
+# Alt-H1
 
-@Module({
-  imports: [],
-  controllers: [],
-  providers: [],
-})
+This is a test markdown file to test ngx-markdown.
 
-export class AppModule {}
+- Test
+- Test
+- Test
+
+## Test
+
+**Test**
+
+_Test_
+
+~~Test~~
+
+`Test`
+
+```typescript
+const test = 'test';
 ```
+
+```html
+<div>Test</div>
+```
+
+```css
+.test {
+  color: red;
+}
+```
+
+```scss
+.test {
+  color: red;
+}
+```
+
+```js
+const test = 'test';
+```
+
+```json
+{
+  "test": "test"
+}
+```
+
+<img src="https://avatars.githubusercontent.com/u/21263805?s=200&v=4" alt="Test" width="100" height="100" />
+
+[Link](https://google.com)
+
+- [ ] Test
+- [x] Test

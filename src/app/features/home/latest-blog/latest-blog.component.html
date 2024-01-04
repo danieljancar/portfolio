@@ -22,7 +22,10 @@
         role="article"
       >
         <figure>
-          <img [src]="'assets/blog/' + blog.banner" [alt]="blog.bannerAlt" />
+          <img
+            [src]="'assets/blog/images/' + blog.banner"
+            [alt]="blog.bannerAlt"
+          />
         </figure>
         <div class="card-body">
           <div class="flex flex-wrap gap-2">

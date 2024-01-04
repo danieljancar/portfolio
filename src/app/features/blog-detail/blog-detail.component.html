@@ -1,9 +1,9 @@
 <article class="flex justify-center">
   <div class="sm:mx-5 sm:my-9 w-full max-w-6xl">
     <div class="mx-3 sm:mx-5 my-3 sm:my-9">
-      <app-introduction [blog]="blog" [authorName]="authorName"/>
+      <app-introduction [blog]="blog" [authorName]="authorName" />
       <div class="divider"></div>
-      <markdown [src]="'assets/blog/content/' + blog?.content"></markdown>
+      <app-markdown-renderer [blog]="blog" />
     </div>
   </div>
 </article>
