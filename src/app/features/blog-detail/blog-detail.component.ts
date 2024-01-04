@@ -8,6 +8,7 @@ import { Blog, BlogsJson } from '../../types/blog.type';
 import * as blogData from '../../content/blog.json';
 import { Author } from '../../types/author.type';
 import { MarkdownRendererComponent } from './markdown-renderer/markdown-renderer.component';
+import { BlogFooterComponent } from './blog-footer/blog-footer.component';
 
 @Component({
   selector: 'app-blog-detail',
@@ -21,6 +22,7 @@ import { MarkdownRendererComponent } from './markdown-renderer/markdown-renderer
     DatePipe,
     IntroductionComponent,
     MarkdownRendererComponent,
+    BlogFooterComponent,
   ],
 })
 export class BlogDetailComponent implements OnInit {
