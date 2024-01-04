@@ -1,0 +1,51 @@
+<h1 class="text-3xl font-semibold subpixel-antialiased">{{ blog?.title }}</h1>
+<div class="join join-vertical sm:join-horizontal text-gray-500 mt-3">
+  <p class="join-item mb-0.5 sm:mb-0">
+          <span class="flex mr-3 items-center">
+            <ng-icon class="blogInfoIconMargin" name="bootstrapClock"/>
+            {{ blog?.created | date: 'MMMM dd, yyyy' }}
+          </span>
+  </p>
+  <p class="join-item mb-0.5 sm:mb-0">
+          <span class="flex mr-3 items-center">
+            <ng-icon class="blogInfoIconMargin" name="bootstrapBook"/>
+            <time>{{ blog?.readTime }}</time>&nbsp;min read</span>
+  </p>
+  <p class="join-item">
+          <span class="flex items-center">
+            <ng-icon class="blogInfoIconMargin" name="bootstrapPerson"/>
+            <span>{{ authorName }}</span>
+          </span>
+  </p>
+</div>
+<div class="divider"></div>
+<div class="mb-2">
+  <div class="relative h-96 bg-center bg-cover overflow-hidden mb-2">
+    <img [src]="'assets/blog/images/' + blog?.banner"
+         [alt]="blog?.bannerAlt"
+         class="absolute inset-0 w-full h-full object-cover object-center rounded-lg shadow-md">
+  </div>
+  <div class="flex justify-end align-middle">
+    @if (blog?.bannerAiGenerated) {
+      <div class="tooltip tooltip-left hover:cursor-pointer" data-tip="This image was AI generated">
+        <ng-icon class="text-xl mr-3" name="bootstrapRobot"/>
+      </div>
+    }
+    <div class="tooltip tooltip-left" data-tip="Go to image source">
+      <a [href]="blog?.bannerSource" target="_blank" rel="noopener noreferrer">
+        <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight"/>
+      </a>
+    </div>
+  </div>
+</div>
+<div>
+  <p class="mt-2 text-xl antialiased italic">{{ blog?.description }}</p>
+  <div class="flex flex-wrap">
+    @for (tag of blog?.tags;track $index) {
+      <a [href]="'https://www.google.com/search?q=' + encodeURIComponent(tag)"
+         target="_blank" rel="noopener noreferrer" class="m-2 hover:opacity-75 duration-75 ease-in">
+        <span class="text-sm text-gray-500">#{{ tag }}</span>
+      </a>
+    }
+  </div>
+</div>
