@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import {format} from 'date-fns';
 
 /**
  * A collection of common date format strings.
@@ -48,9 +48,9 @@ export class DateUtil {
    * const relativeTime = DateUtils.getRelativeTimeDescription(dateString);
    * console.log(relativeTime); // Outputs: "2 days ago"
    */
-  static getRelativeTimeDescription(date: Date | string): string {
+  static getRelativeTimeDescription(date: Date | string | undefined): string {
     const currentDate = new Date();
-    const targetDate = new Date(date);
+    const targetDate = date ? new Date(date) : currentDate;
 
     const timeDifference = currentDate.getTime() - targetDate.getTime();
     const seconds = Math.floor(timeDifference / 1000);

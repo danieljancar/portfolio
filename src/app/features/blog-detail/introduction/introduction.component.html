@@ -6,20 +6,20 @@
 >
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="blogInfoIconMargin" name="bootstrapClock" />
-      {{ blog?.created | date: 'MMMM dd, yyyy' }}
+      <ng-icon class="blogInfoIconMargin" name="bootstrapClock"/>
+      {{ blog?.created | relativeTime }}
     </span>
   </p>
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="blogInfoIconMargin" name="bootstrapBook" />
+      <ng-icon class="blogInfoIconMargin" name="bootstrapBook"/>
       <time>{{ blog?.readTime }}</time
       >&nbsp;min read</span
     >
   </p>
   <p class="join-item">
     <span class="flex items-center">
-      <ng-icon class="blogInfoIconMargin" name="bootstrapPerson" />
+      <ng-icon class="blogInfoIconMargin" name="bootstrapPerson"/>
       <span>{{ author?.name }}</span>
     </span>
   </p>
@@ -39,12 +39,12 @@
         class="tooltip tooltip-left hover:cursor-pointer"
         data-tip="This image was AI generated"
       >
-        <ng-icon class="text-xl mr-3" name="bootstrapRobot" />
+        <ng-icon class="text-xl mr-3" name="bootstrapRobot"/>
       </div>
     }
     <div class="tooltip tooltip-left" data-tip="Go to image source">
       <a [href]="blog?.bannerSource" rel="noopener noreferrer" target="_blank">
-        <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight" />
+        <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight"/>
       </a>
     </div>
   </div>

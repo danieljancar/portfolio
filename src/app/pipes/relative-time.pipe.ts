@@ -3,7 +3,10 @@ import { DateUtil } from '../utils/date.util';
 
 @Pipe({ standalone: true, name: 'relativeTime' })
 export class RelativeTimePipe implements PipeTransform {
-  transform(value: Date | string): string {
+  transform(value: Date | string | undefined): string {
+    if (value === undefined) {
+      return '';
+    }
     return DateUtil.getRelativeTimeDescription(value);
   }
 }

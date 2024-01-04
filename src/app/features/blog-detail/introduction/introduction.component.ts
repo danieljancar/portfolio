@@ -12,11 +12,12 @@ import {
 import { Blog } from '../../../types/blog.type';
 import { ActivatedRoute } from '@angular/router';
 import { Author } from '../../../types/author.type';
+import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
 
 @Component({
   selector: 'app-introduction',
   standalone: true,
-  imports: [DatePipe, NgIcon],
+  imports: [DatePipe, NgIcon, RelativeTimePipe],
   viewProviders: [
     provideIcons({
       bootstrapBoxArrowUpRight,
