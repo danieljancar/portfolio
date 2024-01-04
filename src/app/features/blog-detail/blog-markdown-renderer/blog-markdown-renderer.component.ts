@@ -14,7 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import { Blog } from '../../../types/blog.type';
 
 @Component({
-  selector: 'app-markdown-renderer',
+  selector: 'app-blog-markdown-renderer',
   standalone: true,
   imports: [MarkdownComponent],
   providers: [
@@ -29,10 +29,10 @@ import { Blog } from '../../../types/blog.type';
       },
     }),
   ],
-  templateUrl: './markdown-renderer.component.html',
-  styleUrl: './markdown-renderer.component.scss',
+  templateUrl: './blog-markdown-renderer.component.html',
+  styleUrl: './blog-markdown-renderer.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class MarkdownRendererComponent {
+export class BlogMarkdownRendererComponent {
   @Input() public blog: Blog | undefined;
 }

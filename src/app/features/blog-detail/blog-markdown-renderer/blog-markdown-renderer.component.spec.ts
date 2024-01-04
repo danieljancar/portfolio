@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MarkdownRendererComponent } from './markdown-renderer.component';
+import { BlogMarkdownRendererComponent } from './blog-markdown-renderer.component';
 
 describe('MarkdownRendererComponent', () => {
-  let component: MarkdownRendererComponent;
-  let fixture: ComponentFixture<MarkdownRendererComponent>;
+  let component: BlogMarkdownRendererComponent;
+  let fixture: ComponentFixture<BlogMarkdownRendererComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MarkdownRendererComponent],
+      imports: [BlogMarkdownRendererComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MarkdownRendererComponent);
+    fixture = TestBed.createComponent(BlogMarkdownRendererComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

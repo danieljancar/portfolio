@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { MarkdownComponent } from 'ngx-markdown';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
-import { IntroductionComponent } from './introduction/introduction.component';
+import { BlogInfoComponent } from './blog-info/blog-info.component';
 import { Blog } from '../../types/blog.type';
-import { MarkdownRendererComponent } from './markdown-renderer/markdown-renderer.component';
+import { BlogMarkdownRendererComponent } from './blog-markdown-renderer/blog-markdown-renderer.component';
 import { BlogFooterComponent } from './blog-footer/blog-footer.component';
 import { BlogService } from '../../core/blog.service';
 import { Author } from '../../types/author.type';
@@ -20,8 +20,8 @@ import { Author } from '../../types/author.type';
     NgOptimizedImage,
     NgIcon,
     DatePipe,
-    IntroductionComponent,
-    MarkdownRendererComponent,
+    BlogInfoComponent,
+    BlogMarkdownRendererComponent,
     BlogFooterComponent,
   ],
 })

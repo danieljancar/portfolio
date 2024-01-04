@@ -15,7 +15,7 @@ import { Author } from '../../../types/author.type';
 import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
 
 @Component({
-  selector: 'app-introduction',
+  selector: 'app-blog-info',
   standalone: true,
   imports: [DatePipe, NgIcon, RelativeTimePipe],
   viewProviders: [
@@ -28,10 +28,10 @@ import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
       bootstrapBrush,
     }),
   ],
-  templateUrl: './introduction.component.html',
-  styleUrl: './introduction.component.scss',
+  templateUrl: './blog-info.component.html',
+  styleUrl: './blog-info.component.scss',
 })
-export class IntroductionComponent {
+export class BlogInfoComponent {
   @Input() public blog: Blog | undefined;
   @Input() public author: Author | undefined;
   protected readonly encodeURIComponent = encodeURIComponent;
