@@ -31,7 +31,7 @@ import { Blog } from '../../../types/blog.type';
   ],
   templateUrl: './markdown-renderer.component.html',
   styleUrl: './markdown-renderer.component.scss',
-  encapsulation: ViewEncapsulation.ShadowDom,
+  encapsulation: ViewEncapsulation.None,
 })
 export class MarkdownRendererComponent {
   @Input() public blog: Blog | undefined;
