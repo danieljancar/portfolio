@@ -11,6 +11,7 @@ import {
 } from '@ng-icons/bootstrap-icons';
 import { Blog } from '../../../types/blog.type';
 import { ActivatedRoute } from '@angular/router';
+import { Author } from '../../../types/author.type';
 
 @Component({
   selector: 'app-introduction',
@@ -31,7 +32,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class IntroductionComponent {
   @Input() public blog: Blog | undefined;
-  @Input() public authorName: string | undefined;
+  @Input() public author: Author | undefined;
   protected readonly encodeURIComponent = encodeURIComponent;
 
   constructor(private route: ActivatedRoute) {

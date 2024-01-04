@@ -4,11 +4,11 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { IntroductionComponent } from './introduction/introduction.component';
-import { Blog, BlogsJson } from '../../types/blog.type';
-import * as blogData from '../../content/blog.json';
-import { Author } from '../../types/author.type';
+import { Blog } from '../../types/blog.type';
 import { MarkdownRendererComponent } from './markdown-renderer/markdown-renderer.component';
 import { BlogFooterComponent } from './blog-footer/blog-footer.component';
+import { BlogService } from '../../core/blog.service';
+import { Author } from '../../types/author.type';
 
 @Component({
   selector: 'app-blog-detail',
@@ -27,33 +27,23 @@ import { BlogFooterComponent } from './blog-footer/blog-footer.component';
 })
 export class BlogDetailComponent implements OnInit {
   public blog: Blog | undefined;
-  public authorName: string | undefined;
+  public author: Author | undefined;
 
-  constructor(private route: ActivatedRoute) {
-    window.scrollTo(0, 0);
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private blogService: BlogService,
+  ) {}
 
   ngOnInit(): void {
     const blogId = this.route.snapshot.paramMap.get('blogId');
     if (blogId) {
-      this.loadBlogData(blogId);
-    }
-  }
-
-  public async getAuthor(username: string | undefined) {
-    const authors: Author[] = (blogData as BlogsJson).authors;
-    const author = authors.find(author => author.username === username);
-    if (author) {
-      this.authorName = author.name;
-    }
-    return author;
-  }
-
-  private loadBlogData(blogId: string): void {
-    const blogs: Blog[] = (blogData as BlogsJson).blogs;
-    this.blog = blogs.find(blog => blog.slug === blogId);
-    if (this.blog) {
-      this.getAuthor(this.blog.author);
+      this.blog = this.blogService.getBlogBySlug(blogId);
+      if (this.blog) {
+        const author = this.blogService.getAuthor(this.blog.author);
+        if (author) {
+          this.author = author;
+        }
+      }
     }
   }
 }

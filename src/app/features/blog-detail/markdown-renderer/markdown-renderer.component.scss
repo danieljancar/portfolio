@@ -13,7 +13,9 @@
     @apply text-2xl font-semibold text-gray-700 dark:text-gray-300;
   }
 
-  h4, h5, h6 {
+  h4,
+  h5,
+  h6 {
     @apply text-xl font-semibold text-gray-600 dark:text-gray-400;
   }
 
@@ -40,7 +42,8 @@
     @apply bg-gray-100 text-gray-800 p-4 rounded mt-4 overflow-x-auto dark:bg-gray-700 dark:text-gray-200;
   }
 
-  ul, ol {
+  ul,
+  ol {
     @apply list-disc list-inside my-4;
   }
 
@@ -50,7 +53,8 @@
 
   table {
     @apply w-full text-left border-collapse my-4;
-    th, td {
+    th,
+    td {
       @apply border border-gray-300 p-2 dark:border-gray-600;
     }
 
@@ -67,12 +71,11 @@
     }
   }
 
-
   // Styles for inline code
   code {
     @apply bg-gray-100 text-gray-800 p-1 rounded dark:bg-gray-700 dark:text-gray-200;
   }
-  
+
   pre {
     @apply bg-gray-100 text-gray-800 p-4 rounded mt-4 overflow-x-auto dark:bg-gray-700 dark:text-gray-200;
 
