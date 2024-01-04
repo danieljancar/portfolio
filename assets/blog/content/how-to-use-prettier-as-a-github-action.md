@@ -10,7 +10,13 @@ Prettier is a code formatter that ensures your code is consistently styled. It's
 
 ## Setting Up Prettier
 
-To use Prettier in a Node.js project, start by installing the `prettier` package. Once installed, Prettier can be configured to run on certain files or directories. This is done through a `.prettierrc` file in your project. For instance, to configure Prettier to format all files, your `.prettierrc` file would look like this:
+To use Prettier in a Node.js project, start by installing the `prettier` package. If you're using npm, run the following command:
+
+```bash
+npm install prettier --save-dev
+```
+
+Once installed, Prettier can be configured to run on certain files or directories. This is done through a `.prettierrc` file in your project. For instance, to configure Prettier to format all files, your `.prettierrc` file would look like this:
 
 ```json
 {
@@ -35,37 +41,41 @@ npx prettier --write .
 
 # Integrating Prettier with GitHub Actions
 
-To automate Prettier with GitHub Actions, you'll need to configure a YAML file in your repository. This file, typically named `.github/workflows/prettier.yml`, defines the conditions under which Prettier will run. Here’s an example configuration to run Prettier on every push to the main branch:
+To automate Prettier with GitHub Actions, you'll need to configure a YAML file in your repository. This file, typically named `.github/workflows/prettier.yml`, defines the conditions under which Prettier will run. Here’s an example configuration to run Prettier on every pull request to the develop and master branches:
 
 ```yaml
-name: Prettier
+name: Prettier Formatting
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - master
+      - develop
 
 jobs:
   prettier:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Dependencies
-        run: npm install
-      - name: Run Prettier
-        run: npx prettier --write src
-      - name: Commit Changes
-        run: |
-          git config --local user.email "<email>"
-          git config --local user.name "<name>"
-          git commit -am "Run Prettier"
-      - name: Push Changes
-        uses: ad-m/github-push-action@master
+      - name: Checkout code
+        uses: actions/checkout@v2
         with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: '--write **/*.{js,ts,tsx,json,md,css}'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-This configuration ensures that every time you push to the main branch, Prettier will format your code and commit any changes.
+This configuration ensures that every time you push to the develop or master branches, Prettier will run on all JavaScript, TypeScript, JSON, Markdown, and CSS files. If you want to run Prettier on all files, you can replace the `prettier_options` line with the following:
+
+```yaml
+prettier_options: '--write .'
+```
 
 # Conclusion
 
