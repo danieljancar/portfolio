@@ -27,7 +27,6 @@ const test = 'test';
 ```
 
 ```html
-
 <div>Test</div>
 ```
 
@@ -61,6 +60,5 @@ const test = 'test';
 - [x] Test
 
 | Test | Test |
-|------|------|
+| ---- | ---- |
 | Test | Test |
-
