@@ -10,6 +10,8 @@ This is a test markdown file to test ngx-markdown.
 - Test
 - Test
 
+> Test
+
 ## Test
 
 **Test**
@@ -25,6 +27,7 @@ const test = 'test';
 ```
 
 ```html
+
 <div>Test</div>
 ```
 
@@ -56,3 +59,8 @@ const test = 'test';
 
 - [ ] Test
 - [x] Test
+
+| Test | Test |
+|------|------|
+| Test | Test |
+
