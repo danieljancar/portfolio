@@ -12,9 +12,10 @@ import {
   bootstrapRobot,
 } from '@ng-icons/bootstrap-icons';
 import { Blog } from '../../../types/blog.type';
-import { ActivatedRoute } from '@angular/router';
 import { Author } from '../../../types/author.type';
 import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
+import { simpleStackblitz } from '@ng-icons/simple-icons';
+import { DefaultImageService } from '../../../core/default-image.service';
 
 @Component({
   selector: 'app-blog-info',
@@ -30,6 +31,7 @@ import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
       bootstrapBrush,
       bootstrapGithub,
       bootstrapLink45deg,
+      simpleStackblitz,
     }),
   ],
   templateUrl: './blog-info.component.html',
@@ -38,8 +40,15 @@ import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
 export class BlogInfoComponent {
   @Input() public blog: Blog | undefined;
   @Input() public author: Author | undefined;
+  public defaultImageShown = false;
+  protected readonly encodeURIComponent = encodeURIComponent;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private defaultImageService: DefaultImageService) {
     window.scrollTo(0, 0);
+  }
+
+  setDefaultImage(event: Event) {
+    this.defaultImageService.setDefaultImage(event);
+    this.defaultImageShown = true;
   }
 }

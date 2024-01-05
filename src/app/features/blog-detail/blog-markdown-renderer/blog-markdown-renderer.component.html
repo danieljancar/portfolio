@@ -1,7 +1,11 @@
-<div class="markdown-content">
-  <markdown
-    [src]="'assets/blog/content/' + blog?.content"
-    lineNumbers
-    ngPreserveWhitespaces
-  />
-</div>
+@if (isLoading) {
+  <app-loading-spinner marginTop="30" marginBottom="250"/>
+} @else {
+  <div class="markdown-content">
+    <markdown
+      [src]="'assets/blog/content/' + blog?.content"
+      lineNumbers
+      ngPreserveWhitespaces
+    />
+  </div>
+}

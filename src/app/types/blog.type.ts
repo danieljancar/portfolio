@@ -15,6 +15,7 @@ export type Blog = {
   bannerAiGenerated: boolean;
   author: string;
   githubRepoLink?: string | null;
+  stackBlitzLink?: string | null;
   otherSourceLink?: string | null;
 };
 

@@ -32,6 +32,7 @@
     "@angular/router": "^17.0.0",
     "@ng-icons/bootstrap-icons": "^26.3.0",
     "@ng-icons/core": "^26.3.0",
+    "@ng-icons/simple-icons": "^26.3.0",
     "angular-cli-ghpages": "^1.0.7",
     "clipboard": "^2.0.11",
     "date-fns": "^3.0.0",

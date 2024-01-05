@@ -5,7 +5,7 @@
     {
       "username": "danieljancar",
       "name": "Daniel Jancar",
-      "bio": "Passionate Software Developer loving to learn new things, open-source and helping people out.",
+      "bio": "Passionate developer and tech enthusiast.",
       "image": "danieljancar.jpg",
       "website": "https://danieljancar.dev",
       "github": "danieljancar",
@@ -25,12 +25,11 @@
       ],
       "content": "how-to-use-prettier-as-a-github-action.md",
       "readTime": "4",
-      "banner": "how-to-use-prettier-as-a-github-action.png",
+      "banner": "how-to-use-prettiesr-as-a-github-action.png",
       "bannerAlt": "Image of a website with the Prettier logo and the Github logo, styled in a robot-like way",
       "bannerSource": "https://openai.com/research/dall-e",
-      "bannerAiGenerated": true,
+      "bannerAiGenerated": false,
       "author": "danieljancar",
-      "githubRepoLink": "danieljancar/portfolio",
       "otherSourceLink": "https://prettier.io/"
     }
   ]
