@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router'; // Import Router
 import { MarkdownComponent } from 'ngx-markdown';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
@@ -32,18 +32,23 @@ export class BlogDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private blogService: BlogService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
     const blogId = this.route.snapshot.paramMap.get('blogId');
     if (blogId) {
       this.blog = this.blogService.getBlogBySlug(blogId);
-      if (this.blog) {
+      if (!this.blog) {
+        this.router.navigate(['/404']);
+      } else {
         const author = this.blogService.getAuthor(this.blog.author);
         if (author) {
           this.author = author;
         }
       }
+    } else {
+      this.router.navigate(['/404']);
     }
   }
 }
