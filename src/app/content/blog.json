@@ -28,7 +28,7 @@
       "banner": "how-to-use-prettier-as-a-github-action.png",
       "bannerAlt": "Image of a website with the Prettier logo and the Github logo, styled in a robot-like way",
       "bannerSource": "https://openai.com/research/dall-e",
-      "bannerAiGenerated": false,
+      "bannerAiGenerated": true,
       "author": "danieljancar",
       "otherSourceLink": "https://prettier.io/"
     }
