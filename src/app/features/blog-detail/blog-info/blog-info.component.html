@@ -31,6 +31,7 @@
       [alt]="blog?.bannerAlt"
       [src]="'assets/blog/images/' + blog?.banner"
       (error)="setDefaultImage($event)"
+      [attr.aria-label]="blog?.bannerAlt"
       class="absolute inset-0 w-full h-full object-cover object-center rounded-lg shadow-md"
     />
   </div>
@@ -54,15 +55,23 @@
       }
     </div>
     <div class="flex">
+      @if (defaultImageShown) {
+        <div
+          class="tooltip tooltip-left hover:cursor-pointer"
+          data-tip="This image is a placeholder"
+        >
+          <ng-icon class="text-xl mr-2" name="bootstrapImage"/>
+        </div>
+      }
       @if (blog?.bannerAiGenerated || defaultImageShown) {
         <div
           class="tooltip tooltip-left hover:cursor-pointer"
           data-tip="This image was AI generated"
         >
-          <ng-icon class="text-xl mr-3 p-0.5" name="bootstrapRobot"/>
+          <ng-icon class="text-xl mr-2" name="bootstrapRobot"/>
         </div>
       }
-      <a class="p-0.5" [href]="blog?.bannerSource" rel="noopener noreferrer" target="_blank">
+      <a [href]="blog?.bannerSource" rel="noopener noreferrer" target="_blank">
         <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight"/>
       </a>
     </div>

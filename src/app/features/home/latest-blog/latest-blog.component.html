@@ -26,6 +26,7 @@
             [alt]="blog?.bannerAlt"
             [src]="'assets/blog/images/' + blog?.banner"
             (error)="setDefaultImage($event)"
+            [attr.aria-label]="blog?.bannerAlt"
           />
         </figure>
         <div class="card-body">
