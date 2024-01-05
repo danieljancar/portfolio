@@ -33,17 +33,31 @@
       class="absolute inset-0 w-full h-full object-cover object-center rounded-lg shadow-md"
     />
   </div>
-  <div class="flex justify-end align-middle">
-    @if (blog?.bannerAiGenerated) {
-      <div
-        class="tooltip tooltip-left hover:cursor-pointer"
-        data-tip="This image was AI generated"
-      >
-        <ng-icon class="text-xl mr-3" name="bootstrapRobot"/>
+  <div class="flex justify-between align-middle">
+    @if (blog?.githubRepoLink || blog?.otherSourceLink) {
+      <div class="flex">
+        @if (blog?.githubRepoLink) {
+          <a class="p-0.5" [href]="blog?.githubRepoLink" rel="noopener noreferrer" target="_self">
+            <ng-icon class="text-xl mr-1.5" name="bootstrapGithub"/>
+          </a>
+        }
+        @if (blog?.otherSourceLink) {
+          <a class="p-0.5" [href]="blog?.githubRepoLink" rel="noopener noreferrer" target="_self">
+            <ng-icon class="text-xl" name="bootstrapLink45deg"/>
+          </a>
+        }
       </div>
     }
-    <div class="tooltip tooltip-left" data-tip="Go to image source">
-      <a [href]="blog?.bannerSource" rel="noopener noreferrer" target="_blank">
+    <div class="flex">
+      @if (blog?.bannerAiGenerated) {
+        <div
+          class="tooltip tooltip-left hover:cursor-pointer"
+          data-tip="This image was AI generated"
+        >
+          <ng-icon class="text-xl mr-3 p-0.5" name="bootstrapRobot"/>
+        </div>
+      }
+      <a class="p-0.5" [href]="blog?.bannerSource" rel="noopener noreferrer" target="_blank">
         <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight"/>
       </a>
     </div>

@@ -29,7 +29,9 @@
       "bannerAlt": "Image of a website with the Prettier logo and the Github logo, styled in a robot-like way",
       "bannerSource": "https://openai.com/research/dall-e",
       "bannerAiGenerated": true,
-      "author": "danieljancar"
+      "author": "danieljancar",
+      "githubRepoLink": "danieljancar/portfolio",
+      "otherSourceLink": "https://prettier.io/"
     }
   ]
 }

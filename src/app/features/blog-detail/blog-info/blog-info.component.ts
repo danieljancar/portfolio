@@ -6,6 +6,8 @@ import {
   bootstrapBoxArrowUpRight,
   bootstrapBrush,
   bootstrapClock,
+  bootstrapGithub,
+  bootstrapLink45deg,
   bootstrapPerson,
   bootstrapRobot,
 } from '@ng-icons/bootstrap-icons';
@@ -26,6 +28,8 @@ import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
       bootstrapClock,
       bootstrapPerson,
       bootstrapBrush,
+      bootstrapGithub,
+      bootstrapLink45deg,
     }),
   ],
   templateUrl: './blog-info.component.html',
@@ -34,7 +38,6 @@ import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
 export class BlogInfoComponent {
   @Input() public blog: Blog | undefined;
   @Input() public author: Author | undefined;
-  protected readonly encodeURIComponent = encodeURIComponent;
 
   constructor(private route: ActivatedRoute) {
     window.scrollTo(0, 0);
