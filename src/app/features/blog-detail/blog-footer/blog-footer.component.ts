@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Blog } from '../../../types/blog.type';
 import { Author } from '../../../types/author.type';
 
 @Component({
@@ -10,7 +9,7 @@ import { Author } from '../../../types/author.type';
   styleUrl: './blog-footer.component.scss',
 })
 export class BlogFooterComponent {
-  @Input() blog: Blog | undefined;
+  @Input() tags: string[] | undefined;
   @Input() author: Author | undefined;
   protected readonly encodeURIComponent = encodeURIComponent;
 }

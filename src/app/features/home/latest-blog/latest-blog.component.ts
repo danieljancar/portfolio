@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import * as blogData from '../../../content/blog.json';
+import * as blogData from '../../../../assets/blog/blog.json';
 import { Blog } from '../../../types/blog.type';
 import { CommonModule, NgForOf, NgOptimizedImage } from '@angular/common';
 import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { bootstrapEmojiExpressionlessFill } from '@ng-icons/bootstrap-icons';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { DefaultImageService } from '../../../core/default-image.service';
 
 @Component({
@@ -30,10 +30,7 @@ import { DefaultImageService } from '../../../core/default-image.service';
 export class LatestBlogComponent implements OnInit {
   latestBlog: Blog[] = [];
 
-  constructor(
-    private router: Router,
-    private defaultImageService: DefaultImageService,
-  ) {}
+  constructor(private defaultImageService: DefaultImageService) {}
 
   ngOnInit() {
     this.loadLatestBlogs();

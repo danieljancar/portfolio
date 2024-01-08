@@ -1,4 +1,4 @@
-import * as blogData from '../content/blog.json';
+import * as blogData from '../../assets/blog/blog.json';
 import { Injectable } from '@angular/core';
 import { Author } from '../types/author.type';
 import { BlogsJson } from '../types/blog.type';

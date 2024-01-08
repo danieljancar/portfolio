@@ -42,8 +42,7 @@ import { DefaultImageService } from '../../../core/default-image.service';
 export class BlogInfoComponent {
   @Input() public blog: Blog | undefined;
   @Input() public author: Author | undefined;
-  public defaultImageShown = false;
-  protected readonly encodeURIComponent = encodeURIComponent;
+  public defaultImageShown: boolean = false;
 
   constructor(private defaultImageService: DefaultImageService) {
     window.scrollTo(0, 0);
