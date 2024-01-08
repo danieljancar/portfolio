@@ -8,10 +8,9 @@ describe('LegalMarkdownRendererComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LegalMarkdownRendererComponent]
-    })
-    .compileComponents();
-    
+      imports: [LegalMarkdownRendererComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(LegalMarkdownRendererComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

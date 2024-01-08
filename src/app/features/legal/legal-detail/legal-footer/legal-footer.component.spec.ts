@@ -8,10 +8,9 @@ describe('LegalFooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LegalFooterComponent]
-    })
-    .compileComponents();
-    
+      imports: [LegalFooterComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(LegalFooterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
