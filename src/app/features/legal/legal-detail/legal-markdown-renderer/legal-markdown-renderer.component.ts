@@ -13,15 +13,20 @@ import {
   provideMarkdown,
 } from 'ngx-markdown';
 import { HttpClient } from '@angular/common/http';
-import { Blog } from '../../../types/blog.type';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { BlogFooterComponent } from '../blog-footer/blog-footer.component';
-import { Author } from '../../../types/author.type';
+import { BlogFooterComponent } from '../../../blog/blog-detail/blog-footer/blog-footer.component';
+import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
+import { LegalFooterComponent } from '../legal-footer/legal-footer.component';
+import { Legal } from '../../../../types/legal.type';
 
 @Component({
-  selector: 'app-blog-markdown-renderer',
+  selector: 'app-legal-markdown-renderer',
   standalone: true,
-  imports: [MarkdownComponent, LoadingSpinnerComponent, BlogFooterComponent],
+  imports: [
+    BlogFooterComponent,
+    LoadingSpinnerComponent,
+    MarkdownComponent,
+    LegalFooterComponent,
+  ],
   providers: [
     provideMarkdown({
       loader: HttpClient,
@@ -34,19 +39,21 @@ import { Author } from '../../../types/author.type';
       },
     }),
   ],
-  templateUrl: './blog-markdown-renderer.component.html',
-  styleUrl: './blog-markdown-renderer.component.scss',
+  templateUrl: './legal-markdown-renderer.component.html',
+  styleUrls: [
+    './legal-markdown-renderer.component.scss',
+    '../../../../styles/markdown.scss',
+  ],
   encapsulation: ViewEncapsulation.None,
 })
-export class BlogMarkdownRendererComponent implements OnInit {
-  @Input() public blog: Blog | undefined;
-  @Input() public author: Author | undefined;
+export class LegalMarkdownRendererComponent implements OnInit {
+  @Input() legal: Legal | undefined;
   isLoading: boolean = true;
 
   constructor(private markdownService: MarkdownService) {}
 
   ngOnInit() {
-    const mdPath: string = `assets/blog/content/${this.blog?.content}`;
+    const mdPath: string = `assets/legal/content/${this.legal?.file}.md`;
     this.markdownService.getSource(mdPath).subscribe(() => {
       this.isLoading = false;
     });

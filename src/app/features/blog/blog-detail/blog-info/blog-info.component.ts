@@ -9,14 +9,15 @@ import {
   bootstrapGithub,
   bootstrapImage,
   bootstrapLink45deg,
+  bootstrapPencilSquare,
   bootstrapPerson,
   bootstrapRobot,
 } from '@ng-icons/bootstrap-icons';
-import { Blog } from '../../../types/blog.type';
-import { Author } from '../../../types/author.type';
-import { RelativeTimePipe } from '../../../pipes/relative-time.pipe';
 import { simpleStackblitz } from '@ng-icons/simple-icons';
-import { DefaultImageService } from '../../../core/default-image.service';
+import { RelativeTimePipe } from '../../../../pipes/relative-time.pipe';
+import { Blog } from '../../../../types/blog.type';
+import { Author } from '../../../../types/author.type';
+import { DefaultImageService } from '../../../../core/default-image.service';
 
 @Component({
   selector: 'app-blog-info',
@@ -34,6 +35,7 @@ import { DefaultImageService } from '../../../core/default-image.service';
       bootstrapLink45deg,
       bootstrapImage,
       simpleStackblitz,
+      bootstrapPencilSquare,
     }),
   ],
   templateUrl: './blog-info.component.html',
@@ -43,6 +45,8 @@ export class BlogInfoComponent {
   @Input() public blog: Blog | undefined;
   @Input() public author: Author | undefined;
   public defaultImageShown: boolean = false;
+  public readonly blogFileBaseUrl: string =
+    'https://github.com/danieljancar/portfolio/tree/develop/src/assets/blog/content/';
 
   constructor(private defaultImageService: DefaultImageService) {
     window.scrollTo(0, 0);

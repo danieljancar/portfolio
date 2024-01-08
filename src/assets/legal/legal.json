@@ -1,33 +1,32 @@
 {
   "name": "legal.json",
   "description": "Metadata for some legal documents.",
-  "version": "1.0.0",
-  "created": "18-12-2023",
-  "edited": "18-12-2023",
+  "created": "2024-01-08T00:00:00",
+  "edited": "2024-01-08T00:00:00",
   "files": [
     {
       "name": "Terms of Service",
-      "description": "Terms of service for the website.",
+      "description": "Terms of service are the legal agreements between a service provider and a person who wants to use that service. The person must agree to abide by the terms of service in order to use the offered service.",
       "version": "1.0.0",
-      "created": "18-12-2023",
-      "edited": "18-12-2023",
-      "file": "terms.md"
+      "created": "2024-01-08T00:00:00",
+      "edited": "2024-01-08T00:00:00",
+      "file": "terms"
     },
     {
       "name": "Privacy Policy",
-      "description": "Privacy policy for the website.",
+      "description": "Privacy policy is a statement or a legal document that discloses some or all of the ways a party gathers, uses, discloses, and manages a client's data.",
       "version": "1.0.0",
-      "created": "18-12-2023",
-      "edited": "18-12-2023",
-      "file": "privacy.md"
+      "created": "2024-01-08T00:00:00",
+      "edited": "2024-01-08T00:00:00",
+      "file": "privacy"
     },
     {
       "name": "Cookie Policy",
-      "description": "Cookie policy for the website.",
+      "description": "Cookie policy is a declaration to your users on what cookies are active on your website, what user data they track, for what purpose, and where in the world this data is sent.",
       "version": "1.0.0",
-      "created": "18-12-2023",
-      "edited": "18-12-2023",
-      "file": "cookie.md"
+      "created": "2024-01-08T00:00:00",
+      "edited": "2024-01-08T00:00:00",
+      "file": "cookies"
     }
   ]
 }

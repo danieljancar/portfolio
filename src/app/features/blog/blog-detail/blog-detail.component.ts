@@ -4,11 +4,11 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { DatePipe, NgOptimizedImage } from '@angular/common';
 import { NgIcon } from '@ng-icons/core';
 import { BlogInfoComponent } from './blog-info/blog-info.component';
-import { Blog } from '../../types/blog.type';
 import { BlogMarkdownRendererComponent } from './blog-markdown-renderer/blog-markdown-renderer.component';
 import { BlogFooterComponent } from './blog-footer/blog-footer.component';
-import { BlogService } from '../../core/blog.service';
-import { Author } from '../../types/author.type';
+import { Blog } from '../../../types/blog.type';
+import { Author } from '../../../types/author.type';
+import { BlogService } from '../../../core/blog.service';
 
 @Component({
   selector: 'app-blog-detail',

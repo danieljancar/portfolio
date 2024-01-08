@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Author } from '../../../types/author.type';
+import { Author } from '../../../../types/author.type';
 
 @Component({
   selector: 'app-blog-footer',

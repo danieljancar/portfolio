@@ -6,21 +6,27 @@
 >
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="blogInfoIconMargin" name="bootstrapClock"/>
+      <ng-icon class="IconSmallMarginR" name="bootstrapClock"/>
       {{ blog?.created | relativeTime }}
     </span>
   </p>
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="blogInfoIconMargin" name="bootstrapBook"/>
+      <ng-icon class="IconSmallMarginR" name="bootstrapBook"/>
       <time>{{ blog?.readTime }}</time
       >&nbsp;min read</span
     >
   </p>
+  <p class="join-item mb-0.5 sm:mb-0">
+    <span class="flex mr-3 items-center">
+      <ng-icon class="IconSmallMarginR" name="bootstrapPerson"/>
+      <span>{{ author?.name }}</span>
+    </span>
+  </p>
   <p class="join-item">
     <span class="flex items-center">
-      <ng-icon class="blogInfoIconMargin" name="bootstrapPerson"/>
-      <span>{{ author?.name }}</span>
+      <ng-icon  class="IconSmallMarginR" name="bootstrapPencilSquare"/>
+      <a [href]="blogFileBaseUrl + blog?.content" class="link link-hover">Suggest edit</a>
     </span>
   </p>
 </div>
