@@ -1,0 +1,13 @@
+@if (isLoading) {
+  <app-loading-spinner/>
+} @else {
+  <div class="markdown-content">
+    <markdown
+      [src]="'assets/blog/content/' + blog?.content"
+      lineNumbers
+      ngPreserveWhitespaces
+    />
+  </div>
+  <div class="divider"></div>
+  <app-blog-footer [author]="author" [tags]="blog?.tags"/>
+}

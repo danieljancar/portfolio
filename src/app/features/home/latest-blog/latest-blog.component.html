@@ -23,21 +23,19 @@
       >
         <figure>
           <img
-            [src]="'assets/blog/images/' + blog.banner"
-            [alt]="blog.bannerAlt"
+            [alt]="blog?.bannerAlt"
+            [src]="'assets/blog/images/' + blog?.banner"
+            (error)="setDefaultImage($event)"
+            [attr.aria-label]="blog?.bannerAlt"
           />
         </figure>
         <div class="card-body">
-          <div class="flex flex-wrap gap-2">
-            @for (tag of blog.tags; track $index) {
-              <span class="badge badge-outline badge-info">{{ tag }}</span>
-            }
-          </div>
           <h2 class="card-title">{{ blog.title }}</h2>
           <p>{{ blog.description }}</p>
           <time class="text-xs text-secondary">{{
-            blog.created | date: 'mediumDate'
-          }}</time>
+              blog.created | date: 'mediumDate'
+            }}
+          </time>
         </div>
       </div>
     } @empty {

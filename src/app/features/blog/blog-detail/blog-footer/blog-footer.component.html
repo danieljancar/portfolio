@@ -1,0 +1,31 @@
+<div class="flex flex-col">
+  <div class="flex items-center mb-8 sm:m-4">
+    <div class="avatar">
+      <div
+        class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
+      >
+        <img
+          [alt]="author?.name + ' profile picture'"
+          [attr.aria-label]="author?.name + ' profile picture'"
+          [src]="'assets/authors/profile-pictures/' + author?.username + '.png'"
+        />
+      </div>
+    </div>
+    <div class="ml-4 sm:ml-8">
+      <h1 class="text-2xl">{{ author?.name }}</h1>
+      <p class="text-sm text-gray-500">{{ author?.bio }}</p>
+    </div>
+  </div>
+  <div class="flex flex-wrap">
+    @for (tag of tags; track $index) {
+      <a
+        [href]="'https://www.google.com/search?q=' + encodeURIComponent(tag)"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="m-2 hover:opacity-75 duration-75 ease-in text-sm text-gray-400"
+      >
+        <span>#{{ tag }}</span>
+      </a>
+    }
+  </div>
+</div>

@@ -1,0 +1,33 @@
+{
+  "name": "blogs.json",
+  "description": "A list with metadata of all blogs written in markdown.",
+  "authors": [
+    {
+      "username": "danieljancar",
+      "name": "Daniel Jancar",
+      "bio": "Passionate developer and tech enthusiast.",
+      "image": "danieljancar.jpg",
+      "website": "https://danieljancar.dev",
+      "github": "danieljancar",
+      "linkedin": "danieljancar"
+    }
+  ],
+  "blogs": [
+    {
+      "slug": "how-to-use-prettier-as-a-github-action",
+      "title": "How to use Prettier as a Github Action",
+      "description": "Prettier is a great tool to format your code. In this article, I will show you how to use Prettier as a Github Action.",
+      "created": "2024-01-04T15:33:12",
+      "edited": "2024-01-04T15:33:12",
+      "tags": ["prettier", "github-actions"],
+      "content": "how-to-use-prettier-as-a-github-action.md",
+      "readTime": "4",
+      "banner": "how-to-use-prettier-as-a-github-action.png",
+      "bannerAlt": "Image of a website with the Prettier logo and the Github logo, styled in a robot-like way",
+      "bannerSource": "https://openai.com/research/dall-e",
+      "bannerAiGenerated": true,
+      "author": "danieljancar",
+      "otherSourceLink": "https://prettier.io/"
+    }
+  ]
+}
