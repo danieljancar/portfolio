@@ -1,28 +1,32 @@
-<div class="join join-vertical lg:join-horizontal text-gray-600 dark:text-gray-300 mt-3">
+<div
+  class="join join-vertical lg:join-horizontal text-gray-600 dark:text-gray-300 mt-3"
+>
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapClock"/>
+      <ng-icon class="IconSmallMarginR" name="bootstrapClock" />
       Created: {{ legal?.created | relativeTime }}
     </span>
   </p>
   @if (legal?.edited != legal?.created) {
     <p class="join-item mb-0.5 sm:mb-0">
-    <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapClockHistory"/>
-      Last Updated: {{ legal?.edited| relativeTime }}
-    </span>
+      <span class="flex mr-3 items-center">
+        <ng-icon class="IconSmallMarginR" name="bootstrapClockHistory" />
+        Last Updated: {{ legal?.edited | relativeTime }}
+      </span>
     </p>
   }
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapFiles"/>
+      <ng-icon class="IconSmallMarginR" name="bootstrapFiles" />
       Version: {{ legal?.version }}
     </span>
   </p>
   <p class="join-item">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapPencilSquare"/>
-      <a [href]="legalFileBaseUrl + legal?.file + '.md'" class="link link-hover">Suggest edit</a>
+      <ng-icon class="IconSmallMarginR" name="bootstrapPencilSquare" />
+      <a [href]="legalFileBaseUrl + legal?.file + '.md'" class="link link-hover"
+        >Suggest edit</a
+      >
     </span>
   </p>
 </div>

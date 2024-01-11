@@ -32,9 +32,8 @@
         <div class="card-body">
           <h2 class="card-title">{{ blog.title }}</h2>
           <p>{{ blog.description }}</p>
-          <time class="text-xs text-secondary">{{
-              blog.created | date: 'mediumDate'
-            }}
+          <time class="text-xs text-secondary"
+            >{{ blog.created | date: 'mediumDate' }}
           </time>
         </div>
       </div>

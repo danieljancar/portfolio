@@ -24,4 +24,10 @@ export type BlogsJson = {
   description: string;
   authors: Author[];
   blogs: Blog[];
+  sidebar: Sidebar;
+};
+
+export type Sidebar = {
+  pickedBlogs: string[];
+  recommendedTags: string[];
 };
