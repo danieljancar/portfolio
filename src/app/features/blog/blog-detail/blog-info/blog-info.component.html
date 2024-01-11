@@ -6,27 +6,29 @@
 >
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapClock"/>
+      <ng-icon class="IconSmallMarginR" name="bootstrapClock" />
       {{ blog?.created | relativeTime }}
     </span>
   </p>
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapBook"/>
+      <ng-icon class="IconSmallMarginR" name="bootstrapBook" />
       <time>{{ blog?.readTime }}</time
       >&nbsp;min read</span
     >
   </p>
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapPerson"/>
+      <ng-icon class="IconSmallMarginR" name="bootstrapPerson" />
       <span>{{ author?.name }}</span>
     </span>
   </p>
   <p class="join-item">
     <span class="flex items-center">
-      <ng-icon  class="IconSmallMarginR" name="bootstrapPencilSquare"/>
-      <a [href]="blogFileBaseUrl + blog?.content" class="link link-hover">Suggest edit</a>
+      <ng-icon class="IconSmallMarginR" name="bootstrapPencilSquare" />
+      <a [href]="blogFileBaseUrl + blog?.content" class="link link-hover"
+        >Suggest edit</a
+      >
     </span>
   </p>
 </div>
@@ -44,19 +46,33 @@
   <div class="flex justify-between align-middle">
     <div class="flex">
       @if (blog?.githubRepoLink) {
-        <a class="p-0.5" [href]="'https://github.com/' + blog?.githubRepoLink" rel="noopener noreferrer"
-           target="_self">
-          <ng-icon class="text-xl mr-1.5" name="bootstrapGithub"/>
+        <a
+          class="p-0.5"
+          [href]="'https://github.com/' + blog?.githubRepoLink"
+          rel="noopener noreferrer"
+          target="_self"
+        >
+          <ng-icon class="text-xl mr-1.5" name="bootstrapGithub" />
         </a>
       }
       @if (blog?.stackBlitzLink) {
-        <a class="p-0.5" [href]="blog?.stackBlitzLink" rel="noopener noreferrer" target="_self">
-          <ng-icon class="text-xl mr-1.5" name="simpleStackblitz"/>
+        <a
+          class="p-0.5"
+          [href]="blog?.stackBlitzLink"
+          rel="noopener noreferrer"
+          target="_self"
+        >
+          <ng-icon class="text-xl mr-1.5" name="simpleStackblitz" />
         </a>
       }
       @if (blog?.otherSourceLink) {
-        <a class="p-0.5" [href]="blog?.otherSourceLink" rel="noopener noreferrer" target="_self">
-          <ng-icon class="text-xl" name="bootstrapLink45deg"/>
+        <a
+          class="p-0.5"
+          [href]="blog?.otherSourceLink"
+          rel="noopener noreferrer"
+          target="_self"
+        >
+          <ng-icon class="text-xl" name="bootstrapLink45deg" />
         </a>
       }
     </div>
@@ -66,7 +82,7 @@
           class="tooltip tooltip-left hover:cursor-pointer"
           data-tip="This image is a placeholder"
         >
-          <ng-icon class="text-xl mr-2" name="bootstrapImage"/>
+          <ng-icon class="text-xl mr-2" name="bootstrapImage" />
         </div>
       }
       @if (blog?.bannerAiGenerated || defaultImageShown) {
@@ -74,13 +90,13 @@
           class="tooltip tooltip-left hover:cursor-pointer"
           data-tip="This image was AI generated"
         >
-          <ng-icon class="text-xl mr-2" name="bootstrapRobot"/>
+          <ng-icon class="text-xl mr-2" name="bootstrapRobot" />
         </div>
       }
       <a [href]="blog?.bannerSource" rel="noopener noreferrer" target="_blank">
-        <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight"/>
+        <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight" />
       </a>
     </div>
   </div>
 </div>
-<div>
+<div></div>

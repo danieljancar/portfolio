@@ -1,4 +1,22 @@
-<div class="text-center my-72">
-  <h1><ng-icon class="text-7xl" name="bootstrapConeStriped"></ng-icon></h1>
-  <p>This page is still under construction. Please check back later.</p>
+<div class="flex justify-center px-1 xl:px-0 mb-20">
+  <div
+    class="max-w-5xl lg:max-w-7xl flex flex-col items-center w-full c-min-h-80"
+  >
+    <div></div>
+    <div class="flex flex-col justify-center lg:flex-row w-full">
+      <div class="w-full lg:w-3/4">
+        <div>
+          <app-blog-filter
+            (filterChanged)="blogPostsComponent.onFilterChange($event)"
+            class="pl-4"
+          ></app-blog-filter>
+          <div class="divider mt-0.5"></div>
+          <app-blog-posts #blogPostsComponent></app-blog-posts>
+        </div>
+      </div>
+      <div class="w-full lg:w-1/3 xl:w-1/4">
+        <app-blog-sidebar/>
+      </div>
+    </div>
+  </div>
 </div>

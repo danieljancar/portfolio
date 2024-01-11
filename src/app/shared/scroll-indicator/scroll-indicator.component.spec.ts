@@ -8,10 +8,9 @@ describe('ScrollIndicatorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ScrollIndicatorComponent]
-    })
-    .compileComponents();
-    
+      imports: [ScrollIndicatorComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ScrollIndicatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
