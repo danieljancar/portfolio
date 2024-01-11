@@ -77,6 +77,10 @@ This configuration ensures that every time you push to the develop or master bra
 prettier_options: '--write .'
 ```
 
+# Configure Actions permissions
+
+To run the newly created workflow, you'll need to allow the Github Actions workflow to read and write to your repository. Go to your `Settings` tab, then click on `Actions` -> `General`, move to the `Workflow permissions` section, and enable the `Read and write` option.
+
 # Conclusion
 
 Through this guide, you've learned how to leverage Prettier alongside GitHub Actions to automate your code formatting process. This setup not only streamlines your workflow but also ensures consistency across your project’s codebase. By integrating these tools into your development cycle, you can focus more on coding and less on the minutiae of code styling.

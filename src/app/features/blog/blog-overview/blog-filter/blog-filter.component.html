@@ -1,0 +1,16 @@
+<section class="flex flex-wrap">
+  <button
+    (click)="applyFilter('latest')"
+    [class.badge-primary]="currentFilter === 'latest'"
+    class="badge badge-outline text-lg p-3 mr-2 hover:opacity-75"
+  >
+    Latest
+  </button>
+  <button
+    (click)="applyFilter('oldest')"
+    [class.badge-primary]="currentFilter === 'oldest'"
+    class="badge badge-outline text-lg p-3 mr-2 hover:opacity-75"
+  >
+    Oldest
+  </button>
+</section>

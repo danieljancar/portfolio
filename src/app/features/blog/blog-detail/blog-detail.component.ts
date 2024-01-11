@@ -9,6 +9,7 @@ import { BlogFooterComponent } from './blog-footer/blog-footer.component';
 import { Blog } from '../../../types/blog.type';
 import { Author } from '../../../types/author.type';
 import { BlogService } from '../../../core/blog.service';
+import { ScrollIndicatorComponent } from '../../../shared/scroll-indicator/scroll-indicator.component';
 
 @Component({
   selector: 'app-blog-detail',
@@ -23,6 +24,7 @@ import { BlogService } from '../../../core/blog.service';
     BlogInfoComponent,
     BlogMarkdownRendererComponent,
     BlogFooterComponent,
+    ScrollIndicatorComponent,
   ],
 })
 export class BlogDetailComponent implements OnInit {
