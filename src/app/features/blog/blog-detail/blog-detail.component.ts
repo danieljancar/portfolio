@@ -10,6 +10,7 @@ import { Blog } from '../../../types/blog.type';
 import { Author } from '../../../types/author.type';
 import { BlogService } from '../../../core/blog.service';
 import { ScrollIndicatorComponent } from '../../../shared/scroll-indicator/scroll-indicator.component';
+import { BackButtonComponent } from '../../../shared/back-button/back-button.component';
 
 @Component({
   selector: 'app-blog-detail',
@@ -25,6 +26,7 @@ import { ScrollIndicatorComponent } from '../../../shared/scroll-indicator/scrol
     BlogMarkdownRendererComponent,
     BlogFooterComponent,
     ScrollIndicatorComponent,
+    BackButtonComponent,
   ],
 })
 export class BlogDetailComponent implements OnInit {

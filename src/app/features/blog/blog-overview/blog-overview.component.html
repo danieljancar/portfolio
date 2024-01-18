@@ -4,19 +4,22 @@
   >
     <div></div>
     <div class="flex flex-col justify-center lg:flex-row w-full">
-      <div class="w-full lg:w-3/4">
-        <div>
+      @defer (on immediate; prefetch on idle) {
+        <div class="w-full lg:w-3/4">
+          <app-back-button/>
           <app-blog-filter
             (filterChanged)="blogPostsComponent.onFilterChange($event)"
             class="pl-4"
-          ></app-blog-filter>
+          />
           <div class="divider mt-0.5"></div>
-          <app-blog-posts #blogPostsComponent></app-blog-posts>
+          <app-blog-posts #blogPostsComponent/>
         </div>
-      </div>
-      <div class="w-full lg:w-1/3 xl:w-1/4">
-        <app-blog-sidebar/>
-      </div>
+        <div class="w-full lg:w-1/3 xl:w-1/4">
+          <app-blog-sidebar/>
+        </div>
+      } @loading (after 100) {
+        <app-loading-spinner/>
+      }
     </div>
   </div>
 </div>

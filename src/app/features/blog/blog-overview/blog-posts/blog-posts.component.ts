@@ -23,7 +23,7 @@ import { RouterLink } from '@angular/router';
 export class BlogPostsComponent implements OnInit {
   public blogs: Blog[] = [];
   public hasMoreBlogs: boolean = true;
-  public loading: boolean = false;
+  public loading: boolean = true;
   public maxLoadMoreCount: number = 0;
   private startIndex: number = 0;
   private loadCount: number = 6;
@@ -42,7 +42,6 @@ export class BlogPostsComponent implements OnInit {
   }
 
   loadBlogs() {
-    this.loading = true;
     const moreBlogs = this.blogService.getFilteredBlogs(
       this.currentFilter,
       this.startIndex,

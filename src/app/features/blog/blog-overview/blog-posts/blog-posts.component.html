@@ -6,7 +6,6 @@
     >
       <div
         class="w-full flex flex-col lg:grid lg:grid-cols-3 gap-4 pl-2.5 md:pl-3 lg:pl-5"
-        [routerLink]="['/blog', blog.slug]"
       >
         <div class="lg:col-span-2 break-words">
           <h2 class="line-clamp-3 lg:line-clamp-2 text-2xl font-bold">
@@ -36,13 +35,13 @@
       <div class="divider"></div>
     </div>
     @if (loading) {
-      <app-loading-spinner />
+      <app-loading-spinner/>
     }
   } @empty {
-    <div class="items-center flex flex-col justify-center">
-      <ng-icon class="text-2xl mb-3" name="bootstrapEmojiDizzy" />
-      <p class="text-lg">No blogs found!</p>
-    </div>
+    <app-placeholder-message
+      icon="bootstrapEmojiDizzy"
+      message="No blogs found."
+    />
   }
   @if (maxLoadMoreCount <= 8 && hasMoreBlogs) {
     <button class="btn btn-primary mt-4" (click)="loadMoreBlogs()">
@@ -51,7 +50,7 @@
   } @else {
     <app-placeholder-message
       icon="bootstrapEmojiDizzy"
-      message="That's all for now."
+      message="No more blogs found."
     />
   }
 </section>
