@@ -3,6 +3,18 @@
     <p>My personal portfolio website, built with <a href="https://angular,dev">Angular 17</a> and hosted on <a href="https://danieljancar.dev">danieljancar.dev</a>.</p>
 </div>
 
+<div align="center">
+
+[![Deployment CD](https://github.com/danieljancar/portfolio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/pages/pages-build-deployment)
+[![Angular CI](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml)
+[![Prettier](https://github.com/danieljancar/portfolio/actions/workflows/format.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/format.yml)
+
+[![Styling - TailwindCSS](https://img.shields.io/badge/Styling-TailwindCSS-38bdf8?logo=tailwindcss)](https://tailwindcss.com/docs/installation)
+[![UI - DaisyUI](https://img.shields.io/badge/UI-DaisyUI-1ed1a5?logo=daisyui)](https://daisyui.com/)
+[![Icons - NG Icons](https://img.shields.io/badge/Icons-NG_Icons-c31a2f?logo=angular)](https://ng-icons.github.io/ng-icons/#/browse-icons)
+
+</div>
+
 ---
 
 # Introduction
