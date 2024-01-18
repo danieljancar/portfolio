@@ -6,7 +6,6 @@
     <div class="flex flex-col justify-center lg:flex-row w-full">
       @defer (on immediate; prefetch on idle) {
         <div class="w-full lg:w-3/4">
-          <app-back-button/>
           <app-blog-filter
             (filterChanged)="blogPostsComponent.onFilterChange($event)"
             class="pl-4"
