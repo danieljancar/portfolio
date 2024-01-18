@@ -2,32 +2,32 @@
   {{ blog?.title }}
 </h1>
 <div
-  class="join join-vertical sm:join-horizontal text-gray-600 dark:text-gray-300 mt-3"
+  class="flex flex-wrap text-gray-600 dark:text-gray-300 mt-3"
 >
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapClock" />
+      <ng-icon class="IconSmallMarginR" name="bootstrapClock"/>
       {{ blog?.created | relativeTime }}
     </span>
   </p>
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapBook" />
+      <ng-icon class="IconSmallMarginR" name="bootstrapBook"/>
       <time>{{ blog?.readTime }}</time
       >&nbsp;min read</span
     >
   </p>
   <p class="join-item mb-0.5 sm:mb-0">
     <span class="flex mr-3 items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapPerson" />
+      <ng-icon class="IconSmallMarginR" name="bootstrapPerson"/>
       <span>{{ author?.name }}</span>
     </span>
   </p>
   <p class="join-item">
     <span class="flex items-center">
-      <ng-icon class="IconSmallMarginR" name="bootstrapPencilSquare" />
+      <ng-icon class="IconSmallMarginR" name="bootstrapPencilSquare"/>
       <a [href]="blogFileBaseUrl + blog?.content" class="link link-hover"
-        >Suggest edit</a
+      >Suggest edit</a
       >
     </span>
   </p>
@@ -36,10 +36,10 @@
 <div class="mb-2">
   <div class="relative h-96 bg-center bg-cover overflow-hidden mb-2">
     <img
-      [alt]="blog?.bannerAlt"
-      [src]="'assets/blog/images/' + blog?.banner"
       (error)="setDefaultImage($event)"
+      [alt]="blog?.bannerAlt"
       [attr.aria-label]="blog?.bannerAlt"
+      [src]="'assets/blog/images/' + blog?.banner"
       class="absolute inset-0 w-full h-full object-cover object-center rounded-lg shadow-md"
     />
   </div>
@@ -52,7 +52,7 @@
           rel="noopener noreferrer"
           target="_self"
         >
-          <ng-icon class="text-xl mr-1.5" name="bootstrapGithub" />
+          <ng-icon class="text-xl mr-1.5" name="bootstrapGithub"/>
         </a>
       }
       @if (blog?.stackBlitzLink) {
@@ -62,7 +62,7 @@
           rel="noopener noreferrer"
           target="_self"
         >
-          <ng-icon class="text-xl mr-1.5" name="simpleStackblitz" />
+          <ng-icon class="text-xl mr-1.5" name="simpleStackblitz"/>
         </a>
       }
       @if (blog?.otherSourceLink) {
@@ -72,7 +72,7 @@
           rel="noopener noreferrer"
           target="_self"
         >
-          <ng-icon class="text-xl" name="bootstrapLink45deg" />
+          <ng-icon class="text-xl" name="bootstrapLink45deg"/>
         </a>
       }
     </div>
@@ -82,7 +82,7 @@
           class="tooltip tooltip-left hover:cursor-pointer"
           data-tip="This image is a placeholder"
         >
-          <ng-icon class="text-xl mr-2" name="bootstrapImage" />
+          <ng-icon class="text-xl mr-2" name="bootstrapImage"/>
         </div>
       }
       @if (blog?.bannerAiGenerated || defaultImageShown) {
@@ -90,11 +90,11 @@
           class="tooltip tooltip-left hover:cursor-pointer"
           data-tip="This image was AI generated"
         >
-          <ng-icon class="text-xl mr-2" name="bootstrapRobot" />
+          <ng-icon class="text-xl mr-2" name="bootstrapRobot"/>
         </div>
       }
       <a [href]="blog?.bannerSource" rel="noopener noreferrer" target="_blank">
-        <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight" />
+        <ng-icon class="text-lg" name="bootstrapBoxArrowUpRight"/>
       </a>
     </div>
   </div>

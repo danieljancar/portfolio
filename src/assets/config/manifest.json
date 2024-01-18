@@ -4,12 +4,12 @@
   "description": "The portfolio of Daniel Jancar, find blog posts about various tech topics.",
   "icons": [
     {
-      "src": "/src/assets/icons/favicon-32x32.png",
+      "src": "/assets/icons/favicon-32x32.png",
       "sizes": "32x32",
       "type": "image/png"
     },
     {
-      "src": "/src/assets/icons/favicon-16x16.png",
+      "src": "/assets/icons/favicon-16x16.png",
       "sizes": "16x16",
       "type": "image/png"
     },
