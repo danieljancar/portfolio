@@ -21,7 +21,7 @@ jobs:
 
       - run: npm install -g @angular/cli
       - run: npm install
-      - run: ng build --base-href https://danieljancar.dev
+      - run: ng build --base-href https://danieljancar.dev --exclude=node_modules
 
       - name: Deploy to gh-pages
         run: |
