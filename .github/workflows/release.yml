@@ -1,0 +1,48 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false # This is important to avoid conflicts with the deploy step
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - run: npm install -g @angular/cli
+      - run: npm install
+      - run: ng build --base-href https://danieljancar.dev
+
+      - name: Deploy to gh-pages
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git checkout -b gh-pages
+          git add -f dist/portfolio/browser
+          git commit -m "Deploy to GitHub Pages"
+          git push origin `git subtree split --prefix dist/portfolio/browser gh-pages`:gh-pages --force
+
+  semantic-release:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - run: npm install
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
