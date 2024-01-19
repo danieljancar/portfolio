@@ -12,7 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          persist-credentials: false # This is important to avoid conflicts with the deploy step
+          persist-credentials: true
+          fetch-depth: 0 # Fetch all history for all tags and branches
 
       - uses: actions/setup-node@v2
         with:
@@ -29,7 +30,7 @@ jobs:
           git checkout -b gh-pages
           git add -f dist/portfolio/browser
           git commit -m "Deploy to GitHub Pages"
-          git push origin `git subtree split --prefix dist/portfolio/browser gh-pages`:gh-pages --force
+          git push origin gh-pages --force --quiet
 
   semantic-release:
     needs: build-and-deploy
