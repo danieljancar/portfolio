@@ -1,25 +1,50 @@
-name: Prettier Formatting
+name: Release Workflow
 
 on:
-  pull_request:
+  push:
     branches:
       - master
-      - develop
 
 jobs:
-  prettier:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
 
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.3
+      - uses: actions/setup-node@v2
         with:
-          prettier_options: '--write **/*.{js,ts,tsx,json,md,css}'
+          node-version: '20'
+
+      - run: npm install -g @angular/cli
+      - run: npm install
+
+      - run: ng build --base-href https://danieljancar.dev
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/portfolio/browser
+
+  semantic-release:
+    runs-on: ubuntu-latest
+    needs: deploy
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - run: npm install
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
