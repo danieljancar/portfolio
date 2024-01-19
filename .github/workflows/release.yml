@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: true
-          fetch-depth: 0 # Fetch all history for all tags and branches
+          fetch-depth: 0
 
       - uses: actions/setup-node@v2
         with:
@@ -28,7 +28,9 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git checkout -b gh-pages
-          git add -f dist/portfolio/browser
+          git rm -rf .
+          cp -r dist/portfolio/browser/* .
+          git add .
           git commit -m "Deploy to GitHub Pages"
           git push origin gh-pages --force --quiet
 
