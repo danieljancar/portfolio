@@ -6,6 +6,7 @@
 <div align="center">
 
 [![Deployment CD](https://github.com/danieljancar/portfolio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/pages/pages-build-deployment)
+[![Release Workflow](https://github.com/danieljancar/portfolio/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/danieljancar/portfolio/actions/workflows/release.yml)
 [![Angular CI](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml)
 [![Prettier](https://github.com/danieljancar/portfolio/actions/workflows/format.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/format.yml)
 
