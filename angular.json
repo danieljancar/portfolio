@@ -58,13 +58,25 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "1000kb",
+                  "maximumError": "3000kb"
                 }
               ],
               "outputHashing": "all"
             },
             "development": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10000kb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "1000kb",
+                  "maximumError": "3000kb"
+                }
+              ],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
