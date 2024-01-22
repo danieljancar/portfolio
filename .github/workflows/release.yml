@@ -29,7 +29,7 @@ jobs:
       - name: Configure Git User
         run: |
           git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
+          git config --global user.name "gh-actions[bot]"
 
       - name: Deploy to GitHub Pages
         run: npx angular-cli-ghpages --dir=dist/portfolio/browser --no-silent
