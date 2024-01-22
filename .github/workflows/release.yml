@@ -27,6 +27,7 @@ jobs:
         run: |
           cp sitemap.xml dist/portfolio/browser/sitemap.xml
           cp robots.txt dist/portfolio/browser/robots.txt
+          cp .gitignore dist/portfolio/browser/.gitignore
 
       - name: Push to gh-pages
         run: |
