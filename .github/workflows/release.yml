@@ -1,4 +1,4 @@
-name: Release Workflow
+name: Build and Push to gh-pages
 
 on:
   push:
@@ -8,46 +8,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      sha: ${{ steps.set_output.outputs.sha }}
     steps:
-      - uses: actions/checkout@v2
-      - name: Set output
-        id: set_output
-        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-      - run: npm ci
-      - run: npm run build -- --base-href https://danieljancar.dev
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ needs.build.outputs.sha }}
-      - uses: actions/setup-node@v2
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
-      - run: git fetch --depth=1 origin gh-pages
-      - run: git checkout gh-pages
-      - run: git rm -rf *
-      - run: cp -r dist/portfolio/browser/* .
-      - run: git add .
-      - run: git commit -m "Deploy to GitHub Pages" || echo "No changes to commit"
-      - run: git push origin gh-pages --force --quiet
 
-  release:
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-      - run: npm ci
-      - run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Angular Project
+        run: npm run build -- --output-path=dist/portfolio/browser --prod
+
+      - name: Add Additional Files
+        run: |
+          cp sitemap.xml dist/portfolio/browser/sitemap.xml
+          cp robots.txt dist/portfolio/browser/robots.txt
+
+      - name: Push to gh-pages
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git checkout -b gh-pages
+          git add -f dist/portfolio/browser
+          git commit -m "Deploy to gh-pages"
+          git push origin gh-pages --force
