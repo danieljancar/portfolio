@@ -21,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Build Angular Project
-        run: npm run build -- --output-path=dist/portfolio/browser --prod
+        run: npm run build -- --output-path=dist/portfolio/browser
 
       - name: Add Additional Files
         run: |
