@@ -22,7 +22,7 @@
 
 This is my personal website, where I share some information about myself, important links, and documents.
 
-# Installation
+# Development
 
 ## Prerequisites
 

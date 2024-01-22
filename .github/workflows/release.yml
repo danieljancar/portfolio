@@ -1,4 +1,4 @@
-name: Build and Push to gh-pages
+name: Release Workflow
 
 on:
   push:
@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-dependencies.outputs.cache-key }}
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
@@ -17,27 +19,51 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+
       - name: Install Dependencies
         run: npm install
 
       - name: Build Angular Project
-        run: npm run build -- --output-path=dist/portfolio/browser
+        run: ng build --base-href https://danieljancar.dev
 
-      - name: Add Additional Files
-        run: |
-          cp sitemap.xml dist/portfolio/browser/sitemap.xml
-          cp robots.txt dist/portfolio/browser/robots.txt
-          cp .gitignore dist/portfolio/browser/.gitignore
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/portfolio/browser
 
-      - name: Push to gh-pages
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "Actions Bot"
-          git fetch
-          git checkout gh-pages
-          git reset --hard origin/gh-pages
-          git rm -rf *
-          cp -a dist/portfolio/browser/* .
-          git add .
-          git commit -m "Deploy to gh-pages"
-          git push origin gh-pages --force
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+
+      - name: Deploy to GitHub Pages
+        run: npx angular-cli-ghpages --dir=dist/portfolio/browser
+
+  release:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Semantic Release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
