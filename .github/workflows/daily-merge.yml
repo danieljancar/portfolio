@@ -1,0 +1,22 @@
+name: Daily Merge Develop to Master
+
+on:
+  schedule:
+    - cron: '0 11 * * *'
+
+jobs:
+  merge-develop-to-master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master branch
+        uses: actions/checkout@v3
+        with:
+          ref: master
+
+      - name: Merge develop into master
+        run: |
+          git config --global user.name "gh-actions[bot]"
+          git config --global user.email "actions@github.com"
+          git fetch origin develop
+          git merge origin/develop
+          git push origin master
