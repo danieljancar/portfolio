@@ -33,8 +33,7 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "Actions Bot"
           git checkout --orphan gh-pages
-          git reset --hard
-          git clean -fdx
+          git rm -rf .
           cp -a dist/portfolio/browser/. .
           git add .
           git commit -m "Deploy to gh-pages"
