@@ -8,9 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.set_output.outputs.sha }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
+      - name: Set output
+        id: set_output
+        run: echo "::set-output name=sha::$(git rev-parse HEAD)"
+      - uses: actions/setup-node@v2
         with:
           node-version: '20'
       - run: npm ci
@@ -20,33 +25,26 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.build.outputs.sha }}
+      - uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - run: npm ci
-      - run: npm run build -- --base-href https://danieljancar.dev
-      - name: Deploy to gh-pages
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git fetch --depth=1 origin gh-pages
-          git checkout gh-pages
-          git rm -rf *
-          cp -r dist/portfolio/browser/* .
-          git add .
-          git commit -m "Deploy to GitHub Pages"
-          git push origin gh-pages --force --quiet
+      - run: git fetch --depth=1 origin gh-pages
+      - run: git checkout gh-pages
+      - run: git rm -rf *
+      - run: cp -r dist/portfolio/browser/* .
+      - run: git add .
+      - run: git commit -m "Deploy to GitHub Pages" || echo "No changes to commit"
+      - run: git push origin gh-pages --force --quiet
 
   release:
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: true
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: '20'
       - run: npm ci
