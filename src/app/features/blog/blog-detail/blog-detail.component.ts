@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router'; // Import Router
-import { MarkdownComponent } from 'ngx-markdown';
-import { DatePipe, NgOptimizedImage } from '@angular/common';
-import { NgIcon } from '@ng-icons/core';
-import { BlogInfoComponent } from './blog-info/blog-info.component';
-import { BlogMarkdownRendererComponent } from './blog-markdown-renderer/blog-markdown-renderer.component';
-import { BlogFooterComponent } from './blog-footer/blog-footer.component';
-import { Blog } from '../../../types/blog.type';
-import { Author } from '../../../types/author.type';
-import { BlogService } from '../../../core/blog.service';
-import { ScrollIndicatorComponent } from '../../../shared/scroll-indicator/scroll-indicator.component';
-import { BackButtonComponent } from '../../../shared/back-button/back-button.component';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router'; // Import Router
+import {MarkdownComponent} from 'ngx-markdown';
+import {DatePipe, NgOptimizedImage} from '@angular/common';
+import {NgIcon} from '@ng-icons/core';
+import {BlogInfoComponent} from './blog-info/blog-info.component';
+import {BlogMarkdownRendererComponent} from './blog-markdown-renderer/blog-markdown-renderer.component';
+import {BlogFooterComponent} from './blog-footer/blog-footer.component';
+import {Blog} from '../../../types/blog.type';
+import {Author} from '../../../types/author.type';
+import {BlogService} from '../../../core/blog.service';
+import {ScrollIndicatorComponent} from '../../../shared/scroll-indicator/scroll-indicator.component';
+import {BackButtonComponent} from '../../../shared/back-button/back-button.component';
+import {Meta, Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-blog-detail',
@@ -37,7 +38,10 @@ export class BlogDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private blogService: BlogService,
     private router: Router,
-  ) {}
+    private titleService: Title,
+    private metaService: Meta
+  ) {
+  }
 
   ngOnInit(): void {
     const blogId = this.route.snapshot.paramMap.get('blogId');
@@ -49,6 +53,12 @@ export class BlogDetailComponent implements OnInit {
         const author = this.blogService.getAuthor(this.blog.author);
         if (author) {
           this.author = author;
+
+          this.titleService.setTitle(`${this.blog.title} | by ${this.author.name}`);
+          this.metaService.updateTag({
+            name: 'description',
+            content: this.blog.description,
+          });
         }
       }
     } else {
