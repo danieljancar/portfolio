@@ -2,7 +2,7 @@ name: Daily Push Develop to Master
 
 on:
   schedule:
-    - cron: '0 11 * * *'
+    - cron: '0 1,15 * * *'
 
 jobs:
   push-develop-to-master:
