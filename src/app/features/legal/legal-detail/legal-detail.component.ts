@@ -1,15 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Legal} from '../../../types/legal.type';
-import {LegalService} from '../../../core/legal.service';
-import {LegalInfoComponent} from './legal-info/legal-info.component';
-import {BlogInfoComponent} from '../../blog/blog-detail/blog-info/blog-info.component';
-import {
-  BlogMarkdownRendererComponent
-} from '../../blog/blog-detail/blog-markdown-renderer/blog-markdown-renderer.component';
-import {LegalMarkdownRendererComponent} from './legal-markdown-renderer/legal-markdown-renderer.component';
-import {Meta, Title} from "@angular/platform-browser";
-import {DatePipe, formatDate} from "@angular/common";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Legal } from '../../../types/legal.type';
+import { LegalService } from '../../../core/legal.service';
+import { LegalInfoComponent } from './legal-info/legal-info.component';
+import { BlogInfoComponent } from '../../blog/blog-detail/blog-info/blog-info.component';
+import { BlogMarkdownRendererComponent } from '../../blog/blog-detail/blog-markdown-renderer/blog-markdown-renderer.component';
+import { LegalMarkdownRendererComponent } from './legal-markdown-renderer/legal-markdown-renderer.component';
+import { Meta, Title } from '@angular/platform-browser';
+import { DatePipe, formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-legal-detail',
@@ -20,9 +18,7 @@ import {DatePipe, formatDate} from "@angular/common";
     BlogMarkdownRendererComponent,
     LegalMarkdownRendererComponent,
   ],
-  providers: [
-    DatePipe
-  ],
+  providers: [DatePipe],
   templateUrl: './legal-detail.component.html',
   styleUrl: './legal-detail.component.scss',
 })
@@ -35,17 +31,22 @@ export class LegalDetailComponent implements OnInit {
     private legalService: LegalService,
     private titleService: Title,
     private metaService: Meta,
-    private datePipe: DatePipe
-  ) {
-  }
+    private datePipe: DatePipe,
+  ) {}
 
   ngOnInit(): void {
     const legalId = this.route.snapshot.paramMap.get('legalId');
     if (legalId) {
       this.legal = this.legalService.getLegalByFile(legalId);
       if (this.legal) {
-        const formattedDate = formatDate(this.legal.edited, 'dd.MM.yyyy', 'en-US');
-        this.titleService.setTitle(`${this.legal.name} | Version ${this.legal.version} | Last changed ${formattedDate} | Daniel Jancar`);
+        const formattedDate = formatDate(
+          this.legal.edited,
+          'dd.MM.yyyy',
+          'en-US',
+        );
+        this.titleService.setTitle(
+          `${this.legal.name} | Version ${this.legal.version} | Last changed ${formattedDate} | Daniel Jancar`,
+        );
         this.metaService.updateTag({
           name: 'description',
           content: this.legal.description,
