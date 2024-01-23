@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {NgIcon, provideIcons} from '@ng-icons/core';
-import {bootstrapConeStriped} from '@ng-icons/bootstrap-icons';
-import {Meta, Title} from "@angular/platform-browser";
+import { Component } from '@angular/core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { bootstrapConeStriped } from '@ng-icons/bootstrap-icons';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-legal-overview',
@@ -12,7 +12,9 @@ import {Meta, Title} from "@angular/platform-browser";
   viewProviders: [provideIcons({ bootstrapConeStriped })],
 })
 export class LegalOverviewComponent {
-  constructor(private titleService: Title, private metaService: Meta
+  constructor(
+    private titleService: Title,
+    private metaService: Meta,
   ) {
     this.titleService.setTitle(`Daniel Jancar - Legal`);
     this.metaService.updateTag({

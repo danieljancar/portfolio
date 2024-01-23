@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {WelcomeComponent} from './welcome/welcome.component';
-import {AboutMeComponent} from './about-me/about-me.component';
-import {LatestBlogComponent} from './latest-blog/latest-blog.component';
-import {Meta, Title} from "@angular/platform-browser";
+import { Component } from '@angular/core';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { AboutMeComponent } from './about-me/about-me.component';
+import { LatestBlogComponent } from './latest-blog/latest-blog.component';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +12,10 @@ import {Meta, Title} from "@angular/platform-browser";
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  constructor(private titleService: Title, private metaService: Meta) {
+  constructor(
+    private titleService: Title,
+    private metaService: Meta,
+  ) {
     this.titleService.setTitle(`Daniel Jancar - Passionate Software Developer`);
     this.metaService.updateTag({
       name: 'description',
