@@ -31,7 +31,7 @@ import {Meta, Title} from "@angular/platform-browser";
 export class BlogOverviewComponent {
   constructor(private titleService: Title, private metaService: Meta
   ) {
-    this.titleService.setTitle(`Daniel Jancar - Blog`);
+    this.titleService.setTitle(`Blog | Daniel Jancar`);
     this.metaService.updateTag({
       name: 'description',
       content: `Find some of my blog posts here about many different topics.`,

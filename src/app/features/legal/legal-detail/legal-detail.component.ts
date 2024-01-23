@@ -9,6 +9,7 @@ import {
 } from '../../blog/blog-detail/blog-markdown-renderer/blog-markdown-renderer.component';
 import {LegalMarkdownRendererComponent} from './legal-markdown-renderer/legal-markdown-renderer.component';
 import {Meta, Title} from "@angular/platform-browser";
+import {DatePipe, formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-legal-detail',
@@ -18,6 +19,9 @@ import {Meta, Title} from "@angular/platform-browser";
     BlogInfoComponent,
     BlogMarkdownRendererComponent,
     LegalMarkdownRendererComponent,
+  ],
+  providers: [
+    DatePipe
   ],
   templateUrl: './legal-detail.component.html',
   styleUrl: './legal-detail.component.scss',
@@ -30,7 +34,8 @@ export class LegalDetailComponent implements OnInit {
     private router: Router,
     private legalService: LegalService,
     private titleService: Title,
-    private metaService: Meta
+    private metaService: Meta,
+    private datePipe: DatePipe
   ) {
   }
 
@@ -39,7 +44,8 @@ export class LegalDetailComponent implements OnInit {
     if (legalId) {
       this.legal = this.legalService.getLegalByFile(legalId);
       if (this.legal) {
-        this.titleService.setTitle(`${this.legal.name} | Daniel Jancar`);
+        const formattedDate = formatDate(this.legal.edited, 'dd.MM.yyyy', 'en-US');
+        this.titleService.setTitle(`${this.legal.name} | Version ${this.legal.version} | Last changed ${formattedDate} | Daniel Jancar`);
         this.metaService.updateTag({
           name: 'description',
           content: this.legal.description,
