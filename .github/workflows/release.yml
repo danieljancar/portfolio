@@ -26,6 +26,11 @@ jobs:
       - name: Build Angular Project
         run: ng build --base-href https://danieljancar.dev
 
+      - name: Copy Sitemap and Robots
+        run: |
+          cp sitemap.xml dist/portfolio/browser
+          cp robots.txt dist/portfolio/browser
+
       - name: Configure Git User
         run: |
           git config --global user.email "actions@github.com"
