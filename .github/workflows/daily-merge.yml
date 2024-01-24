@@ -2,7 +2,7 @@ name: Daily Merge Develop to Master
 
 on:
   schedule:
-    - cron: '0 0,12,18 * * *'
+    - cron: '0 0,12,18 * * *' # Every 12 hours at 00:00, 12:00 and 18:00
 
 jobs:
   merge-develop-to-master:
