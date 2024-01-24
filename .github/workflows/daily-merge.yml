@@ -2,7 +2,7 @@ name: Daily Merge Develop to Master
 
 on:
   schedule:
-    - cron: '*/1 * * * *'  # Runs every minute
+    - cron: "0 1,11,17 * * *"
 
 jobs:
   merge-develop-to-master:
