@@ -2,7 +2,7 @@ name: Daily Merge Develop to Master
 
 on:
   schedule:
-    - cron: '0 1,15 * * *'  # Adjusted for UTC time
+    - cron: '0 0,12,18 * * *'
 
 jobs:
   merge-develop-to-master:
@@ -11,7 +11,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.MY_PAT }}  # Use the PAT here
+          token: ${{ secrets.DAILY_PUSH }}
 
       - name: Merge develop into master
         run: |
