@@ -1,8 +1,8 @@
-name: Daily Merge Develop to Master
+name: Daily Merge
 
 on:
   schedule:
-    - cron: "0 1,13,17 * * *"
+    - cron: "0 1,14,19 * * *"
 
 jobs:
   merge-develop-to-master:
