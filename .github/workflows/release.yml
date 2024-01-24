@@ -31,6 +31,9 @@ jobs:
           cp sitemap.xml dist/portfolio/browser
           cp robots.txt dist/portfolio/browser
 
+      - name: Update Sitemap in Build Folder
+        run: bash scripts/updateSitemap.sh dist/portfolio/browser/sitemap.xml dist/portfolio/browser/assets/blog/blog.json
+
       - name: Configure Git User
         run: |
           git config --global user.email "actions@github.com"

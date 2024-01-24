@@ -1,23 +1,22 @@
-name: Daily Push Develop to Master
+name: Daily Merge Develop to Master
 
 on:
   schedule:
-    - cron: '0 1,15 * * *'
+    - cron: '0 0,12,18 * * *' # Every 12 hours at 00:00, 12:00 and 18:00
 
 jobs:
-  push-develop-to-master:
+  merge-develop-to-master:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout develop branch
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: develop
+          token: ${{ secrets.DAILY_PUSH }}
 
-      - name: Push develop to master
+      - name: Merge develop into master
         run: |
           git config --global user.name "gh-actions[bot]"
           git config --global user.email "actions@github.com"
-          git fetch origin master
           git checkout master
-          git reset --hard origin/develop
-          git push origin master --force
+          git merge origin/develop
+          git push origin master
