@@ -3,29 +3,43 @@
   <url>
     <loc>https://danieljancar.dev/</loc>
     <lastmod>2024-01-04</lastmod>
+    <priority>1.00</priority>
+    <changefreq>yearly</changefreq>
   </url>
   <url>
     <loc>https://danieljancar.dev/404</loc>
     <lastmod>2024-01-08</lastmod>
+    <priority>0.20</priority>
+    <changefreq>yearly</changefreq>
   </url>
   <url>
     <loc>https://danieljancar.dev/blog</loc>
     <lastmod>2024-01-04</lastmod>
+    <priority>0.90</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://danieljancar.dev/legal/terms</loc>
     <lastmod>2024-01-08</lastmod>
+    <priority>0.40</priority>
+    <changefreq>yearly</changefreq>
   </url>
   <url>
     <loc>https://danieljancar.dev/legal/cookies</loc>
     <lastmod>2024-01-08</lastmod>
+    <priority>0.40</priority>
+    <changefreq>yearly</changefreq>
   </url>
   <url>
     <loc>https://danieljancar.dev/legal/privacy</loc>
     <lastmod>2024-01-08</lastmod>
+    <priority>0.40</priority>
+    <changefreq>yearly</changefreq>
   </url>
 <url>
 		<loc>https://danieljancar.dev/blog/how-to-use-prettier-as-a-github-action</loc>
 		<lastmod>2024-01-04</lastmod>
+		<priority>0.85</priority>
+		<changefreq>monthly</changefreq>
 	</url>
 </urlset>
