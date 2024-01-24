@@ -1,4 +1,4 @@
-name: Daily Merge
+name: Weekly Merge
 
 on:
   schedule:
