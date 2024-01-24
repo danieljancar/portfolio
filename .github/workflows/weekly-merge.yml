@@ -2,7 +2,7 @@ name: Daily Merge
 
 on:
   schedule:
-    - cron: "0 1,14,19 * * *"
+    - cron: '0 1 * * 1' # Monday 1am UTC
 
 jobs:
   merge-develop-to-master:
