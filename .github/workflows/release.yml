@@ -28,11 +28,14 @@ jobs:
 
       - name: Copy Sitemap and Robots
         run: |
-          cp sitemap.xml dist/portfolio/browser
-          cp robots.txt dist/portfolio/browser
+          cp config/sitemap.xml dist/portfolio/browser
+          cp config/robots.txt dist/portfolio/browser
 
       - name: Update Sitemap in Build Folder
         run: bash scripts/updateSitemap.sh dist/portfolio/browser/sitemap.xml dist/portfolio/browser/assets/blog/blog.json
+
+      - name: Create CNAME
+        run: bash scripts/createCNAME.sh
 
       - name: Configure Git User
         run: |

@@ -8,6 +8,7 @@
 [![Deployment CD](https://github.com/danieljancar/portfolio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/pages/pages-build-deployment)
 [![Release Workflow](https://github.com/danieljancar/portfolio/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/danieljancar/portfolio/actions/workflows/release.yml)
 [![Angular CI](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml)
+[![Daily Merge](https://github.com/danieljancar/portfolio/actions/workflows/daily-merge.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/daily-merge.yml)
 [![Prettier](https://github.com/danieljancar/portfolio/actions/workflows/format.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/format.yml)
 
 [![Styling - TailwindCSS](https://img.shields.io/badge/Styling-TailwindCSS-38bdf8?logo=tailwindcss)](https://tailwindcss.com/docs/installation)
@@ -30,43 +31,9 @@ This is my personal website, where I share some information about myself, import
 - [Angular CLI](https://angular.io/cli) - Command line interface for Angular
 - [Git](https://git-scm.com/) - Version control system
 
-## Setup
-
-1. Clone a fork of this repository to your local machine.
-
-```bash
-git clone https://github.com/your-username/portfolio.git
-```
-
-2. Navigate to the project directory.
-
-```bash
-cd portfolio
-```
-
-3. Install the project dependencies.
-
-```bash
-npm install
-```
-
-4. Run the project.
-
-```bash
-npm run start
-```
-
-# Usage
-
-5. Open the project in your browser.
-
-```bash
-http://localhost:4200
-```
-
 # Contributing
 
-I welcome contributions from everyone. Before you get started, please take a moment to review the [guidelines](CONTRIBUTING.md).
+I welcome contributions from everyone. Before you get started, please take a moment to review the [guidelines](.github/CONTRIBUTING.md).
 
 ## Branches
 
@@ -77,8 +44,8 @@ This project uses the following branches:
 
 ## Commit Messages
 
-When you commit, make sure to follow the [Contributing Guide](CONTRIBUTING.md) for commit messages. This will help keep the commit messages clean and consistent across the project. If you don't follow the guide, your pull request will be rejected.
+When you commit, make sure to follow the [Contributing Guide](.github/CONTRIBUTING.md) for commit messages. This will help keep the commit messages clean and consistent across the project. If you don't follow the guide, your pull request will be rejected.
 
 # License
 
-This project is licensed under the [GNU GPLv3](LICENSE) license. By contributing to this project, you agree that your contributions will be released under the same license. Also, you agree to the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md) and [Developer Certificate of Origin](DCO.md).
+This project is licensed under the [GNU GPLv3](LICENSE) license. By contributing to this project, you agree that your contributions will be released under the same license. Also, you agree to the [Contributor Covenant Code of Conduct](.github/CODE_OF_CONDUCT.md) and [Developer Certificate of Origin](.github/DCO.md).

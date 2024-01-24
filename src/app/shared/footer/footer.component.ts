@@ -7,6 +7,7 @@ import {
   bootstrapMedium,
   bootstrapStackOverflow,
 } from '@ng-icons/bootstrap-icons';
+import { simpleDevdotto } from '@ng-icons/simple-icons';
 
 @Component({
   selector: 'app-footer',
@@ -20,6 +21,7 @@ import {
       bootstrapLinkedin,
       bootstrapStackOverflow,
       bootstrapMedium,
+      simpleDevdotto,
     }),
   ],
 })
