@@ -8,7 +8,7 @@
 [![Deployment CD](https://github.com/danieljancar/portfolio/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/pages/pages-build-deployment)
 [![Release Workflow](https://github.com/danieljancar/portfolio/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/danieljancar/portfolio/actions/workflows/release.yml)
 [![Angular CI](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml)
-[![Daily Merge](https://github.com/danieljancar/portfolio/actions/workflows/daily-merge.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/daily-merge.yml)
+[![Weekly Merge](https://github.com/danieljancar/portfolio/actions/workflows/weekly-merge.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/weekly-merge.yml)
 [![Prettier](https://github.com/danieljancar/portfolio/actions/workflows/format.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/format.yml)
 
 [![Styling - TailwindCSS](https://img.shields.io/badge/Styling-TailwindCSS-38bdf8?logo=tailwindcss)](https://tailwindcss.com/docs/installation)
