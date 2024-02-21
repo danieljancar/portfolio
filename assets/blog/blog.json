@@ -36,11 +36,27 @@
       "content": "how-to-use-prettier-as-a-github-action.md",
       "readTime": "4",
       "banner": "how-to-use-prettier-as-a-github-action.png",
-      "bannerAlt": "Image of a website with the Prettier logo and the Github logo, styled in a robot-like way",
+      "bannerAlt": "Image of a website with the Prettier logo and the Github logo, styled in a robot-like way.",
       "bannerSource": "https://openai.com/research/dall-e",
       "bannerAiGenerated": true,
       "author": "danieljancar",
       "otherSourceLink": "https://prettier.io/"
+    },
+    {
+      "slug": "husky-perfect-git-hook-to-reduce-refactoring-efforts",
+      "title": "Husky - Perfect Git Hook to Reduce Refactoring Efforts",
+      "description": "Husky is a great tool to add git hooks to your project. I will show you how to set it up and how it can reduce refactoring efforts.",
+      "created": "2024-02-21T15:53:12",
+      "edited": "2024-02-21T15:53:12",
+      "tags": ["husky", "git-hooks"],
+      "content": "husky-perfect-git-hook-to-reduce-refactoring-efforts.md",
+      "readTime": "5",
+      "banner": "husky-perfect-git-hook-to-reduce-refactoring-efforts.png",
+      "bannerAlt": "Image of a cartoon husky sitting in front of a coding IDE's.",
+      "bannerSource": "https://openai.com/research/dall-e",
+      "bannerAiGenerated": true,
+      "author": "danieljancar",
+      "otherSourceLink": "https://typicode.github.io/husky/"
     }
   ]
 }

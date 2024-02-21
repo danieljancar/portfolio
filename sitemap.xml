@@ -42,4 +42,10 @@
 		<priority>0.85</priority>
 		<changefreq>monthly</changefreq>
 	</url>
+<url>
+		<loc>https://danieljancar.dev/blog/husky-perfect-git-hook-to-reduce-refactoring-efforts</loc>
+		<lastmod>2024-02-21</lastmod>
+		<priority>0.85</priority>
+		<changefreq>monthly</changefreq>
+	</url>
 </urlset>
