@@ -28,7 +28,7 @@
   "blogs": [
     {
       "slug": "how-to-use-prettier-as-a-github-action",
-      "title": "How to use Prettier as a Github Action",
+      "title": "How to Use Prettier as a Github Action",
       "description": "Prettier is a great tool to format your code. In this article, I will show you how to use Prettier as a Github Action.",
       "created": "2024-01-04T15:33:12",
       "edited": "2024-01-04T15:33:12",
