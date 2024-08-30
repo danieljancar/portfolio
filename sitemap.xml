@@ -37,6 +37,12 @@
     <changefreq>yearly</changefreq>
   </url>
 <url>
+		<loc>https://danieljancar.dev/blog/winning-stellar-dev-challenge-award</loc>
+		<lastmod>2024-08-30</lastmod>
+		<priority>0.85</priority>
+		<changefreq>monthly</changefreq>
+	</url>
+<url>
 		<loc>https://danieljancar.dev/blog/how-to-use-prettier-as-a-github-action</loc>
 		<lastmod>2024-01-04</lastmod>
 		<priority>0.85</priority>
