@@ -27,6 +27,22 @@
   ],
   "blogs": [
     {
+      "slug": "winning-stellar-dev-challenge-award",
+      "title": "Winning The Stellar Dev Challenge Award",
+      "description": "From a lunchtime idea to an award-winning project, we built VoteVault on Stellar and created a video tutorial that earned the Vivid Video Award. Check out our journey!",
+      "created": "2024-08-30T10:09:12",
+      "edited": "2024-08-30T10:09:12",
+      "tags": ["stellar", "blockchain", "votevault", "tutorial", "award"],
+      "content": "winning-stellar-dev-challenge-award.md",
+      "readTime": "1",
+      "banner": "winning-stellar-dev-challenge-award.png",
+      "bannerAlt": "AI generated image of a mix between beach and computers.",
+      "bannerSource": "https://openai.com/research/dall-e",
+      "bannerAiGenerated": true,
+      "author": "danieljancar",
+      "otherSourceLink": "https://stellar.org/"
+    },
+    {
       "slug": "how-to-use-prettier-as-a-github-action",
       "title": "How to Use Prettier as a Github Action",
       "description": "Prettier is a great tool to format your code. In this article, I will show you how to use Prettier as a Github Action.",
