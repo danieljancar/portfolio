@@ -1,8 +1,9 @@
-name: Weekly Merge
+name: Triweekly Merge
 
 on:
   schedule:
-    - cron: '0 1 * * 1' # Monday 1am UTC
+    # Run every third Monday at 1am UTC
+    - cron: '0 1 1-31/21 * 1' 
 
 jobs:
   merge-develop-to-master:
