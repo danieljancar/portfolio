@@ -1,10 +1,6 @@
-# Teaching Scratch in Elbasan 🇦🇱
-
 Last week, I had the opportunity to join [iStep](https://istep.ch) for a volunteer project in **Elbasan, Albania**, where we introduced children and teenagers to the basics of programming using **Scratch**.
 
 It was my first time taking part in such a project abroad. I didn’t quite know what to expect — new people, a new environment, and a completely different daily routine. But from the very beginning, I felt welcomed. The team was supportive, and the atmosphere among the kids was full of energy and curiosity.
-
----
 
 ## Coding with Scratch – Step by Step
 
@@ -41,8 +37,6 @@ This week wasn’t just about coding. It was about connection. About sharing wha
 I'm incredibly thankful I got to be part of this experience and hope we left something valuable behind — even if it was just planting a small seed for the future.
 
 ![Participants presenting their projects](/assets/blog/images/istep_6_2025.jpeg)
-
----
 
 **Want to support projects like this?**  
 Check out [iStep’s Website](https://istep.ch) or [donate here](https://istep.ch/en/donate). ❤️
