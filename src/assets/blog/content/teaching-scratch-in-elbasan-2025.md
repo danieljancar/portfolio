@@ -1,40 +1,46 @@
 # Teaching Scratch in Elbasan 🇦🇱
 
-Last week, I had the chance to join [iStep](https://istep.ch) for a volunteer project in **Elbasan, Albania**, where we introduced kids and teenagers to the basics of programming using **Scratch**.
+Last week, I had the opportunity to join [iStep](https://istep.ch) for a volunteer project in **Elbasan, Albania**, where we introduced children and teenagers to the basics of programming using **Scratch**.
 
-It was my first time being part of this experience. I didn’t know exactly what to expect – a new place, new people, and a completely different environment. But right from the start, I felt welcomed. The team was great, and the kids were super motivated and full of energy.
+It was my first time taking part in such a project abroad. I didn’t quite know what to expect — new people, a new environment, and a completely different daily routine. But from the very beginning, I felt welcomed. The team was supportive, and the atmosphere among the kids was full of energy and curiosity.
+
+---
 
 ## Coding with Scratch – Step by Step
 
-We used a nearby school as our classroom and worked closely with [A2B](https://a2balbania.org), which is just next door. **A2B - Hope for the Future** is a place where kids can eat, do homework, and hang out – many of them see it as a second home. It was really moving to see how much this place means to them.
+We held our workshops in a local school and worked closely with the neighboring [A2B Center](https://a2balbania.org), run by the organization **A2B – Hope for the Future**. The center provides a warm, supportive space for children and teenagers — many of whom come from difficult backgrounds. It was clear from day one how much this place means to them. Some kids eat here every day, others come to do their homework, and some even use the showers because they don’t have one at home. Others use the center’s computers to print and prepare important documents — tools that many of us take for granted.
 
-Together with Maxim, we started each day with a bit of theory on the screen and then jumped into small interactive projects. We built games together using Scratch, always with clear goals so the kids could work step by step.
+Together with Maxim, we guided the participants through daily sessions. We began with short theory inputs using our Scratch guide, then moved into interactive, hands-on exercises. One of the highlights was watching the kids solve challenges by building small games — all step by step, and often with their own creative touches.
 
-![Primary School in Elbasan](./images/istep_2_2025.jpeg)
+![Primary School in Elbasan](/assets/blog/images/istep_2_2025.jpeg)
 
 ## Seeing Progress and Excitement
 
-It was amazing to see how quickly the kids picked things up. Even though none of them had coded before, they were able to build their own small games after just a few sessions. The excitement when something worked – when a game finally ran or a character moved as expected – was something I won’t forget.
+It was incredible to see how fast the kids understood the programming concepts. Most of them had never coded before, yet after just a few days they were confidently creating games with logic and interaction. Their enthusiasm was contagious — especially the joy on their faces when something finally worked.
 
-> One of my favorite moments was seeing their faces light up when their code actually worked. You could tell they were proud.
+> One of my favorite moments was seeing a student proudly demonstrate his game to the group — his character was jumping, collecting items, and responding to keyboard input. The room lit up with excitement.
+
+![A2B Center](/assets/blog/images/istep_3_2025.jpeg)
 
 ## More Than Just a Course
 
-![A2B Center](./images/istep_3_2025.jpeg)
+While the Scratch course was the main focus of our week, the experience went far beyond that. We learned a lot from being on site, talking to the kids, and listening to the team at A2B. Their dedication is inspiring — they don’t just offer support for youth, but also for seniors and people in need across southern Albania.
 
-Outside the workshops, we had time to explore a bit too. The iStep team often went for dinner together, and one afternoon we went for a short hike with Maxim and Petre. It was a great way to experience the nature and lifestyle in Albania a bit more closely.
+A2B runs additional social projects such as delivering warm meals to elderly people who receive little or no pension, organizing community prayer meetings, and even providing food deliveries to families who can’t leave their homes. Their work goes far beyond education — it brings dignity, stability, and connection into people’s everyday lives.
 
-What touched me the most, though, was how **grateful** the kids were. Many of them don’t have much, but they come to A2B with a smile and are thankful for every small thing. That kind of appreciation really stayed with me.
+In our free time, we also had the chance to explore a bit. We often had dinner together with the iStep team, and one afternoon, Maxim, Petre, and I went on a short hike in the surrounding hills — a beautiful and peaceful moment that helped us better understand Albania’s culture and nature.
 
-![Hiking after course](./images/istep_5_2025.jpeg)
+![Hiking after course](/assets/blog/images/istep_5_2025.jpeg)
 
-## Final Thoughts
+## What Stays With Me
 
-This week meant a lot to me. It wasn’t just about teaching programming – it was about meeting people, sharing moments, and seeing how much impact a simple workshop can have.  
+What impacted me the most this week was the kids' **gratitude**. Many of them don’t have much, but they show up with open hearts, ready to learn, laugh, and share. Their appreciation for even the smallest things reminded me how much we often take for granted — and how powerful it is when someone believes in you.
 
-I'm thankful I got to be part of this and hope we left something positive behind for the kids.
+This week wasn’t just about coding. It was about connection. About sharing what we know. About learning from others. And about seeing the real, everyday life of people here.
 
-![Participants presenting their projects](./images/istep_6_2025.jpeg)
+I'm incredibly thankful I got to be part of this experience and hope we left something valuable behind — even if it was just planting a small seed for the future.
+
+![Participants presenting their projects](/assets/blog/images/istep_6_2025.jpeg)
 
 ---
 
@@ -43,5 +49,5 @@ Check out [iStep’s Website](https://istep.ch) or [donate here](https://istep.c
 
 ### Links:
 - [LinkedIn post](https://www.linkedin.com/posts/danieljancar_istep-activity-7314158227040985088-_PcB?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAD_SKUQBtP7FxM49uDfKT9LbodYXF5OioLM)
-- [iStep post](https://istep.ch/en/blog/1)
+- [iStep blog post](https://istep.ch/en/blog/1)
 - [A2B Albania](https://a2balbania.org)
