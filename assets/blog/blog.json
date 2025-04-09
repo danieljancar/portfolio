@@ -27,6 +27,22 @@
   ],
   "blogs": [
     {
+      "slug": "teaching-scratch-in-elbasan-2025",
+      "title": "Teaching Scratch in Elbasan 🇦🇱",
+      "description": "Last week, I had the chance to join iStep for a volunteer project in Elbasan, Albania, where we introduced kids and teenagers to the basics of programming using Scratch.",
+      "created": "2025-04-09T10:09:00",
+      "edited": "2025-04-09T10:09:00",
+      "tags": ["iStep", "Scratch", "Elbasan", "Volunteering", "CodingForKids"],
+      "content": "teaching-scratch-in-elbasan-2025.md",
+      "readTime": "1",
+      "banner": "istep_4_2025.jpeg",
+      "bannerAlt": "Scratch workshop with kids.",
+      "bannerSource": "https://danieljancar.dev",
+      "bannerAiGenerated": false,
+      "author": "danieljancar",
+      "otherSourceLink": "https://istep.ch"
+    },
+    {
       "slug": "winning-stellar-dev-challenge-award",
       "title": "Winning The Stellar Dev Challenge Award",
       "description": "From a lunchtime idea to an award-winning project, we built VoteVault on Stellar and created a video tutorial that earned the Vivid Video Award. Check out our journey!",
