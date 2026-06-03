@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Legal, LegalJson } from '../types/legal.type';
-import * as legalData from '../../assets/legal/legal.json';
+import legalData from '../data/legal.json';
+import { Legal, LegalJson } from './models/legal.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class LegalService {
-  private legals: Legal[] = (legalData as LegalJson).files;
-
-  constructor() {}
+  private readonly files = (legalData as LegalJson).files;
 
   getLegalByFile(file: string): Legal | undefined {
-    return this.legals.find(legal => legal.file === file);
+    return this.files.find(legal => legal.file === file);
+  }
+
+  getFiles(): string[] {
+    return this.files.map(legal => legal.file);
   }
 }

@@ -1,0 +1,104 @@
+<section
+  class="hero-bg relative isolate flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-28 text-center"
+>
+  <app-hero-canvas />
+  <div
+    class="hero-blob -top-24 -left-24 size-[28rem] bg-brand-400"
+    style="--bx: 40px; --by: 30px"
+    aria-hidden="true"
+  ></div>
+  <div
+    class="hero-blob top-1/3 -right-16 size-[24rem] bg-[var(--color-accent)]"
+    style="--bx: -36px; --by: -28px; animation-delay: -6s"
+    aria-hidden="true"
+  ></div>
+  <div class="hero-fade-bottom z-[1]" aria-hidden="true"></div>
+
+  <div class="relative z-10 flex w-full flex-col items-center">
+    <div class="relative w-full">
+      <app-blur-text
+        text="DANIEL"
+        animateBy="letters"
+        [wrap]="false"
+        [delay]="60"
+        class="font-extrabold uppercase leading-[0.8] tracking-tighter text-[var(--text)] text-[clamp(3.5rem,15vw,13rem)]"
+      />
+      <app-blur-text
+        text="JANCAR"
+        animateBy="letters"
+        [wrap]="false"
+        [delay]="60"
+        class="font-extrabold uppercase leading-[0.8] tracking-tighter text-[var(--text)] text-[clamp(3.5rem,15vw,13rem)]"
+      />
+
+      <div
+        class="hero-pop absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 [animation-delay:550ms]"
+      >
+        <div
+          class="overflow-hidden rounded-full border border-[var(--border)] shadow-2xl transition-transform duration-300 hover:scale-105 w-[clamp(70px,9vw,128px)] h-[clamp(118px,15vw,216px)]"
+        >
+          <img
+            src="assets/images/daniel-portrait.webp"
+            alt="Daniel Jancar"
+            class="size-full object-cover"
+            width="288"
+            height="288"
+          />
+        </div>
+      </div>
+    </div>
+
+    <p
+      class="hero-fade mt-8 flex flex-wrap items-baseline justify-center gap-x-3 text-2xl font-semibold text-[var(--text-soft)] [animation-delay:1000ms] sm:text-3xl md:text-4xl"
+    >
+      <span>I build things</span>
+      <app-gooey-text
+        [texts]="morphWords"
+        textClass="text-brand-500 dark:text-brand-400 font-bold"
+      />
+    </p>
+
+    <div
+      class="hero-reveal mt-10 flex flex-wrap items-center justify-center gap-3 [animation-delay:1150ms]"
+    >
+      <a
+        routerLink="/"
+        fragment="projects"
+        class="rounded-full bg-brand-500 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-brand-500/25 transition-all hover:-translate-y-0.5 hover:bg-brand-400 hover:shadow-xl hover:shadow-brand-500/30"
+      >
+        See my work
+      </a>
+      <a
+        [href]="'mailto:' + email"
+        class="rounded-full border border-[var(--border)] bg-[var(--bg)]/40 px-6 py-3 text-sm font-medium text-[var(--text)] backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-brand-400 hover:text-brand-400"
+      >
+        Get in touch
+      </a>
+    </div>
+  </div>
+
+  <div
+    class="absolute inset-x-0 bottom-24 z-10 flex flex-col items-center gap-2 px-6"
+  >
+    <app-blur-text
+      text="Learning fast, working across the whole stack, shipping things that feel good to use."
+      animateBy="words"
+      [delay]="40"
+      class="max-w-xl text-sm text-[var(--text-soft)] sm:text-base"
+    />
+    <p
+      class="hero-fade inline-flex items-center gap-1.5 font-mono text-xs text-[var(--text-soft)] [animation-delay:1400ms]"
+    >
+      <ng-icon name="bootstrapGeoAlt" size="13" /> Lucerne, Switzerland
+    </p>
+  </div>
+
+  <a
+    routerLink="/"
+    fragment="about"
+    aria-label="Scroll to about"
+    class="hero-fade absolute bottom-5 left-1/2 z-10 -translate-x-1/2 text-[var(--text-soft)] transition-colors [animation-delay:1500ms] hover:text-[var(--text)]"
+  >
+    <ng-icon name="bootstrapArrowDown" size="22" class="animate-bounce" />
+  </a>
+</section>

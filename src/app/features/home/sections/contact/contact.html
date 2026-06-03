@@ -1,0 +1,26 @@
+<section
+  id="contact"
+  class="mx-auto max-w-3xl scroll-mt-24 px-5 py-24 text-center md:px-8"
+>
+  <h2 [appReveal]="0" class="font-mono text-sm text-brand-400">Contact</h2>
+  <p
+    [appReveal]="0.05"
+    class="mt-4 text-balance text-3xl font-bold tracking-tight sm:text-4xl"
+  >
+    Let's get in touch
+  </p>
+  <p [appReveal]="0.1" class="mx-auto mt-4 max-w-lg text-[var(--text-soft)]">
+    I am always open to meeting new people and discussing about anything in the
+    world of software development or just life in general.
+  </p>
+
+  <div [appReveal]="0.15" class="mt-8 flex flex-col items-center gap-6">
+    <a
+      [href]="'mailto:' + email"
+      class="inline-flex items-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-400"
+    >
+      <ng-icon name="bootstrapEnvelope" size="18" />
+      {{ email }}
+    </a>
+  </div>
+</section>

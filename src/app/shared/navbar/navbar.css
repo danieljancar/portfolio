@@ -1,0 +1,36 @@
+.nav-overlay {
+  animation: nav-overlay-in 0.3s ease-out both;
+}
+
+.nav-overlay-link {
+  opacity: 0;
+  animation: nav-link-rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes nav-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nav-link-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-overlay,
+  .nav-overlay-link {
+    opacity: 1;
+    animation: none;
+  }
+}

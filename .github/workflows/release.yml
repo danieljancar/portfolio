@@ -1,43 +1,43 @@
-name: Release Workflow
+name: Release
 
 on:
   push:
     branches:
       - master
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   build-deploy-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Source Code
-        uses: actions/checkout@v3
-
-      - name: Use Node.js 20
-        uses: actions/setup-node@v3
+      - name: Checkout source
+        uses: actions/checkout@v6
         with:
-          node-version: '20'
+          fetch-depth: 0
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Use Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
 
-      - name: Install Angular CLI
-        run: npm install -g @angular/cli
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Build Angular Project
-        run: ng build --base-href https://danieljancar.dev
+      - name: Lint
+        run: npm run lint
 
-      - name: Copy Sitemap and Robots
-        run: |
-          cp config/sitemap.xml dist/portfolio/browser
-          cp config/robots.txt dist/portfolio/browser
+      - name: Test
+        run: npm test
 
-      - name: Update Sitemap in Build Folder
-        run: bash scripts/updateSitemap.sh dist/portfolio/browser/sitemap.xml dist/portfolio/browser/assets/blog/blog.json
+      - name: Build (prerender + sitemap, CNAME, robots, 404)
+        run: npm run build
 
-      - name: Create CNAME
-        run: bash scripts/createCNAME.sh
-
-      - name: Configure Git User
+      - name: Configure git user
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "gh-actions[bot]"
@@ -47,7 +47,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Semantic Release
+      - name: Semantic release
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,121 @@
+.prose-md {
+  color: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.prose-md h1,
+.prose-md h2,
+.prose-md h3,
+.prose-md h4 {
+  color: var(--text);
+  font-weight: 700;
+  line-height: 1.25;
+  scroll-margin-top: 6rem;
+}
+
+.prose-md h1 {
+  font-size: 2rem;
+  margin: 2rem 0 1rem;
+}
+.prose-md h2 {
+  font-size: 1.6rem;
+  margin: 2rem 0 0.75rem;
+}
+.prose-md h3 {
+  font-size: 1.3rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.prose-md p {
+  margin: 1rem 0;
+}
+
+.prose-md a {
+  color: var(--color-brand-400);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-md a:hover {
+  color: var(--color-brand-500);
+}
+
+.prose-md ul,
+.prose-md ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+.prose-md ul {
+  list-style: disc;
+}
+.prose-md ol {
+  list-style: decimal;
+}
+.prose-md li {
+  margin: 0.4rem 0;
+}
+
+.prose-md blockquote {
+  border-left: 3px solid var(--color-brand-400);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+.prose-md img {
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  max-width: 100%;
+  height: auto;
+}
+
+.prose-md hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.prose-md code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.35rem;
+}
+
+.prose-md pre {
+  background: #0d0f1a;
+  color: #e6e8f0;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+}
+
+.prose-md pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font-size: 0.875rem;
+}
+
+.prose-md table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+}
+.prose-md th,
+.prose-md td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.prose-md th {
+  background: var(--bg-soft);
+  font-weight: 600;
+}

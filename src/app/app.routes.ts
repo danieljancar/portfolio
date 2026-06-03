@@ -1,15 +1,36 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './features/home/home.component';
-import { NotFoundComponent } from './shared/not-found/not-found.component';
-import { BlogOverviewComponent } from './features/blog/blog-overview/blog-overview.component';
-import { BlogDetailComponent } from './features/blog/blog-detail/blog-detail.component';
-import { LegalDetailComponent } from './features/legal/legal-detail/legal-detail.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'blog', component: BlogOverviewComponent },
-  { path: 'blog/:blogId', component: BlogDetailComponent },
-  { path: 'legal/:legalId', component: LegalDetailComponent },
-  { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '/404' },
+  {
+    path: '',
+    loadComponent: () => import('./features/home/home').then(m => m.Home),
+    title: 'Daniel Jancar — Software Developer',
+  },
+  {
+    path: 'blog',
+    loadComponent: () =>
+      import('./features/blog/blog-overview/blog-overview').then(
+        m => m.BlogOverview,
+      ),
+    title: 'Blog — Daniel Jancar',
+  },
+  {
+    path: 'blog/:slug',
+    loadComponent: () =>
+      import('./features/blog/blog-detail/blog-detail').then(m => m.BlogDetail),
+  },
+  {
+    path: 'legal/:legalId',
+    loadComponent: () =>
+      import('./features/legal/legal-detail/legal-detail').then(
+        m => m.LegalDetail,
+      ),
+  },
+  {
+    path: '404',
+    loadComponent: () =>
+      import('./shared/not-found/not-found').then(m => m.NotFound),
+    title: 'Page not found — Daniel Jancar',
+  },
+  { path: '**', redirectTo: '404' },
 ];

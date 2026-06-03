@@ -1,50 +1,28 @@
-import * as blogData from '../../assets/blog/blog.json';
 import { Injectable } from '@angular/core';
-import { Author } from '../types/author.type';
-import { Blog, BlogsJson } from '../types/blog.type';
+import blogData from '../data/blog.json';
+import { Author, Blog, BlogsJson } from './models/blog.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class BlogService {
-  private authors: Author[] = (blogData as BlogsJson).authors;
-  private blogs: BlogsJson['blogs'] = (blogData as BlogsJson).blogs;
-  private tags: string[] = (blogData as BlogsJson).sidebar.recommendedTags;
+  private readonly data = blogData as BlogsJson;
 
-  getFilteredBlogs(filter: string, startIndex: number, count: number): Blog[] {
-    let filteredBlogs = this.blogs;
-
-    switch (filter) {
-      case 'latest':
-        filteredBlogs = this.getBlogsSortedByDate(false);
-        break;
-      case 'oldest':
-        filteredBlogs = this.getBlogsSortedByDate(true);
-        break;
-    }
-
-    return filteredBlogs.slice(startIndex, startIndex + count);
-  }
-
-  getBlogsSortedByDate(ascending: boolean): Blog[] {
-    return this.blogs.sort((a, b) => {
-      const dateA = new Date(a.created);
-      const dateB = new Date(b.created);
-      return ascending
-        ? dateA.getTime() - dateB.getTime()
-        : dateB.getTime() - dateA.getTime();
+  getBlogs(sort: 'latest' | 'oldest' = 'latest'): Blog[] {
+    return [...this.data.blogs].sort((a, b) => {
+      const diff =
+        new Date(a.created).getTime() - new Date(b.created).getTime();
+      return sort === 'latest' ? -diff : diff;
     });
   }
 
+  getBlogBySlug(slug: string): Blog | undefined {
+    return this.data.blogs.find(blog => blog.slug === slug);
+  }
+
   getAuthor(username: string | undefined): Author | undefined {
-    return this.authors.find(author => author.username === username);
+    return this.data.authors.find(author => author.username === username);
   }
 
-  getBlogBySlug(slug: string): BlogsJson['blogs'][number] | undefined {
-    return this.blogs.find(blog => blog.slug === slug);
-  }
-
-  getRecommendedTags(): string[] {
-    return this.tags;
+  getSlugs(): string[] {
+    return this.data.blogs.map(blog => blog.slug);
   }
 }
