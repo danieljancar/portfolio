@@ -3,17 +3,17 @@ name: Triweekly Merge
 on:
   schedule:
     # Run every third Monday at 1am UTC
-    - cron: '0 1 1-31/21 * 1' 
+    - cron: '0 1 1-31/21 * 1'
 
 jobs:
   merge-develop-to-master:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.DAILY_PUSH }}
-          fetch-depth: 0  # Fetch all history for all branches and tags
+          fetch-depth: 0 # Fetch all history for all branches and tags
 
       - name: Setup Git
         run: |
