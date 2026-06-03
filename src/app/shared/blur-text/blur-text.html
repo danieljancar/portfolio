@@ -1,7 +1,7 @@
 <span class="flex justify-center" [class.flex-wrap]="wrap()">
   @for (seg of segments(); track $index) {
     <span
-      class="inline-block transition-[filter,opacity,transform] duration-500 ease-out"
+      class="inline-block whitespace-pre transition-[filter,opacity,transform] duration-500 ease-out"
       [style.transition-delay.ms]="$index * delay()"
       [style.filter]="shown() ? 'blur(0px)' : 'blur(10px)'"
       [style.opacity]="shown() ? 1 : 0"
