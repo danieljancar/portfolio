@@ -26,13 +26,13 @@
             [class.text-base]="!item.featured"
           >
             {{ item.role }}
-            <span class="mx-1 text-[var(--text-soft)]">·</span>
+            <span class="mx-1 text-[var(--text-soft)] pr-1">-</span>
             @if (item.companyUrl) {
               <a
                 [href]="item.companyUrl"
                 target="_blank"
                 rel="noopener"
-                class="inline-flex items-center gap-1 hover:underline"
+                class="inline-flex items-center gap-2 hover:underline"
                 [style.color]="
                   item.featured ? 'var(--color-brand-400)' : 'var(--text-soft)'
                 "

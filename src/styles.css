@@ -11,18 +11,18 @@
     ui-monospace, 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, Consolas,
     monospace;
 
-  --color-brand-50: #eef0ff;
-  --color-brand-100: #e0e3ff;
-  --color-brand-200: #c6ccff;
-  --color-brand-300: #a3abff;
-  --color-brand-400: #7480ff;
-  --color-brand-500: #5560f5;
-  --color-brand-600: #3f43da;
-  --color-brand-700: #3335b0;
-  --color-brand-800: #2c2e8d;
-  --color-brand-900: #292b72;
+  --color-brand-50: #f1f6ea;
+  --color-brand-100: #e0ebcd;
+  --color-brand-200: #c4d9a3;
+  --color-brand-300: #a3c477;
+  --color-brand-400: #82a951;
+  --color-brand-500: #5b7e3c;
+  --color-brand-600: #4c6932;
+  --color-brand-700: #3c5228;
+  --color-brand-800: #324321;
+  --color-brand-900: #2b391e;
 
-  --color-accent: #f0abfc;
+  --color-accent: #b5d98a;
 
   --radius-card: 1rem;
 }

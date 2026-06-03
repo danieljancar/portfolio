@@ -3,12 +3,12 @@
 .hero-bg {
   background:
     radial-gradient(
-      120% 90% at 50% -10%,
-      color-mix(in srgb, var(--color-brand-400) 28%, transparent),
-      transparent 60%
+      130% 70% at 50% 0%,
+      color-mix(in srgb, var(--color-brand-400) 30%, transparent),
+      transparent 55%
     ),
     radial-gradient(
-      90% 70% at 85% 30%,
+      80% 55% at 80% 18%,
       color-mix(in srgb, var(--color-accent) 18%, transparent),
       transparent 55%
     );
@@ -17,15 +17,26 @@
 :host-context(.dark) .hero-bg {
   background:
     radial-gradient(
-      120% 90% at 50% -10%,
+      130% 70% at 50% 0%,
       color-mix(in srgb, var(--color-brand-500) 38%, transparent),
-      transparent 60%
+      transparent 55%
     ),
     radial-gradient(
-      90% 70% at 85% 30%,
+      80% 55% at 80% 18%,
       color-mix(in srgb, var(--color-brand-700) 30%, transparent),
       transparent 55%
     );
+}
+
+/* Smoothly dissolves the hero backdrop into the page background so the
+   next section blends in instead of starting at a hard edge. */
+.hero-fade-bottom {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 40%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--bg));
 }
 
 .hero-blob {
