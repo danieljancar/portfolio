@@ -1,0 +1,32 @@
+<section id="skills" class="mx-auto max-w-3xl scroll-mt-24 px-5 py-20 md:px-8">
+  <h2 class="font-mono text-sm text-brand-400">Skills</h2>
+  <div class="mt-2 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+    <p class="text-[var(--text-soft)]">
+      The tools I reach for. Drag them around, fling them, or give the box a
+      shake.
+    </p>
+    <button
+      type="button"
+      (click)="shake()"
+      class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-soft)] px-3 py-1.5 font-mono text-xs text-[var(--text-soft)] transition-colors hover:border-brand-400 hover:text-brand-400"
+    >
+      <ng-icon name="bootstrapArrowRepeat" size="14" />
+      Shake
+    </button>
+  </div>
+
+  <ul
+    #box
+    [appReveal]="0.1"
+    class="relative mt-8 h-[360px] w-full overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-soft)] sm:h-[420px]"
+  >
+    @for (skill of skills; track skill) {
+      <li
+        data-skill
+        class="group m-1 inline-flex max-w-max cursor-grab touch-none select-none items-center rounded-full border border-[var(--border)] bg-[var(--bg)] px-3.5 py-1.5 font-mono text-xs text-[var(--text)] shadow-sm transition-[transform,border-color,color] duration-150 will-change-transform hover:z-10 hover:border-brand-400 hover:text-brand-400 active:cursor-grabbing sm:text-sm"
+      >
+        {{ skill }}
+      </li>
+    }
+  </ul>
+</section>

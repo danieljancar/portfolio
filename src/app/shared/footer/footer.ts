@@ -21,59 +21,7 @@ import { EMAIL, SOCIALS } from '../../data/socials.data';
     }),
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <footer class="border-t border-[var(--border)] bg-[var(--bg-soft)]">
-      <div
-        class="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 py-12 sm:px-8"
-      >
-        <div class="flex flex-wrap items-center justify-center gap-5">
-          @for (s of socials; track s.href) {
-            <a
-              [href]="s.href"
-              target="_blank"
-              rel="noopener"
-              [attr.aria-label]="s.label"
-              class="text-[var(--text-soft)] transition-colors hover:text-brand-400"
-            >
-              <ng-icon [name]="s.icon" size="22" />
-            </a>
-          }
-        </div>
-
-        <a
-          [href]="'mailto:' + email"
-          class="font-mono text-sm text-[var(--text-soft)] transition-colors hover:text-[var(--text)]"
-          >{{ email }}</a
-        >
-
-        <nav
-          class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-[var(--text-soft)]"
-        >
-          <a routerLink="/legal/terms" class="hover:text-[var(--text)]"
-            >Terms</a
-          >
-          <span aria-hidden="true">·</span>
-          <a routerLink="/legal/privacy" class="hover:text-[var(--text)]"
-            >Privacy</a
-          >
-          <span aria-hidden="true">·</span>
-          <a routerLink="/legal/cookies" class="hover:text-[var(--text)]"
-            >Cookies</a
-          >
-          <span aria-hidden="true">·</span>
-          <a
-            routerLink="/legal/code-of-conduct"
-            class="hover:text-[var(--text)]"
-            >Code of Conduct</a
-          >
-        </nav>
-
-        <p class="text-xs text-[var(--text-soft)]">
-          © {{ year }} Daniel Jancar
-        </p>
-      </div>
-    </footer>
-  `,
+  templateUrl: './footer.html',
 })
 export class Footer {
   protected readonly socials = SOCIALS;

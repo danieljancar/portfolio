@@ -1,0 +1,75 @@
+<section id="experience" class="mx-auto max-w-3xl scroll-mt-24 px-5 py-20 md:px-8">
+  <h2 class="font-mono text-sm text-brand-400">Experience</h2>
+  <p class="mt-2 text-[var(--text-soft)]">
+    My jorney in the tech industry and... life? It's been a wild ride, and I'm
+    grateful for every twist and turn along the way.
+  </p>
+
+  <ol class="mt-10 space-y-6 border-l border-[var(--border)] pl-7">
+    @for (item of experience; track item.company; let i = $index) {
+      <li [appReveal]="i * 0.05" class="relative">
+        <span
+          class="absolute -left-[2.156rem] top-[0.45rem] size-3 rounded-full border-2 border-[var(--bg)]"
+          [style.background]="
+            item.featured ? 'var(--color-brand-400)' : 'var(--border)'
+          "
+          [style.box-shadow]="
+            item.featured
+              ? '0 0 0 4px color-mix(in srgb, var(--color-brand-400) 22%, transparent)'
+              : 'none'
+          "
+        ></span>
+        <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          <h3
+            class="font-semibold"
+            [class.text-lg]="item.featured"
+            [class.text-base]="!item.featured"
+          >
+            {{ item.role }}
+            <span class="mx-1 text-[var(--text-soft)]">·</span>
+            @if (item.companyUrl) {
+              <a
+                [href]="item.companyUrl"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-1 hover:underline"
+                [style.color]="
+                  item.featured ? 'var(--color-brand-400)' : 'var(--text-soft)'
+                "
+              >
+                {{ item.company }}
+                <ng-icon name="bootstrapBoxArrowUpRight" size="12" />
+              </a>
+            } @else {
+              <span
+                [style.color]="
+                  item.featured ? 'var(--color-brand-400)' : 'var(--text-soft)'
+                "
+                >{{ item.company }}</span
+              >
+            }
+          </h3>
+          <span class="font-mono text-xs text-[var(--text-soft)] sm:ml-auto">
+            {{ item.period }}
+          </span>
+        </div>
+        @if (item.featured) {
+          @if (item.summary) {
+            <p class="mt-2 text-[var(--text-soft)]">{{ item.summary }}</p>
+          }
+          @if (item.stack?.length) {
+            <ul class="mt-3 flex flex-wrap gap-2">
+              @for (tech of item.stack; track tech) {
+                <li
+                  class="rounded-full bg-[var(--bg-soft)] px-2.5 py-1 font-mono text-xs text-[var(--text-soft)]"
+                >
+                  {{ tech }}
+                </li>
+              }
+            </ul>
+          }
+        }
+      </li>
+    }
+  </ol>
+</section>

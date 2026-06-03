@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-/* Manual dark mode: toggled by adding `.dark` on <html>. */
+/* Dark mode is toggled by adding `.dark` on <html>. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -11,7 +11,6 @@
     ui-monospace, 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, Consolas,
     monospace;
 
-  /* Brand palette (indigo/violet) */
   --color-brand-50: #eef0ff;
   --color-brand-100: #e0e3ff;
   --color-brand-200: #c6ccff;

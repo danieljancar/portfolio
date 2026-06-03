@@ -12,14 +12,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/checkout@v6
 
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.3
+      - name: Use Node.js 24
+        uses: actions/setup-node@v6
         with:
-          prettier_options: '--write **/*.{js,ts,html,json,md,css}'
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check

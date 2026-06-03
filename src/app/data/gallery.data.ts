@@ -24,7 +24,7 @@ const files = [
   'IMG_5819.jpeg',
 ];
 
-export const GALLERY: GalleryPhoto[] = files.map((file) => ({
+export const GALLERY: GalleryPhoto[] = files.map(file => ({
   src: `assets/gallery/${file}`,
   alt: 'Photo taken by Daniel Jancar',
 }));

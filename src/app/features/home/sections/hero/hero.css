@@ -1,0 +1,110 @@
+/* Full-bleed fallback gradient (also the only backdrop on mobile, where the
+   WebGL canvas bails out). Sits behind the animated canvas. */
+.hero-bg {
+  background:
+    radial-gradient(
+      120% 90% at 50% -10%,
+      color-mix(in srgb, var(--color-brand-400) 28%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      90% 70% at 85% 30%,
+      color-mix(in srgb, var(--color-accent) 18%, transparent),
+      transparent 55%
+    );
+}
+
+:host-context(.dark) .hero-bg {
+  background:
+    radial-gradient(
+      120% 90% at 50% -10%,
+      color-mix(in srgb, var(--color-brand-500) 38%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      90% 70% at 85% 30%,
+      color-mix(in srgb, var(--color-brand-700) 30%, transparent),
+      transparent 55%
+    );
+}
+
+.hero-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.5;
+  pointer-events: none;
+  will-change: transform;
+  animation: hero-float 18s ease-in-out infinite;
+}
+
+:host-context(.dark) .hero-blob {
+  opacity: 0.35;
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(var(--bx, 30px), var(--by, -24px)) scale(1.12);
+  }
+}
+
+.hero-reveal {
+  opacity: 0;
+  animation: hero-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-pop {
+  opacity: 0;
+  animation: hero-pop 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Opacity-only reveal for elements that already own their transform
+   (e.g. the centred scroll arrow with -translate-x-1/2). */
+.hero-fade {
+  opacity: 0;
+  animation: hero-fade-in 0.85s ease-out both;
+}
+
+@keyframes hero-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob {
+    animation: none;
+  }
+  .hero-reveal,
+  .hero-pop,
+  .hero-fade {
+    opacity: 1;
+    animation: none;
+  }
+}

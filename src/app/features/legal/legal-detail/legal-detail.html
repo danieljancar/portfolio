@@ -1,0 +1,20 @@
+@if (legal(); as doc) {
+  <article class="mx-auto max-w-3xl px-5 py-12 sm:py-16">
+    <a
+      routerLink="/"
+      class="mb-8 inline-flex items-center gap-2 text-sm text-[var(--text-soft)] transition-colors hover:text-[var(--text)]"
+    >
+      <ng-icon name="bootstrapArrowLeft" size="16" /> Home
+    </a>
+    <h1 class="text-3xl font-bold tracking-tight">{{ doc.name }}</h1>
+    <p class="mt-2 font-mono text-xs text-[var(--text-soft)]">
+      Version {{ doc.version }} · Updated {{ doc.edited | date: 'MMMM d, y' }}
+    </p>
+    <div class="mt-8">
+      <markdown
+        class="prose-md"
+        [src]="'assets/legal/content/' + doc.file + '.md'"
+      />
+    </div>
+  </article>
+}

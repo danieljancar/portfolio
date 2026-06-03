@@ -2,23 +2,23 @@
 
 ## Our Journey from Lunchtime Idea to dApp (and a Surprise Video Win)
 
-I’m super excited to share the ups, downs, and unexpected twists of our adventure in the Stellar Smart Contract Dev Challenge. My buddy Cyril Kurmann and I went all in, trying to win the Best dApp award with our project **VoteVault**. While we didn’t quite clinch that title, we did walk away with something pretty awesome—**the Vivid Video Award** and $6000! 💰
+I’m really happy to share the ups, downs, and surprises of our run at the Stellar Smart Contract Dev Challenge. My friend Cyril Kurmann and I went all in trying to win the Best dApp award with our project **VoteVault**. We didn’t take that title home, but we walked away with something we never saw coming: **the Vivid Video Award** and $6000. 💰
 
 ## What’s VoteVault? 🤔
 
-So, here’s the scoop: **VoteVault** is our secure, transparent, and open-source voting platform built on the Stellar blockchain. The idea? Make voting easy, engaging, and, dare we say, a little bit fun. We wanted to do something different from the usual crypto stuff, so we focused on a platform that anyone could use to create, participate in, and verify votes. No crazy animations, just good ol' reliable blockchain tech doing its thing.
+**VoteVault** is our secure, transparent, open-source voting platform built on the Stellar blockchain. The goal was simple. Make voting easy, clear, and even a little bit fun. We wanted to do something different from the usual crypto projects, so we built a platform anyone could use to create, join, and verify votes. No flashy animations, just reliable blockchain tech doing its job.
 
 ## How We Ended Up Winning the Vivid Video Award 📹
 
-Here’s where things get interesting. After wrapping up VoteVault (and thinking we might have a shot at Best dApp), we found ourselves with a bit of time left before the competition deadline. Instead of just sitting around, we decided to make a video tutorial on Stellar smart contracts. Why not, right?
+This is where things got interesting. After finishing VoteVault, and quietly hoping we had a shot at Best dApp, we still had a bit of time before the deadline. Rather than sit around, we decided to make a short video tutorial on Stellar smart contracts.
 
-Inspired by Fireship’s “100 Seconds” series, we wanted to create something short, sweet, and packed with info. Cyril tackled the scripting and narration while I worked on editing the video. The result? A concise and (hopefully) helpful tutorial for anyone diving into Stellar smart contracts. To our surprise, this side project ended up winning us the **Vivid Video Award**! 🚀
+We took inspiration from Fireship’s “100 Seconds” series and wanted something short and packed with info. Cyril handled the scripting and narration while I edited the video. The result was a concise, hopefully helpful tutorial for anyone getting into Stellar smart contracts. To our surprise, that little side project is what won us the **Vivid Video Award**. 🚀
 
 ## Wrapping It All Up 🎬
 
-What started as a simple lunchtime idea turned into a wild ride of coding from tropical locations (Sri Lanka for Cyril, Italy for me), late-night Discord chats, and even a surprise award win. While we didn’t get the Best dApp title we were gunning for, winning the Vivid Video Award feels like a pretty awesome consolation prize.
+What started as a lunchtime idea turned into a wild few weeks of coding from far-flung places (Sri Lanka for Cyril, Italy for me), late-night Discord calls, and an award we never expected. We didn’t get the Best dApp title we were after, but the Vivid Video Award feels like a pretty good way to lose.
 
-Feel free to check out VoteVault, watch our award-winning video, and let us know what you think! We’re proud of what we’ve accomplished and excited to see where this journey takes us next.
+Feel free to check out VoteVault, watch the video, and let us know what you think. We’re proud of what we built and curious to see where it goes next.
 
 **Cheers,**
 Daniel
