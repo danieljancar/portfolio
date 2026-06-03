@@ -4,7 +4,7 @@ This Privacy Policy applies to the personal portfolio website of Daniel Jancar (
 
 ## 2. Information Collection and Use
 
-I do not actively collect personal data from visitors to my website. However, if you choose to contact me via email at dan_jan1@icloud.com, I will use your email address and any other information you provide solely to respond to your inquiries.
+I do not actively collect personal data from visitors to my website. However, if you choose to contact me via email at daniel@danieljancar.dev, I will use your email address and any other information you provide solely to respond to your inquiries.
 
 ## 3. Third-Party Data Processing
 
