@@ -11,24 +11,6 @@ export interface Experience {
 
 export const EXPERIENCE: Experience[] = [
   {
-    role: 'Founder',
-    company: 'Cranny',
-    companyUrl: 'https://the-cranny.com',
-    period: 'Nov 2025 — now',
-    current: true,
-    featured: true,
-    summary:
-      'Building a mobile app on the side with some friends that helps people find the hidden spots that do not exist on regular maps.',
-    stack: [
-      'Expo',
-      'React Native',
-      'Supabase',
-      'PostgreSQL',
-      'PostGIS',
-      'Resend',
-    ],
-  },
-  {
     role: 'Software Developer (Apprentice)',
     company: 'Luzerner Kantonalbank',
     companyUrl: 'https://www.lukb.ch',
