@@ -13,13 +13,13 @@ export const PROJECTS: Project[] = [
     tagline: 'Find the spots only locals know',
     description:
       'A mobile app for finding and sharing the hidden spots near you, from quiet viewpoints to a really good coffee. A side project that I have been doing with some friends for fun.',
-    stack: ['Expo', 'React Native', 'Supabase', 'PostGIS'],
+    stack: ['Expo', 'React Native', 'Supabase', 'PostGIS', 'Resend', 'Social Media', 'App Stores', 'Marketing'],
     links: [{ label: 'Visit', href: 'https://the-cranny.com' }],
     featured: true,
   },
   {
     name: 'Chorizo',
-    tagline: 'Course management, made open',
+    tagline: 'Course management tool',
     description:
       'An open-source tool for organising courses and the people in them. It was one of my first bigger projects and is being actively used for managing taster days for information technology.',
     stack: ['Angular', 'TypeScript', 'Firebase'],
