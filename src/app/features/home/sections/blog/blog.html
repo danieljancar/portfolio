@@ -1,0 +1,59 @@
+@let posts = featured();
+@if (posts.length) {
+  <section id="blog" class="mx-auto max-w-5xl scroll-mt-24 px-5 py-20 md:px-8">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="font-mono text-sm text-brand-400">My writings</h2>
+        <p class="mt-2 text-[var(--text-soft)]">
+          Some of my latest thoughts, ideas, guides or stories.
+        </p>
+      </div>
+      <a
+        routerLink="/blog"
+        class="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-[var(--text)] transition-colors hover:text-brand-400"
+      >
+        All posts
+        <ng-icon name="bootstrapArrowUpRight" size="14" />
+      </a>
+    </div>
+
+    <div class="mt-10 grid gap-5 sm:grid-cols-2">
+      @for (post of posts; track post.slug; let i = $index) {
+        <a
+          [appReveal]="(i % 2) * 0.05"
+          [routerLink]="['/blog', post.slug]"
+          class="group flex flex-col overflow-hidden rounded-card border border-[var(--border)] bg-[var(--surface)] transition-colors hover:border-brand-400"
+        >
+          <img
+            [src]="'assets/blog/images/' + post.banner"
+            [alt]="post.bannerAlt"
+            class="aspect-video w-full object-cover"
+          />
+          <div class="flex flex-1 flex-col p-6">
+            <time class="font-mono text-xs text-[var(--text-soft)]">
+              {{ post.created | date: 'MMM d, y' }} · {{ post.readTime }} min
+              read
+            </time>
+            <h3
+              class="mt-2 text-lg font-semibold transition-colors group-hover:text-brand-400"
+            >
+              {{ post.title }}
+            </h3>
+            <p class="mt-2 line-clamp-2 flex-1 text-[var(--text-soft)]">
+              {{ post.description }}
+            </p>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              @for (tag of post.tags.slice(0, 4); track tag) {
+                <li
+                  class="rounded-full bg-[var(--bg-soft)] px-2.5 py-1 font-mono text-xs text-[var(--text-soft)]"
+                >
+                  #{{ tag }}
+                </li>
+              }
+            </ul>
+          </div>
+        </a>
+      }
+    </div>
+  </section>
+}

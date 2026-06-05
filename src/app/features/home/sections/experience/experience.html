@@ -1,11 +1,7 @@
-<section id="experience" class="mx-auto max-w-3xl scroll-mt-24 px-5 py-20 md:px-8">
-  <h2 class="font-mono text-sm text-brand-400">Experience</h2>
-  <p class="mt-2 text-[var(--text-soft)]">
-    My jorney in the tech industry and... life? It's been a wild ride, and I'm
-    grateful for every twist and turn along the way.
-  </p>
-
-  <ol class="mt-10 space-y-6 border-l border-[var(--border)] pl-7">
+<ol
+  id="experience"
+  class="mt-10 scroll-mt-24 space-y-6 border-l border-[var(--border)] pl-7"
+>
     @for (item of experience; track item.company; let i = $index) {
       <li [appReveal]="i * 0.05" class="relative">
         <span
@@ -72,4 +68,3 @@
       </li>
     }
   </ol>
-</section>
