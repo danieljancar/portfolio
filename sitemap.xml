@@ -11,6 +11,12 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://danieljancar.dev/blog/developing-a-mobile-app-from-scratch-with-expo</loc>
+    <lastmod>2026-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://danieljancar.dev/blog/teaching-scratch-in-elbasan-2025</loc>
     <lastmod>2025-04-09</lastmod>
     <changefreq>monthly</changefreq>
