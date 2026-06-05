@@ -18,6 +18,12 @@ export class BlogService {
     return this.data.blogs.find(blog => blog.slug === slug);
   }
 
+  getFeaturedBlogs(limit = 2): Blog[] {
+    return this.getBlogs('latest')
+      .filter(blog => blog.featured)
+      .slice(0, limit);
+  }
+
   getAuthor(username: string | undefined): Author | undefined {
     return this.data.authors.find(author => author.username === username);
   }

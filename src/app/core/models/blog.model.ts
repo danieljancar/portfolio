@@ -22,6 +22,7 @@ export interface Blog {
   bannerSource: string;
   bannerAiGenerated: boolean;
   author: string;
+  featured?: boolean;
   githubRepoLink?: string | null;
   stackBlitzLink?: string | null;
   otherSourceLink?: string | null;

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Hero } from './sections/hero/hero';
 import { About } from './sections/about/about';
-import { Experience } from './sections/experience/experience';
 import { Skills } from './sections/skills/skills';
 import { Projects } from './sections/projects/projects';
+import { Blog } from './sections/blog/blog';
 import { Gallery } from './sections/gallery/gallery';
 import { Contact } from './sections/contact/contact';
 import { SeoService } from '../../core/seo.service';
@@ -13,9 +13,9 @@ import { SeoService } from '../../core/seo.service';
   imports: [
     Hero,
     About,
-    Experience,
     Skills,
     Projects,
+    Blog,
     Gallery,
     Contact,
   ],
@@ -23,8 +23,8 @@ import { SeoService } from '../../core/seo.service';
   template: `
     <app-hero />
     <app-about />
-    <app-experience />
     <app-skills />
+    <app-blog />
     <app-projects />
     <app-gallery />
     <app-contact />

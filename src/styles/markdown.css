@@ -8,10 +8,36 @@
 .prose-md h2,
 .prose-md h3,
 .prose-md h4 {
+  position: relative;
   color: var(--text);
   font-weight: 700;
   line-height: 1.25;
   scroll-margin-top: 6rem;
+}
+
+.prose-md .heading-anchor {
+  position: absolute;
+  left: -1.1em;
+  width: 1.1em;
+  text-align: center;
+  color: var(--color-brand-400);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.prose-md h1:hover .heading-anchor,
+.prose-md h2:hover .heading-anchor,
+.prose-md h3:hover .heading-anchor,
+.prose-md h4:hover .heading-anchor,
+.prose-md .heading-anchor:focus {
+  opacity: 1;
+}
+
+@media (max-width: 640px) {
+  .prose-md .heading-anchor {
+    display: none;
+  }
 }
 
 .prose-md h1 {
@@ -38,6 +64,13 @@
 }
 .prose-md a:hover {
   color: var(--color-brand-500);
+}
+
+.prose-md .external-link-icon {
+  display: inline-block;
+  margin-left: 0.15em;
+  vertical-align: -0.05em;
+  text-decoration: none;
 }
 
 .prose-md ul,
@@ -101,6 +134,61 @@
   padding: 0;
   color: inherit;
   font-size: 0.875rem;
+}
+
+/* Prism syntax highlighting, tuned for the dark code background above. */
+.prose-md .token.comment,
+.prose-md .token.prolog,
+.prose-md .token.doctype,
+.prose-md .token.cdata {
+  color: #6b7394;
+  font-style: italic;
+}
+.prose-md .token.punctuation {
+  color: #c3c8de;
+}
+.prose-md .token.property,
+.prose-md .token.tag,
+.prose-md .token.boolean,
+.prose-md .token.number,
+.prose-md .token.constant,
+.prose-md .token.symbol,
+.prose-md .token.deleted {
+  color: #f78c6c;
+}
+.prose-md .token.selector,
+.prose-md .token.attr-name,
+.prose-md .token.string,
+.prose-md .token.char,
+.prose-md .token.builtin,
+.prose-md .token.inserted {
+  color: #c3e88d;
+}
+.prose-md .token.operator,
+.prose-md .token.entity,
+.prose-md .token.url {
+  color: #89ddff;
+}
+.prose-md .token.atrule,
+.prose-md .token.attr-value,
+.prose-md .token.keyword {
+  color: #c792ea;
+}
+.prose-md .token.function,
+.prose-md .token.class-name {
+  color: #82aaff;
+}
+.prose-md .token.regex,
+.prose-md .token.important,
+.prose-md .token.variable {
+  color: #ffcb6b;
+}
+.prose-md .token.important,
+.prose-md .token.bold {
+  font-weight: 700;
+}
+.prose-md .token.italic {
+  font-style: italic;
 }
 
 .prose-md table {

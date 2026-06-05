@@ -27,6 +27,23 @@
   ],
   "blogs": [
     {
+      "slug": "developing-a-mobile-app-from-scratch-with-expo",
+      "title": "Developing a Mobile App from Scratch with Expo and React Native",
+      "description": "In this post, I'm sharing my experience of developing a mobile app from scratch and end-to-end - from the initial idea, to the software architecture, the CI/CD strategy and the submission to the app stores.",
+      "created": "2026-06-05T16:15:00",
+      "edited": "2026-06-05T16:15:00",
+      "tags": ["expo", "react-native", "mobile-development", "resend", "supabase"],
+      "content": "developing-a-mobile-app-from-scratch-with-expo.md",
+      "readTime": "5",
+      "banner": "developing-a-mobile-app-from-scratch-with-expo/mobile-app-development-expo-react-native.jpeg",
+      "bannerAlt": "Picture of the Cranny app infront of a bench in a forest",
+      "bannerSource": "https://the-cranny.com",
+      "bannerAiGenerated": false,
+      "author": "danieljancar",
+      "featured": true,
+      "otherSourceLink": "https://the-cranny.com/"
+    },
+    {
       "slug": "teaching-scratch-in-elbasan-2025",
       "title": "Teaching Scratch in Elbasan 🇦🇱",
       "description": "I joined iStep for a volunteer week in Elbasan, Albania, teaching kids and teenagers their first taste of programming with Scratch. Here is what stayed with me.",
@@ -40,6 +57,7 @@
       "bannerSource": "https://danieljancar.dev",
       "bannerAiGenerated": false,
       "author": "danieljancar",
+      "featured": true,
       "otherSourceLink": "https://istep.ch"
     },
     {
