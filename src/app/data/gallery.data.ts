@@ -22,6 +22,14 @@ const files = [
   'IMG_5077.jpeg',
   'IMG_5664.JPG',
   'IMG_5819.jpeg',
+  'DSCF1102.JPG',
+  'DSCF1120.JPG',
+  'DSCF1122.JPG',
+  'DSCF1139.JPG',
+  'DSCF1142.JPG',
+  'DSCF1149.JPG',
+  'DSCF1158.JPG'
+
 ];
 
 export const GALLERY: GalleryPhoto[] = files.map(file => ({
