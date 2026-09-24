@@ -1,5 +1,7 @@
-# Add files here to ignore them from prettier formatting
-/dist
-/coverage
-.angular
-/node_modules
+dist
+.astro
+node_modules
+package-lock.json
+src/generated
+src/content/**/*.md
+CHANGELOG.md
