@@ -13,7 +13,7 @@ const { posts } = Astro.props;
 <ul class="posts wrap">
   {posts.map(post => (
     <li>
-      <a class="post" href={`/blog/${post.id}`}>
+      <a class="post" href={`/blog/${post.id}`} data-cursor="Read">
         <div class="thumb">
           {post.data.cover && (
             <Cover

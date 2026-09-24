@@ -38,10 +38,9 @@ publishes the site to GitHub Pages.
 | `albums`          | Markdown folder + photos   | `/photos`, `/photos/<album>`, home       |
 | `events`          | Markdown                   | `/events`, `/events/<slug>`              |
 | `experience`      | YAML                       | `/about`                                 |
-| `notes`           | Markdown                   | `/now`                                   |
 | `recommendations` | YAML                       | `/recommended`                           |
 | `legal`           | Markdown                   | `/legal/<slug>`                          |
-| `site`            | `settings.yaml` + portrait | headline, intro, about, skills, profiles |
+| `site`            | `settings.yaml` + portrait | headline, about, skills, profiles        |
 
 References between collections are typed: an event can point to its album and a
 project, a post to a project. A broken reference fails the build.
@@ -97,12 +96,26 @@ an event's project or album). That drives `/tags`, `/tags/<tag>` and the related
 blocks on detail pages. Tags are compared by slug, so `React Native` and
 `react-native` meet.
 
+Experience entries have `tags` and a `work` list too. `src/lib/experience.ts`
+uses the same ranking to show what each role is connected to. Roles without an
+end date count as current and get the full treatment; ended roles are listed
+compactly under "Before".
+
 ## Motion
 
-Scroll effects use CSS scroll-driven animations (`animation-timeline`), no
-JavaScript libraries. Browsers without support get the static layout through
+Scroll effects use CSS scroll-driven animations (`animation-timeline`).
+Browsers without support get the static layout through
 `@supports not (animation-timeline: view())` blocks, and
 `prefers-reduced-motion` switches all animation off.
+
+The home hero is a three.js scene (`src/scripts/helix.ts`): album highlights on
+curved panels in a helix that follows the pointer and flies closer on scroll.
+It is loaded with a dynamic import, so the rest of the page never waits for it.
+Without WebGL or with reduced motion the CSS photo ring stays in place.
+
+`src/components/layout/Cursor.astro` replaces the pointer on devices with a
+fine pointer. Any element can set `data-cursor="Label"` to show a label, and
+`data-magnetic` pulls an element slightly towards the pointer.
 
 Vite's default CSS minifier (lightningcss) folds `animation-timeline` into the
 `animation` shorthand, which browsers reject. `astro.config.mjs` therefore uses

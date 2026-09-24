@@ -1,81 +1,55 @@
 ---
 import { Image } from 'astro:assets';
+import Experience from '~/components/experience/Experience.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { getExperience, getSettings } from '~/lib/content';
-import { formatYearMonth } from '~/lib/dates';
+import { getSettings } from '~/lib/content';
+import { getRoles } from '~/lib/experience';
 import { linkAttrs } from '~/lib/links';
 
-const [settings, experience] = await Promise.all([
-  getSettings(),
-  getExperience(),
-]);
+const [settings, roles] = await Promise.all([getSettings(), getRoles()]);
 const paragraphs = settings.about.split(/\n\s*\n/);
-const period = (start?: string, end?: string) => {
-  if (!start) return end ? `Until ${formatYearMonth(end)}` : 'Ongoing';
-  return `${formatYearMonth(start)} to ${end ? formatYearMonth(end) : 'today'}`;
-};
 ---
 
 <BaseLayout title="About" description={settings.description}>
+  <SectionHead title="About" as="h1" />
   <section class="intro wrap">
-    <div class="text">
-      <span class="mono soft">About</span>
-      <h1>{settings.headline}</h1>
-      <div class="about">
-        {paragraphs.map(paragraph => (
-          <p>{paragraph}</p>
-        ))}
-      </div>
-    </div>
     {settings.portrait && (
       <div class="portrait">
         <Image
           src={settings.portrait}
           alt={settings.portraitAlt}
-          widths={[500, 800, 1200]}
-          sizes="(max-width: 900px) 90vw, 35vw"
+          widths={[200, 400]}
+          sizes="160px"
           loading="eager"
         />
       </div>
     )}
+    <div class="text">
+      {paragraphs.map(paragraph => (
+        <p>{paragraph}</p>
+      ))}
+      <ul class="socials mono">
+        {settings.socials.map(link => (
+          <li>
+            <a href={link.href} {...linkAttrs(link.href)}>
+              {link.label} ↗
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 
-  <SectionHead title="Experience" />
-  <ol class="jobs wrap">
-    {experience.map(job => (
-      <li>
-        <span class="mono soft">{period(job.data.start, job.data.end)}</span>
-        <div>
-          <h3>{job.data.role}</h3>
-          <p class="company">
-            {job.data.companyUrl ? (
-              <a href={job.data.companyUrl} {...linkAttrs(job.data.companyUrl)}>
-                {job.data.company} ↗
-              </a>
-            ) : (
-              job.data.company
-            )}
-          </p>
-          {job.data.summary && <p class="summary">{job.data.summary}</p>}
-          {job.data.skills.length > 0 && (
-            <ul class="chips mono">
-              {job.data.skills.map(skill => (
-                <li>{skill}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </li>
-    ))}
-  </ol>
+  <SectionHead title="Experience" id="experience" />
+  <Experience roles={roles} />
 
   <SectionHead title="Skills" />
   <div class="skills wrap">
     {settings.skills.map(group => (
       <div class="group">
-        <h3>{group.group}</h3>
-        <ul class="chips mono">
+        <p class="mono soft">{group.group}</p>
+        <ul>
           {group.items.map(item => (
             <li>{item}</li>
           ))}
@@ -88,27 +62,9 @@ const period = (start?: string, end?: string) => {
 <style>
   .intro {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: clamp(32px, 6vw, 96px);
-    align-items: end;
-    padding-top: 48px;
-  }
-
-  h1 {
-    margin-top: 20px;
-    font-size: clamp(40px, 5.6vw, 88px);
-    font-stretch: 112%;
-    letter-spacing: -0.035em;
-    line-height: 0.95;
-  }
-
-  .about {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    max-width: 62ch;
-    margin-top: 32px;
-    font-size: 19px;
+    grid-template-columns: 160px minmax(0, 62ch);
+    gap: 32px;
+    align-items: start;
   }
 
   .portrait {
@@ -122,91 +78,68 @@ const period = (start?: string, end?: string) => {
     object-fit: cover;
   }
 
-  .jobs {
-    margin: 0;
-    list-style: none;
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 20px;
+    line-height: 1.5;
   }
 
-  .jobs > li {
-    display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 24px;
-    padding: 28px 0;
-    border-top: 1px solid var(--line);
-  }
-
-  h3 {
-    font-size: clamp(22px, 2.4vw, 30px);
-    font-stretch: 125%;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    line-height: 1;
-  }
-
-  .company {
-    margin-top: 8px;
-    font-weight: 600;
-  }
-
-  .summary {
-    max-width: 70ch;
-    margin-top: 12px;
-    color: var(--ink-soft);
-  }
-
-  .chips {
+  .socials {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin: 16px 0 0;
+    gap: 8px;
+    margin: 8px 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .chips li {
-    padding: 4px 8px;
+  .socials a {
+    display: inline-block;
+    padding: 8px 12px;
     border: 1px solid var(--line);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .socials a:hover {
+    background: var(--ink);
+    color: var(--ground);
   }
 
   .skills {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-top: 1px solid var(--line);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
   }
 
-  .group {
-    padding: 28px 0;
-    border-bottom: 1px solid var(--line);
+  .group ul {
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .group:nth-child(odd) {
-    padding-right: 32px;
-  }
-
-  .group:nth-child(even) {
-    padding-left: 32px;
-    border-left: 1px solid var(--line);
+  .group li {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 17px;
   }
 
   @media (max-width: 900px) {
-    .intro,
     .skills {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
 
-    .jobs > li {
+  @media (max-width: 600px) {
+    .intro {
       grid-template-columns: 1fr;
-      gap: 8px;
     }
 
     .portrait {
-      max-width: 380px;
-      order: -1;
-    }
-
-    .group:nth-child(n) {
-      padding-inline: 0;
-      border-left: 0;
+      width: 120px;
     }
   }
 </style>

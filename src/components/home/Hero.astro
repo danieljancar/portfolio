@@ -1,18 +1,35 @@
 ---
+import { getImage } from 'astro:assets';
 import Photo from '~/components/media/Photo.astro';
+import { linkAttrs } from '~/lib/links';
 import type { Photo as PhotoType } from '~/lib/photos';
+import type { Tile } from '~/scripts/helix';
 
 interface Props {
   photos: PhotoType[];
   tagline: string;
+  links: { label: string; href: string }[];
 }
 
-const { photos, tagline } = Astro.props;
+const { photos, tagline, links } = Astro.props;
 const ring = photos.slice(0, 10);
 const step = 360 / Math.max(ring.length, 1);
+const tiles: Tile[] = await Promise.all(
+  photos.slice(0, 18).map(async photo => ({
+    src: (await getImage({ src: photo.image, width: 720, format: 'webp' })).src,
+    href: photo.href,
+    aspect: photo.meta.width / Math.max(photo.meta.height, 1),
+  })),
+);
 ---
 
-<section class="hero" aria-label="Intro">
+<section class="hero" aria-label="Intro" data-hero>
+  <canvas class="scene" data-scene aria-hidden="true"></canvas>
+  <script
+    type="application/json"
+    data-tiles
+    set:html={JSON.stringify(tiles)}
+  ></script>
   <div class="stage" aria-hidden="true">
     <div class="tilt">
       <div class="ring">
@@ -32,7 +49,15 @@ const step = 360 / Math.max(ring.length, 1);
   <div class="name">
     <div class="meta">
       <p>{tagline}</p>
-      <span class="mono">Scroll ↓</span>
+      <ul class="links mono">
+        {links.map(link => (
+          <li>
+            <a href={link.href} {...linkAttrs(link.href)}>
+              {link.label} ↗
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
     <h1 class="display">
       Daniel
@@ -41,6 +66,22 @@ const step = 360 / Math.max(ring.length, 1);
     </h1>
   </div>
 </section>
+
+<script>
+  import type { Tile } from '~/scripts/helix';
+
+  const root = document.querySelector<HTMLElement>('[data-hero]');
+  const canvas = root?.querySelector<HTMLCanvasElement>('[data-scene]');
+  const data = root?.querySelector('[data-tiles]')?.textContent;
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (root && canvas && data && !still) {
+    const tiles = JSON.parse(data) as Tile[];
+    import('~/scripts/helix')
+      .then(({ mountHelix }) => mountHelix(root, canvas, tiles))
+      .catch(() => root.classList.remove('is-3d'));
+  }
+</script>
 
 <style>
   .hero {
@@ -51,6 +92,23 @@ const step = 360 / Math.max(ring.length, 1);
     background: var(--night);
     color: var(--night-ink);
     --dim-strength: 1;
+  }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-out);
+  }
+
+  .is-3d .scene {
+    opacity: 1;
+  }
+
+  .is-3d .stage {
+    display: none;
   }
 
   .stage {
@@ -90,6 +148,30 @@ const step = 360 / Math.max(ring.length, 1);
     padding: 0 var(--gutter) var(--gutter);
     color: #fff;
     mix-blend-mode: difference;
+    pointer-events: none;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    pointer-events: auto;
+  }
+
+  .links a {
+    display: inline-block;
+    padding: 6px 0;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px
+      no-repeat;
+    transition: background-size 0.35s var(--ease-out);
+  }
+
+  .links a:hover {
+    color: inherit;
+    background-size: 100% 1px;
   }
 
   .meta {

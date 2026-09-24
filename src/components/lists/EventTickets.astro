@@ -13,7 +13,7 @@ const { events } = Astro.props;
 <ul class="tickets wrap">
   {events.map(event => (
     <li>
-      <a class="ticket" href={`/events/${event.id}`}>
+      <a class="ticket" href={`/events/${event.id}`} data-cursor="Open">
         <div class="image">
           {event.data.cover && (
             <Cover

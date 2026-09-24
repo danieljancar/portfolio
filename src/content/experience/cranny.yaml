@@ -1,0 +1,8 @@
+role: Founder
+company: Cranny
+companyUrl: https://the-cranny.com
+kind: work
+summary: My own app for finding and sharing spots worth knowing, like a bench with a view or a fireplace hidden in the forest. Live on the App Store and Play Store since June 2026. I build it with two friends.
+work: [cranny]
+tags: [expo, react-native, supabase]
+order: 2

@@ -41,12 +41,18 @@ export const tagHref = (tag: string) => `/tags/${tagSlug(tag)}`;
 export const itemKey = (item: Pick<Item, 'kind' | 'id'>) =>
   `${item.kind}:${item.id}`;
 
+export type Target = Pick<Item, 'tags' | 'links'> &
+  Partial<Pick<Item, 'kind' | 'id'>>;
+
 export function rankRelated(
-  target: Pick<Item, 'kind' | 'id' | 'tags' | 'links'>,
+  target: Target,
   items: Item[],
   { limit = 6, kinds }: { limit?: number; kinds?: Kind[] } = {},
 ): Item[] {
-  const key = itemKey(target);
+  const key =
+    target.kind && target.id
+      ? itemKey({ kind: target.kind, id: target.id })
+      : undefined;
   const tags = new Set(target.tags.map(tagSlug));
   return items
     .filter(
@@ -55,7 +61,8 @@ export function rankRelated(
     .map(item => {
       const shared = item.tags.filter(t => tags.has(tagSlug(t))).length;
       const linked =
-        item.links.includes(key) || target.links.includes(itemKey(item));
+        (key !== undefined && item.links.includes(key)) ||
+        target.links.includes(itemKey(item));
       return { item, score: shared + (linked ? 3 : 0) };
     })
     .filter(({ score }) => score > 0)

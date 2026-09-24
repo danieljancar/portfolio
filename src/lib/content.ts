@@ -30,11 +30,6 @@ export async function getEvents() {
   return events.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
-export async function getNotes() {
-  const notes = await getCollection('notes');
-  return notes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-}
-
 let recommendations: Promise<CollectionEntry<'recommendations'>[]> | undefined;
 
 export function getRecommendations() {

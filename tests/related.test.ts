@@ -54,4 +54,12 @@ describe('rankRelated', () => {
     });
     expect(related.map(i => i.id)).toEqual(['bench']);
   });
+
+  it('ranks for a target that is not an item itself', () => {
+    const related = rankRelated(
+      { tags: ['supabase'], links: ['project:cranny'] },
+      [cranny, post, other, photo],
+    );
+    expect(related.map(i => i.id)).toEqual(['cranny', 'bench']);
+  });
 });

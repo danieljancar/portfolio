@@ -14,7 +14,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
 <ul class="bento" data-bento>
   {work.map((item, i) => (
     <li data-slot={i % 5} data-type={item.data.ongoing ? 'ongoing' : 'one-off'}>
-      <a class="tile" href={`/work/${item.id}`}>
+      <a class="tile" href={`/work/${item.id}`} data-cursor="Open">
         <span class="arrow" aria-hidden="true">
           →
         </span>

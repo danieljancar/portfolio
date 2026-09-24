@@ -1,25 +1,32 @@
 ---
 import type { ImageMetadata } from 'astro';
-import { Image } from 'astro:assets';
 import Cover from '~/components/media/Cover.astro';
 import Photo from '~/components/media/Photo.astro';
+import { linkAttrs } from '~/lib/links';
 import type { Photo as PhotoType } from '~/lib/photos';
 
 interface Props {
   workImage?: ImageMetadata;
   photos: PhotoType[];
   eventImage?: ImageMetadata;
-  portrait?: ImageMetadata;
-  now: string;
+  current: string[];
+  links: { label: string; href: string }[];
   recommendations: boolean;
 }
 
-const { workImage, photos, eventImage, portrait, now, recommendations } =
+const { workImage, photos, eventImage, current, links, recommendations } =
   Astro.props;
+const handle = (href: string) =>
+  href.startsWith('mailto:')
+    ? href.slice(7)
+    : href
+        .replace(/^https?:\/\/(www\.)?/, '')
+        .replace(/\/$/, '')
+        .replace(/^[^/]+\/(in\/)?/, '@');
 ---
 
 <section class="index" aria-label="Index">
-  <a class="cell c5 m2 tall" href="/work">
+  <a class="cell c5 m2 tall" href="/work" data-cursor="Work">
     <span class="arrow" aria-hidden="true">
       →
     </span>
@@ -36,7 +43,7 @@ const { workImage, photos, eventImage, portrait, now, recommendations } =
     <h3 class="display">Work</h3>
   </a>
 
-  <a class="cell c4" href="/photos">
+  <a class="cell c4" href="/photos" data-cursor="Photos">
     <span class="arrow" aria-hidden="true">
       →
     </span>
@@ -50,19 +57,14 @@ const { workImage, photos, eventImage, portrait, now, recommendations } =
     <h3 class="display">Photos</h3>
   </a>
 
-  <a class="cell c3" href="/about">
+  <a class="cell c3 accent" href="/blog" data-cursor="Read">
     <span class="arrow" aria-hidden="true">
       →
     </span>
-    {portrait && (
-      <div class="media portrait">
-        <Image src={portrait} alt="" widths={[200, 400]} sizes="120px" />
-      </div>
-    )}
-    <h3 class="display small">About</h3>
+    <h3 class="display">Blog</h3>
   </a>
 
-  <a class="cell c4 m2" href="/events">
+  <a class="cell c4 m2" href="/events" data-cursor="Events">
     <span class="arrow" aria-hidden="true">
       →
     </span>
@@ -74,22 +76,27 @@ const { workImage, photos, eventImage, portrait, now, recommendations } =
     <h3 class="display">Events</h3>
   </a>
 
-  <a class="cell c3 m2 accent" href="/blog">
+  <a class="cell c3 m2" href="/about#experience" data-cursor="About">
     <span class="arrow" aria-hidden="true">
       →
     </span>
-    <h3 class="display">Blog</h3>
+    <ul class="current">
+      {current.map(name => (
+        <li>{name}</li>
+      ))}
+    </ul>
+    <h3 class="display small">About</h3>
   </a>
 
   {recommendations && (
     <>
-      <a class="cell c4" href="/recommended#listening">
+      <a class="cell c6" href="/recommended#listening">
         <span class="arrow" aria-hidden="true">
           →
         </span>
         <h3 class="display small">Listen</h3>
       </a>
-      <a class="cell c4" href="/recommended#reading">
+      <a class="cell c6" href="/recommended#reading">
         <span class="arrow" aria-hidden="true">
           →
         </span>
@@ -98,22 +105,20 @@ const { workImage, photos, eventImage, portrait, now, recommendations } =
     </>
   )}
 
-  <a class:list={['cell m2', recommendations ? 'c4' : 'c8']} href="/now">
-    <span class="arrow" aria-hidden="true">
-      →
-    </span>
-    <p class="now">{now}</p>
-    <h3 class="display small">Now</h3>
-  </a>
-
-  {!recommendations && (
-    <a class="cell c4 m2" href="#links">
-      <span class="arrow" aria-hidden="true">
-        ↓
+  {links.map(link => (
+    <a
+      class="cell c3 social"
+      href={link.href}
+      data-cursor="Open"
+      {...linkAttrs(link.href)}
+    >
+      <span class="arrow out" aria-hidden="true">
+        ↗
       </span>
-      <h3 class="display small">Say hello</h3>
+      <span class="mono">{handle(link.href)}</span>
+      <h3 class="display small">{link.label}</h3>
     </a>
-  )}
+  ))}
 </section>
 
 <style>
@@ -156,8 +161,8 @@ const { workImage, photos, eventImage, portrait, now, recommendations } =
     grid-column: span 5;
   }
 
-  .c8 {
-    grid-column: span 8;
+  .c6 {
+    grid-column: span 6;
   }
 
   .tall {
@@ -223,21 +228,33 @@ const { workImage, photos, eventImage, portrait, now, recommendations } =
     aspect-ratio: 3 / 4;
   }
 
-  .portrait {
-    width: 96px;
-    aspect-ratio: 4 / 5;
-  }
-
   .event {
     width: 200px;
     aspect-ratio: 3 / 2;
   }
 
-  .now {
-    max-width: 32ch;
+  .current {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .social {
+    min-height: 150px;
+  }
+
+  .social .mono {
     padding-right: 24px;
-    font-size: 18px;
-    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .cell:hover .out {
+    transform: translate(3px, -3px);
   }
 
   @supports (animation-timeline: view()) {
@@ -262,7 +279,7 @@ const { workImage, photos, eventImage, portrait, now, recommendations } =
     .c3,
     .c4,
     .c5,
-    .c8 {
+    .c6 {
       grid-column: span 1;
     }
 
@@ -282,6 +299,14 @@ const { workImage, photos, eventImage, portrait, now, recommendations } =
     h3,
     h3.small {
       font-size: clamp(24px, 7.4vw, 40px);
+    }
+
+    .social h3.small {
+      font-size: clamp(18px, 5.2vw, 30px);
+    }
+
+    .social {
+      min-height: 120px;
     }
 
     .big {

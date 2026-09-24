@@ -316,47 +316,6 @@ collections:
         label: Text
         widget: markdown
         required: false
-  - name: notes
-    label: Updates
-    label_singular: Update
-    description: Short dated updates for /now and the home page.
-    folder: src/content/notes
-    create: true
-    slug: '{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}'
-    summary: "{{date | date('YYYY-MM-DD')}} · {{body | truncate(60)}}"
-    media_folder: images
-    public_folder: ./images
-    fields:
-      - name: date
-        label: Date
-        widget: datetime
-        time_format: false
-        date_format: YYYY-MM-DD
-        format: YYYY-MM-DD
-        default: '{{now}}'
-      - name: body
-        label: Text
-        widget: markdown
-        minimal: true
-      - name: image
-        label: Image
-        widget: image
-        required: false
-      - name: imageAlt
-        label: Image description
-        widget: string
-        required: false
-      - name: link
-        label: Link
-        widget: object
-        required: false
-        fields:
-          - name: label
-            label: Label
-            widget: string
-          - name: href
-            label: URL
-            widget: string
   - name: experience
     label: Experience
     label_singular: Role
@@ -409,6 +368,21 @@ collections:
         required: false
       - name: skills
         label: Skills
+        widget: list
+        required: false
+      - name: work
+        label: Connected work
+        widget: relation
+        collection: projects
+        value_field: '{{slug}}'
+        search_fields:
+          - name
+        display_fields:
+          - name
+        multiple: true
+        required: false
+      - name: tags
+        label: Tags (connects posts, events and albums with the same tags)
         widget: list
         required: false
       - name: order
@@ -474,14 +448,8 @@ collections:
             label: Email
             widget: string
           - name: headline
-            label: Headline on the home page
+            label: Line under my name on the home page
             widget: string
-          - name: intro
-            label: Intro on the home page
-            widget: text
-          - name: now
-            label: What I'm doing now
-            widget: text
           - name: about
             label: About (paragraphs separated by an empty line)
             widget: text

@@ -1,6 +1,7 @@
 ---
 import '~/styles/base.css';
 import SiteFooter from '~/components/layout/SiteFooter.astro';
+import Cursor from '~/components/layout/Cursor.astro';
 import SiteHeader from '~/components/layout/SiteHeader.astro';
 import { getSettings } from '~/lib/content';
 
@@ -89,6 +90,7 @@ const ogImage = new URL(image, Astro.site);
       <slot />
     </main>
     <SiteFooter />
+    <Cursor />
   </body>
 </html>
 

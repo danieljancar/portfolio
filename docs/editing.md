@@ -10,14 +10,13 @@
 3. Edit, then Save. Every save is one commit on `master`, and the site
    rebuilds on its own.
 
-| I want to                                    | Go to                                                                                                         |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Post photos                                  | Photos → New. Upload, write a short description, pick a category. Tick "Featured" to put it on the home page. |
-| Write a blog post                            | Posts → New. Images dragged into the text are stored next to the post.                                        |
-| Share a short update                         | Updates → New. Shows on /now and the home page.                                                               |
-| Add an event                                 | Events → New, then link photos to it from the photo entries.                                                  |
-| Add a podcast or site                        | Recommended → New.                                                                                            |
-| Change the "now" text, links or header video | Site → Settings.                                                                                              |
+| I want to                                | Go to                                                                                                         |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Post photos                              | Photos → New. Upload, write a short description, pick a category. Tick "Featured" to put it on the home page. |
+| Write a blog post                        | Posts → New. Images dragged into the text are stored next to the post.                                        |
+| Add an event                             | Events → New, then link photos to it from the photo entries.                                                  |
+| Add a podcast or site                    | Recommended → New.                                                                                            |
+| Change the headline, about text or links | Site → Settings.                                                                                              |
 
 ## Locally
 

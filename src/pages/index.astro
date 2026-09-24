@@ -3,8 +3,8 @@ import Hero from '~/components/home/Hero.astro';
 import IndexGrid from '~/components/home/IndexGrid.astro';
 import ZoomIn from '~/components/home/ZoomIn.astro';
 import ZoomOut from '~/components/home/ZoomOut.astro';
+import Experience from '~/components/experience/Experience.astro';
 import EventTickets from '~/components/lists/EventTickets.astro';
-import NotesList from '~/components/lists/NotesList.astro';
 import PostList from '~/components/lists/PostList.astro';
 import Recommended from '~/components/lists/Recommended.astro';
 import WorkBento from '~/components/lists/WorkBento.astro';
@@ -12,23 +12,23 @@ import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import {
   getEvents,
-  getNotes,
   getPosts,
   getProjects,
   getRecommendations,
   getSettings,
 } from '~/lib/content';
+import { getRoles } from '~/lib/experience';
 import { getAlbums, getHighlights, type Photo } from '~/lib/photos';
 
-const [settings, work, events, posts, notes, recommendations, albums] =
+const [settings, work, events, posts, recommendations, albums, roles] =
   await Promise.all([
     getSettings(),
     getProjects(),
     getEvents(),
     getPosts(),
-    getNotes(),
     getRecommendations(),
     getAlbums(),
+    getRoles(),
   ]);
 const highlights = await getHighlights();
 
@@ -52,18 +52,30 @@ const zoomOutRest = others
   .slice(0, 6);
 const zoomAlbum = albums.find(album => album.id === zoomCenter?.album);
 const leadWork = work[0];
+const links = [
+  ...settings.socials,
+  { label: 'Email', href: `mailto:${settings.email}` },
+];
+const current = roles.filter(role => role.current);
 ---
 
 <BaseLayout>
-  <Hero photos={highlights} tagline={settings.headline} />
+  <Hero photos={highlights} tagline={settings.headline} links={links} />
   <IndexGrid
     workImage={leadWork?.data.cover}
     photos={others.slice(0, 3)}
     eventImage={events[0]?.data.cover}
-    portrait={settings.portrait}
-    now={settings.now}
+    current={current.map(role => role.entry.data.company)}
+    links={links}
     recommendations={recommendations.length > 0}
   />
+  <SectionHead
+    title="Experience"
+    href="/about#experience"
+    linkLabel="Everything"
+  />
+  <Experience roles={current} past={false} />
+
   {zoomCenter && (
     <ZoomIn
       center={zoomCenter}
@@ -81,13 +93,6 @@ const leadWork = work[0];
 
   <SectionHead title="Blog" href="/blog" linkLabel="All posts" />
   <PostList posts={posts.slice(0, 4)} />
-
-  {notes.length > 0 && (
-    <>
-      <SectionHead title="Updates" href="/now" linkLabel="Now" />
-      <NotesList notes={notes.slice(0, 3)} />
-    </>
-  )}
 
   {recommendations.length > 0 && (
     <>

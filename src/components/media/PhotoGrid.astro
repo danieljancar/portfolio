@@ -17,7 +17,7 @@ const size = (photo: PhotoType, i: number) => {
 <ul class="grid wrap">
   {photos.map((photo, i) => (
     <li class={size(photo, i)} data-album={photo.album}>
-      <a href={photo.href}>
+      <a href={photo.href} data-cursor="View">
         <Photo
           photo={photo}
           alt={`${label}, photo ${i + 1} of ${photos.length}`}

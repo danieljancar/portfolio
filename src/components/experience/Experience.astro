@@ -1,0 +1,437 @@
+---
+import Cover from '~/components/media/Cover.astro';
+import type { Role } from '~/lib/experience';
+import { linkAttrs } from '~/lib/links';
+import { kindLabels } from '~/lib/related';
+
+interface Props {
+  roles: Role[];
+  past?: boolean;
+}
+
+const { roles, past = true } = Astro.props;
+const current = roles.filter(role => role.current);
+const earlier = roles.filter(role => !role.current);
+---
+
+<section class="xp" aria-label="Experience">
+  <ol class="now">
+    {current.map(({ entry, period, connections }) => (
+      <li class="role">
+        <span class="ghost display" aria-hidden="true">
+          {entry.data.company}
+        </span>
+        <span class="node" aria-hidden="true"></span>
+        <div class="head">
+          <p class="mono period">{period}</p>
+          <h3 class="display company">
+            {entry.data.companyUrl ? (
+              <a
+                href={entry.data.companyUrl}
+                data-cursor="Visit"
+                {...linkAttrs(entry.data.companyUrl)}
+              >
+                {entry.data.company}
+              </a>
+            ) : (
+              entry.data.company
+            )}
+          </h3>
+          <p class="title">{entry.data.role}</p>
+        </div>
+        <div class="body">
+          {entry.data.summary && <p class="summary">{entry.data.summary}</p>}
+          {connections.length > 0 && (
+            <ul class="connections" aria-label="Connected">
+              {connections.map((item, j) => (
+                <li style={`--j:${j}`}>
+                  <a class="link" href={item.href} data-cursor="Open">
+                    <span class="thumb">
+                      {item.image && (
+                        <Cover
+                          src={item.image}
+                          alt=""
+                          widths={[160, 320]}
+                          sizes="96px"
+                        />
+                      )}
+                    </span>
+                    <span class="text">
+                      <span class="mono soft">{kindLabels[item.kind]}</span>
+                      <span class="name">{item.title}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  {past && earlier.length > 0 && (
+    <div class="before">
+      <p class="mono soft">Before</p>
+      <ul>
+        {earlier.map(({ entry, period }) => (
+          <li>
+            <span class="mono soft">{period}</span>
+            <span class="line">
+              <b>{entry.data.role}</b>
+              <span>{entry.data.company}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</section>
+
+<style>
+  .xp {
+    padding-inline: var(--gutter);
+  }
+
+  .now {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    view-timeline-name: --xp;
+  }
+
+  .now::before,
+  .now::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 11px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .now::after {
+    background: var(--accent);
+    transform-origin: 50% 0;
+  }
+
+  .role {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 24px 56px;
+    align-items: start;
+    min-height: 72vh;
+    padding: 72px 0 72px 56px;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  .ghost {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: -1;
+    font-size: clamp(120px, 22vw, 360px);
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--line);
+    translate: 0 -50%;
+    pointer-events: none;
+  }
+
+  .node {
+    position: absolute;
+    top: 84px;
+    left: 4px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    background: var(--ground);
+  }
+
+  .period {
+    color: var(--accent-text);
+  }
+
+  .company {
+    margin-top: 14px;
+    font-size: clamp(32px, 4vw, 72px);
+    hyphens: manual;
+  }
+
+  .company a:hover {
+    color: var(--accent-text);
+  }
+
+  .title {
+    margin-top: 16px;
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 600;
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding-top: 36px;
+  }
+
+  .summary {
+    max-width: 52ch;
+    font-size: 19px;
+    line-height: 1.5;
+  }
+
+  .connections {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .connections li {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .connections li::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 32px;
+    height: 2px;
+    background: var(--accent);
+    transform-origin: 0 50%;
+  }
+
+  .link {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid var(--line);
+    background: var(--ground);
+    transition:
+      background-color 0.25s,
+      color 0.25s,
+      translate 0.35s var(--ease-out);
+  }
+
+  .link:hover {
+    background: var(--ink);
+    color: var(--ground);
+    translate: 8px 0;
+  }
+
+  .thumb {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--accent);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .link:hover .soft {
+    color: inherit;
+  }
+
+  .name {
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .before {
+    margin-top: 24px;
+    padding: 32px 0 0 56px;
+    border-top: 1px solid var(--line);
+  }
+
+  .before ul {
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .before li {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    font-size: 18px;
+  }
+
+  .line span {
+    color: var(--ink-soft);
+  }
+
+  @supports (animation-timeline: view()) {
+    .now::after {
+      animation: fill linear both;
+      animation-timeline: --xp;
+      animation-range: entry 40% exit 60%;
+    }
+
+    .ghost {
+      animation: drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+
+    .node {
+      animation: light linear both;
+      animation-timeline: view();
+      animation-range: entry 60% cover 40%;
+    }
+
+    .company {
+      animation: stretch linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+
+    .title,
+    .summary {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 35%;
+    }
+
+    .connections li {
+      animation: slide linear both;
+      animation-timeline: view();
+      animation-range: entry calc(10% + var(--j) * 15%) cover
+        calc(30% + var(--j) * 5%);
+    }
+
+    .connections li::before {
+      animation: grow linear both;
+      animation-timeline: view();
+      animation-range: entry calc(10% + var(--j) * 15%) cover
+        calc(25% + var(--j) * 5%);
+    }
+
+    .before li {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+  }
+
+  @keyframes fill {
+    from {
+      transform: scaleY(0);
+    }
+  }
+
+  @keyframes drift {
+    from {
+      transform: translateX(30%);
+    }
+    to {
+      transform: translateX(-40%);
+    }
+  }
+
+  @keyframes light {
+    from {
+      scale: 0.2;
+      background: var(--ground);
+    }
+    to {
+      scale: 1;
+      background: var(--accent);
+    }
+  }
+
+  @keyframes stretch {
+    from {
+      opacity: 0;
+      font-stretch: 62%;
+      clip-path: inset(100% 0 0);
+      transform: translateX(-6vw);
+    }
+    to {
+      opacity: 1;
+      font-stretch: 125%;
+      clip-path: inset(0);
+      transform: none;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+  }
+
+  @keyframes slide {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+  }
+
+  @keyframes grow {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .role {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      padding: 48px 0 48px 40px;
+    }
+
+    .body {
+      padding-top: 0;
+    }
+
+    .node {
+      top: 60px;
+    }
+
+    .before {
+      padding-left: 40px;
+    }
+
+    .before li {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+
+    .connections li {
+      padding-left: 28px;
+    }
+
+    .connections li::before {
+      width: 20px;
+    }
+
+    .link {
+      grid-template-columns: 72px 1fr;
+    }
+  }
+</style>

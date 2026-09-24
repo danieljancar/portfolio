@@ -1,18 +1,11 @@
 name: Daniel Jancar
 description: Daniel Jancar is a project manager and software developer from Lucerne, Switzerland, who builds apps, organises events and takes photos.
 email: daniel@danieljancar.dev
-headline: I'd rather understand the whole system than one slice of it.
-intro: >-
-  I'm Daniel, a project manager with a software developer's background at
-  Luzerner Kantonalbank. After work I build apps with friends, co-organise the
-  JavaScript Lucerne meetup and take photos of the city and its people.
-now: Project Management Assistant at Luzerner Kantonalbank. Building Cranny with friends. Working on NG Switzerland.
+headline: Project management, software and photography.
 about: |-
-  I'm a generalist at heart. I'd rather understand a whole system than one slice of it, so I follow a problem wherever it goes and do whatever it takes to get something up and working.
+  I work in project management at Luzerner Kantonalbank, where I also did my apprenticeship as an application developer. After work I build Cranny with two friends, help organise NG Switzerland and take photos of Lucerne, the mountains and events around town.
 
-  I did my apprenticeship as an application developer at Luzerner Kantonalbank, building Angular and Ionic apps, among them the e-banking app, and now work there in project management. Outside of work I take on projects in different areas, from apps and websites to design, branding, photography and events. I like meeting new people and hearing about their stories and passions.
-
-  When I'm not at a keyboard you'll probably find me outside, in the gym, making music with my Guggenmusig, reading, enjoying a good meal or hiking in the mountains.
+  When I'm not at a keyboard you'll find me outside, in the gym, making music with my Guggenmusig or hiking in the mountains.
 portrait: ./portrait.jpg
 portraitAlt: Portrait of Daniel Jancar
 skills:
@@ -58,3 +51,5 @@ socials:
     href: https://github.com/danieljancar
   - label: LinkedIn
     href: https://www.linkedin.com/in/danieljancar/
+  - label: Instagram
+    href: https://www.instagram.com/27daniel_j/

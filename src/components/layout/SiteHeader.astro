@@ -11,34 +11,56 @@ const links = [
 const path = Astro.url.pathname;
 const current = (href: string) =>
   path === href || path.startsWith(`${href}/`) ? 'page' : undefined;
+const letters = [...'daniel.jancar'];
 ---
 
-<header class="bar">
+<header class="bar" data-bar>
   <a class="wordmark" href="/" aria-label="Daniel Jancar, home">
-    daniel<span>.</span>jancar
+    {letters.map((letter, i) => (
+      <span class:list={['char', letter === '.' && 'dot']} style={`--c:${i}`}>
+        <span>{letter}</span>
+        <span aria-hidden="true">{letter}</span>
+      </span>
+    ))}
   </a>
 
-  <nav class="desktop" aria-label="Main">
+  <nav class="desktop" aria-label="Main" data-nav>
+    <span class="pill" aria-hidden="true" data-pill></span>
     {links.map(link => (
-      <a href={link.href} aria-current={current(link.href)}>
-        {link.label}
+      <a
+        href={link.href}
+        aria-current={current(link.href)}
+        data-magnetic
+        data-cursor=""
+      >
+        <span class="roll">
+          <span>{link.label}</span>
+          <span aria-hidden="true">{link.label}</span>
+        </span>
       </a>
     ))}
   </nav>
 
   <div class="actions">
     <ThemeToggle />
-    <button class="burger" type="button" popovertarget="menu" aria-label="Menu">
+    <button
+      class="burger"
+      type="button"
+      popovertarget="menu"
+      aria-label="Menu"
+      data-magnetic
+    >
       <span></span>
       <span></span>
     </button>
   </div>
+  <span class="progress" aria-hidden="true"></span>
 </header>
 
 <nav id="menu" class="menu" popover aria-label="Menu">
   <div class="menu-top">
     <a class="wordmark" href="/">
-      daniel<span>.</span>jancar
+      daniel<span class="dot">.</span>jancar
     </a>
     <button
       class="close"
@@ -62,6 +84,48 @@ const current = (href: string) =>
   </ul>
 </nav>
 
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-bar]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const pill = document.querySelector<HTMLElement>('[data-pill]');
+
+  if (bar) {
+    let last = window.scrollY;
+    window.addEventListener(
+      'scroll',
+      () => {
+        const y = window.scrollY;
+        bar.classList.toggle('tucked', y > last && y > 240);
+        last = y;
+      },
+      { passive: true },
+    );
+  }
+
+  if (nav && pill) {
+    const place = (link: HTMLElement | null) => {
+      if (!link) {
+        pill.style.opacity = '0';
+        return;
+      }
+      pill.style.opacity = '1';
+      pill.style.width = `${link.offsetWidth}px`;
+      pill.style.translate = `${link.offsetLeft}px 0`;
+    };
+    const active = () =>
+      nav.querySelector<HTMLElement>('[aria-current="page"]');
+    for (const link of nav.querySelectorAll<HTMLElement>('a')) {
+      link.addEventListener('pointerenter', () => place(link));
+      link.addEventListener('focus', () => place(link));
+    }
+    nav.addEventListener('pointerleave', () => place(active()));
+    window.addEventListener('resize', () => place(active()));
+    document.fonts.ready.then(() => place(active()));
+    place(active());
+    requestAnimationFrame(() => nav.classList.add('ready'));
+  }
+</script>
+
 <style>
   .bar {
     position: fixed;
@@ -72,42 +136,142 @@ const current = (href: string) =>
     align-items: center;
     height: var(--bar-height);
     padding-inline: var(--gutter);
-    background: var(--ground);
+    background: color-mix(in srgb, var(--ground) 86%, transparent);
+    backdrop-filter: blur(16px) saturate(1.4);
     border-bottom: 1px solid var(--line);
-    transition: background-color 0.3s;
+    transition:
+      translate 0.45s var(--ease-out),
+      background-color 0.3s;
+  }
+
+  .bar.tucked {
+    translate: 0 -100%;
+  }
+
+  .bar:has(:focus-visible) {
+    translate: none;
+  }
+
+  .progress {
+    position: absolute;
+    inset: auto 0 -1px;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
   }
 
   .wordmark {
+    display: inline-flex;
     justify-self: start;
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 800;
     font-stretch: 112%;
     letter-spacing: -0.02em;
-  }
-
-  .wordmark span {
-    color: var(--accent);
+    line-height: 1.2;
   }
 
   .wordmark:hover {
     color: inherit;
   }
 
+  .char {
+    display: inline-grid;
+    overflow: hidden;
+  }
+
+  .char span {
+    grid-area: 1 / 1;
+    transition:
+      translate 0.5s var(--ease-out) calc(var(--c) * 22ms),
+      font-stretch 0.5s var(--ease-out) calc(var(--c) * 22ms);
+  }
+
+  .char span + span {
+    translate: 0 110%;
+    font-stretch: 62%;
+    color: var(--accent);
+  }
+
+  .wordmark:hover .char span:first-child {
+    translate: 0 -110%;
+  }
+
+  .wordmark:hover .char span + span {
+    translate: 0 0;
+    font-stretch: 125%;
+  }
+
+  .dot,
+  .dot span {
+    color: var(--accent);
+  }
+
   .desktop {
+    position: relative;
     display: flex;
     gap: 2px;
   }
 
+  .pill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    background: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .desktop.ready .pill {
+    transition:
+      translate 0.45s var(--ease-out),
+      width 0.45s var(--ease-out),
+      opacity 0.3s;
+  }
+
   .desktop a {
-    padding: 8px 12px;
+    position: relative;
+    padding: 8px 14px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    transition:
+      color 0.3s,
+      translate 0.3s var(--ease-out);
   }
 
   .desktop a:hover,
-  .desktop a[aria-current='page'] {
-    background: var(--ink);
+  .desktop a:focus-visible,
+  .desktop:not(:hover) a[aria-current='page'] {
     color: var(--ground);
+  }
+
+  .desktop:hover a[aria-current='page']:not(:hover) {
+    color: inherit;
+  }
+
+  .roll {
+    display: inline-grid;
+    overflow: hidden;
+    vertical-align: top;
+  }
+
+  .roll span {
+    grid-area: 1 / 1;
+    transition: translate 0.45s var(--ease-out);
+  }
+
+  .roll span + span {
+    translate: 0 105%;
+  }
+
+  .desktop a:hover .roll span:first-child {
+    translate: 0 -105%;
+  }
+
+  .desktop a:hover .roll span + span {
+    translate: 0 0;
   }
 
   .actions {
@@ -210,8 +374,9 @@ const current = (href: string) =>
     border-bottom: 1px solid rgb(11 13 10 / 0.3);
   }
 
-  .menu .wordmark span {
-    color: var(--ground);
+  .menu .wordmark,
+  .menu .dot {
+    color: var(--on-accent);
   }
 
   .menu ul {
@@ -252,6 +417,19 @@ const current = (href: string) =>
 
   .menu li a[aria-current='page'] {
     color: var(--ground);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .progress {
+      animation: progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  @keyframes progress {
+    to {
+      transform: scaleX(1);
+    }
   }
 
   @media (max-width: 820px) {

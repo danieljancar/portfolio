@@ -76,17 +76,6 @@ const events = defineCollection({
     }),
 });
 
-const notes = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/notes' }),
-  schema: ({ image }) =>
-    z.object({
-      date: z.coerce.date(),
-      image: image().optional(),
-      imageAlt: z.string().default(''),
-      link: link.optional(),
-    }),
-});
-
 const recommendations = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/recommendations' }),
   schema: z.object({
@@ -112,6 +101,8 @@ const experience = defineCollection({
     end: z.string().optional(),
     summary: z.string().optional(),
     skills: z.array(z.string()).default([]),
+    work: z.array(reference('projects')).default([]),
+    tags: z.array(z.string()).default([]),
     order: z.number().default(100),
   }),
 });
@@ -134,8 +125,6 @@ const site = defineCollection({
       description: z.string(),
       email: z.email(),
       headline: z.string(),
-      intro: z.string(),
-      now: z.string(),
       about: z.string(),
       portrait: image().optional(),
       portraitAlt: z.string().default(''),
@@ -151,7 +140,6 @@ export const collections = {
   projects,
   albums,
   events,
-  notes,
   recommendations,
   experience,
   legal,

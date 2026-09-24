@@ -9,8 +9,8 @@ tags: [expo, react-native, supabase, mobile-development, postgis]
 links:
   - label: the-cranny.com
     href: https://the-cranny.com
-cover: ../posts/developing-a-mobile-app-from-scratch-with-expo/mobile-app-development-expo-react-native.jpeg
-coverAlt: The Cranny app in front of a bench in a forest
+cover: ./cranny-cover.png
+coverAlt: The Cranny logo next to phones showing spots in the app
 featured: true
 ongoing: true
 order: 1
