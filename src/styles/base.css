@@ -1,8 +1,6 @@
-@import '@fontsource-variable/archivo/wdth.css';
-@import '@fontsource/ibm-plex-mono/400.css';
-@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource-variable/funnel-display';
+@import '@fontsource-variable/funnel-sans';
 @import './tokens.css';
-@import './shapes.css';
 
 *,
 *::before,
@@ -19,10 +17,13 @@ body {
   margin: 0;
   background: var(--ground);
   color: var(--ink);
-  font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 1.5;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 img,
@@ -37,13 +38,9 @@ a {
   text-decoration: none;
 }
 
-a:hover {
-  color: var(--accent-text);
-}
-
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 h1,
@@ -51,36 +48,36 @@ h2,
 h3,
 h4 {
   margin: 0;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
 }
 
 p {
   margin: 0;
 }
 
-.display {
-  font-family: var(--font-sans);
-  font-weight: 800;
-  font-stretch: 125%;
-  text-transform: uppercase;
-  letter-spacing: -0.03em;
-  line-height: 0.86;
+::selection {
+  background: var(--green);
+  color: var(--on-accent);
 }
 
-.narrow {
-  font-weight: 300;
-  font-stretch: 62%;
-  letter-spacing: -0.02em;
-}
-
-.mono {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.02em;
-}
-
-.wrap {
+.container {
+  width: 100%;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin-inline: auto;
   padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent-text);
+}
+
+.muted {
+  color: var(--ink-soft);
 }
 
 .visually-hidden {
@@ -93,7 +90,7 @@ p {
 }
 
 .dimmed {
-  filter: brightness(var(--dim, 0.85));
+  filter: brightness(calc(1 - (1 - var(--dim)) * var(--dim-strength)));
   transition: filter 0.5s var(--ease-out);
 }
 
@@ -107,14 +104,14 @@ a:focus-visible .dimmed {
   .reveal {
     animation: reveal linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 80%;
+    animation-range: entry 0% entry 70%;
   }
 }
 
 @keyframes reveal {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(32px);
   }
 }
 

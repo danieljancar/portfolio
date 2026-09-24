@@ -1,14 +1,13 @@
 ---
 import '~/styles/base.css';
-import SiteHeader from '~/components/layout/SiteHeader.astro';
 import SiteFooter from '~/components/layout/SiteFooter.astro';
+import SiteHeader from '~/components/layout/SiteHeader.astro';
 import { getSettings } from '~/lib/content';
 
 interface Props {
   title?: string;
   description?: string;
   image?: string;
-  themeStyle?: string;
   noindex?: boolean;
 }
 
@@ -17,10 +16,9 @@ const {
   title,
   description = settings.description,
   image = '/og.jpg',
-  themeStyle,
   noindex = false,
 } = Astro.props;
-const fullTitle = title ? `${title} · ${settings.name}` : `${settings.name}`;
+const fullTitle = title ? `${title} | ${settings.name}` : settings.name;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
 ---
@@ -30,6 +28,18 @@ const ogImage = new URL(image, Astro.site);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      const readTheme = () => {
+        try {
+          return localStorage.getItem('theme');
+        } catch {
+          return null;
+        }
+      };
+      const stored = readTheme();
+      if (stored === 'light' || stored === 'dark')
+        document.documentElement.dataset.theme = stored;
+    </script>
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={settings.name} />
@@ -42,6 +52,16 @@ const ogImage = new URL(image, Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="theme-color"
+      content="#f4f3ee"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0b0d0a"
+      media="(prefers-color-scheme: dark)"
+    />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link
       rel="icon"
@@ -54,13 +74,12 @@ const ogImage = new URL(image, Astro.site);
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={`${settings.name} · Writing`}
+      title={`${settings.name} blog`}
       href="/rss.xml"
     />
-    <meta name="theme-color" content="#0b0d0a" />
   </head>
-  <body style={themeStyle}>
-    <a class="skip mono" href="#main">
+  <body>
+    <a class="skip" href="#main">
       Skip to content
     </a>
     <SiteHeader />
@@ -78,6 +97,7 @@ const ogImage = new URL(image, Astro.site);
     left: 8px;
     z-index: 100;
     padding: 10px 14px;
+    border-radius: 999px;
     background: var(--ink);
     color: var(--ground);
     transform: translateY(-200%);

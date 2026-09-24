@@ -1,38 +1,51 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
 
-  --ground: #0b0d0a;
-  --surface: #13170f;
-  --surface-2: #1b2016;
-  --ink: #e6eadc;
-  --ink-soft: #a2a996;
-  --line: rgb(230 234 220 / 0.22);
-  --line-strong: #e6eadc;
+  --ground: light-dark(#f4f3ee, #0b0d0a);
+  --surface: light-dark(#ebe9e1, #13170f);
+  --surface-2: light-dark(#dfdcd1, #1b2016);
+  --ink: light-dark(#161a13, #e6eadc);
+  --ink-soft: light-dark(#585e50, #a2a996);
+  --line: light-dark(rgb(22 26 19 / 0.14), rgb(230 234 220 / 0.16));
+  --line-strong: light-dark(#161a13, #e6eadc);
 
   --green: #82a951;
   --green-light: #b5d98a;
   --green-deep: #324321;
   --accent: var(--green);
-  --accent-text: var(--green-light);
-  --on-accent: #0b0d0a;
+  --accent-text: light-dark(#3c5228, #b5d98a);
+  --on-accent: #10140c;
 
-  --night: #060705;
-  --night-ink: #e6eadc;
-  --night-soft: #8a9080;
-
-  --tint: #13170f;
-  --tint-ink: #e6eadc;
-  --photo-accent: var(--accent-text);
-  --wash: var(--surface-2);
+  --tint: var(--surface);
+  --tint-ink: var(--ink);
 
   --dim: 0.85;
+  --is-dark: 0;
+  --dim-strength: calc(0.4 + 0.6 * var(--is-dark));
 
-  --font-sans: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-display: 'Funnel Display Variable', system-ui, sans-serif;
+  --font-body: 'Funnel Sans Variable', system-ui, sans-serif;
+  --font-code: ui-monospace, 'SF Mono', Menlo, monospace;
 
-  --bar-height: 52px;
-  --gutter: clamp(16px, 2.5vw, 32px);
-  --max: 1440px;
+  --bar-height: 64px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --max: 1320px;
+  --radius: 18px;
 
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --is-dark: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --is-dark: 1;
+  }
 }

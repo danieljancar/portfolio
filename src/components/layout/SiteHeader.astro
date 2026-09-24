@@ -1,114 +1,279 @@
 ---
+import ThemeToggle from './ThemeToggle.astro';
+
 const links = [
-  { href: '/work', label: 'Work' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
   { href: '/photos', label: 'Photos' },
   { href: '/events', label: 'Events' },
-  { href: '/blog', label: 'Writing' },
-  { href: '/now', label: 'Now' },
+  { href: '/about', label: 'About' },
 ];
 const path = Astro.url.pathname;
-const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+const current = (href: string) =>
+  path === href || path.startsWith(`${href}/`) ? 'page' : undefined;
 ---
 
 <header class="bar">
-  <a class="logo display" href="/" aria-label="Home">
-    DJ
-  </a>
-  <nav aria-label="Main">
-    <ul>
+  <div class="inner container">
+    <a class="wordmark" href="/" aria-label="Daniel Jancar, home">
+      daniel<span>.</span>jancar
+    </a>
+
+    <nav class="desktop" aria-label="Main">
       {links.map(link => (
-        <li>
-          <a
-            href={link.href}
-            aria-current={isActive(link.href) ? 'page' : undefined}
-          >
-            {link.label}
-          </a>
-        </li>
+        <a href={link.href} aria-current={current(link.href)}>
+          {link.label}
+        </a>
       ))}
-    </ul>
-  </nav>
-  <span class="clock mono" data-clock>
-    Lucerne
-  </span>
+    </nav>
+
+    <div class="actions">
+      <ThemeToggle />
+      <button
+        class="burger"
+        type="button"
+        popovertarget="menu"
+        aria-label="Open menu"
+      >
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
 </header>
 
-<script>
-  const clock = document.querySelector<HTMLElement>('[data-clock]');
-  const format = new Intl.DateTimeFormat('de-CH', {
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: 'Europe/Zurich',
-  });
-  const tick = () => {
-    if (clock) clock.textContent = `Lucerne ${format.format(new Date())}`;
-  };
-  tick();
-  setInterval(tick, 20_000);
-</script>
+<nav id="menu" class="menu" popover aria-label="Menu">
+  <div class="menu-top container">
+    <a class="wordmark" href="/">
+      daniel<span>.</span>jancar
+    </a>
+    <button
+      class="close"
+      type="button"
+      popovertarget="menu"
+      popovertargetaction="hide"
+      aria-label="Close menu"
+    >
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+  <ul class="container">
+    {links.map((link, i) => (
+      <li style={`--i:${i}`}>
+        <a href={link.href} aria-current={current(link.href)}>
+          {link.label}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
 
 <style>
   .bar {
     position: fixed;
     inset: 0 0 auto;
     z-index: 50;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
     height: var(--bar-height);
-    padding-inline: var(--gutter);
-    background: var(--ground);
+    background: color-mix(in srgb, var(--ground) 82%, transparent);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--line);
   }
 
-  .logo {
-    font-size: 22px;
-    justify-self: start;
+  .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 100%;
   }
 
-  ul {
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .wordmark span {
+    color: var(--accent);
+  }
+
+  .desktop {
     display: flex;
-    gap: 2px;
+    gap: 4px;
+  }
+
+  .desktop a {
+    position: relative;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    transition:
+      color 0.2s,
+      background 0.2s;
+  }
+
+  .desktop a:hover {
+    color: var(--ink);
+    background: var(--surface);
+  }
+
+  .desktop a[aria-current='page'] {
+    color: var(--ink);
+    background: var(--surface-2);
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .burger,
+  .close {
+    position: relative;
+    display: none;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .burger span,
+  .close span {
+    position: absolute;
+    left: 11px;
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--ink);
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .burger span:first-child {
+    top: 15px;
+  }
+
+  .burger span:last-child {
+    top: 21px;
+  }
+
+  .burger:hover span:first-child {
+    transform: translateX(3px);
+  }
+
+  .burger:hover span:last-child {
+    transform: translateX(-3px);
+  }
+
+  .close {
+    display: block;
+    border-color: color-mix(in srgb, var(--on-accent) 30%, transparent);
+  }
+
+  .close span {
+    top: 18px;
+    background: var(--on-accent);
+  }
+
+  .close span:first-child {
+    transform: rotate(45deg);
+  }
+
+  .close span:last-child {
+    transform: rotate(-45deg);
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
     margin: 0;
     padding: 0;
-    list-style: none;
+    border: 0;
+    background: var(--green);
+    color: var(--on-accent);
+    clip-path: circle(0 at calc(100% - 44px) 32px);
+    transition:
+      clip-path 0.6s var(--ease-out),
+      display 0.6s allow-discrete,
+      overlay 0.6s allow-discrete;
   }
 
-  nav a {
-    display: block;
-    padding: 8px 12px;
-    font-size: 14px;
-    font-weight: 500;
+  .menu:popover-open {
+    clip-path: circle(150% at calc(100% - 44px) 32px);
   }
 
-  nav a:hover,
-  nav a[aria-current='page'] {
-    background: var(--ink);
+  @starting-style {
+    .menu:popover-open {
+      clip-path: circle(0 at calc(100% - 44px) 32px);
+    }
+  }
+
+  .menu-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--bar-height);
+  }
+
+  .menu .wordmark span {
     color: var(--ground);
   }
 
-  .clock {
-    justify-self: end;
+  .menu ul {
+    margin: 0;
+    padding-top: 6vh;
+    list-style: none;
   }
 
-  @media (max-width: 760px) {
-    .bar {
-      grid-template-columns: auto 1fr;
-      gap: 12px;
-    }
+  .menu li {
+    overflow: hidden;
+  }
 
-    nav {
-      justify-self: end;
-      overflow-x: auto;
-    }
+  .menu li a {
+    display: block;
+    padding: 6px 0;
+    font-family: var(--font-display);
+    font-size: clamp(44px, 13vw, 88px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    transform: translateY(110%);
+    transition: transform 0.6s var(--ease-out) calc(0.15s + var(--i) * 0.06s);
+  }
 
-    nav a {
-      padding: 8px;
-      font-size: 13px;
-    }
+  .menu:popover-open li a {
+    transform: none;
+  }
 
-    .clock {
+  @starting-style {
+    .menu:popover-open li a {
+      transform: translateY(110%);
+    }
+  }
+
+  .menu li a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 8px;
+  }
+
+  @media (max-width: 860px) {
+    .desktop {
       display: none;
+    }
+
+    .burger {
+      display: block;
     }
   }
 </style>

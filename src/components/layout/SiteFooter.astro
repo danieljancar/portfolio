@@ -1,115 +1,115 @@
 ---
 import { getCollection } from 'astro:content';
 import { getSettings } from '~/lib/content';
+import { linkAttrs } from '~/lib/links';
 
 const settings = await getSettings();
 const legal = await getCollection('legal');
-const links = [
-  ...settings.socials,
-  { label: 'Email', href: `mailto:${settings.email}` },
+const more = [
+  { href: '/now', label: 'Now' },
+  { href: '/recommended', label: 'Recommended' },
+  { href: '/tags', label: 'Tags' },
+  { href: '/rss.xml', label: 'RSS' },
 ];
-const handle = (href: string) =>
-  href.startsWith('mailto:')
-    ? href.slice(7)
-    : href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---
 
-<footer class="foot" id="links">
-  <div class="row mono">
-    <span>Links</span>
-    <span>
+<footer class="foot">
+  <div class="container">
+    <p class="lead">Let's talk.</p>
+    <a class="mail" href={`mailto:${settings.email}`}>
+      {settings.email}
+    </a>
+
+    <div class="columns">
+      <nav aria-label="Profiles">
+        {settings.socials.map(link => (
+          <a href={link.href} {...linkAttrs(link.href)}>
+            {link.label}
+            <span aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </nav>
+      <nav aria-label="More">
+        {more.map(link => (
+          <a href={link.href}>{link.label}</a>
+        ))}
+      </nav>
+      <nav aria-label="Legal">
+        {legal.map(doc => (
+          <a href={`/legal/${doc.id}`}>{doc.data.title}</a>
+        ))}
+      </nav>
+    </div>
+
+    <p class="copy">
       © {new Date().getFullYear()} {settings.name}
-    </span>
-  </div>
-  <ul>
-    {links.map(link => (
-      <li>
-        <a
-          href={link.href}
-          rel={link.href.startsWith('http') ? 'me noopener' : undefined}
-        >
-          <span class="display name">{link.label}</span>
-          <span class="mono">{handle(link.href)}</span>
-        </a>
-      </li>
-    ))}
-  </ul>
-  <div class="row mono soft">
-    <nav aria-label="Legal">
-      {legal.map(doc => (
-        <a href={`/legal/${doc.id}`}>{doc.data.title}</a>
-      ))}
-      <a href="/tags">Tags</a>
-      <a href="/rss.xml">RSS</a>
-    </nav>
-    <span>{settings.location}</span>
+    </p>
   </div>
 </footer>
 
 <style>
   .foot {
-    padding: 40px var(--gutter) 24px;
+    margin-top: clamp(80px, 10vw, 140px);
+    padding-block: 72px 32px;
     background: var(--green);
     color: var(--on-accent);
   }
 
-  .row {
+  .lead {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .mail {
+    display: inline-block;
+    margin-top: 8px;
+    font-family: var(--font-display);
+    font-size: clamp(32px, 6vw, 72px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    word-break: break-word;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 3px
+      no-repeat;
+    transition: background-size 0.4s var(--ease-out);
+  }
+
+  .mail:hover {
+    background-size: 100% 3px;
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+    margin-top: 64px;
+  }
+
+  nav {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 12px 24px;
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .soft {
-    margin-top: 32px;
-    color: var(--green-deep);
+  nav a {
+    width: fit-content;
+    font-weight: 500;
   }
 
-  .foot a:hover {
-    color: var(--ground);
+  nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
-  .soft nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 16px;
+  .copy {
+    margin-top: 56px;
+    font-size: 14px;
+    opacity: 0.75;
   }
 
-  ul {
-    margin: 24px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  li a {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    padding: 6px 0;
-    border-bottom: 1px solid rgb(11 13 10 / 0.3);
-  }
-
-  .name {
-    font-size: clamp(40px, 8vw, 128px);
-    transition:
-      font-stretch 0.45s var(--ease-out),
-      color 0.2s;
-  }
-
-  li a:hover .name {
-    font-stretch: 62%;
-    color: var(--ground);
-  }
-
-  li a:hover {
-    color: inherit;
-  }
-
-  @media (max-width: 600px) {
-    li a {
-      flex-direction: column;
-      gap: 0;
+  @media (max-width: 640px) {
+    .columns {
+      grid-template-columns: 1fr 1fr;
     }
   }
 </style>
