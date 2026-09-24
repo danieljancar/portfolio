@@ -10,77 +10,66 @@ backend:
     delete: 'content({{collection}}): remove {{slug}}'
     uploadMedia: 'content: upload {{path}}'
     deleteMedia: 'content: delete {{path}}'
-
 site_url: https://danieljancar.dev
 display_url: https://danieljancar.dev
 logo_url: /icons/android-chrome-192x192.png
-
 media_folder: src/assets/uploads
 public_folder: /src/assets/uploads
-
 slug:
   encoding: ascii
   clean_accents: true
-
 collections:
-  - name: photos
+  - name: albums
     label: Photos
-    label_singular: Photo
-    description: One entry per photo. Colours and camera data are read from the file at build time.
-    folder: src/content/photos
-    extension: yaml
-    format: yaml
+    label_singular: Album
+    description: One album per shoot. Every photo uploaded to an album shows up on the site, no description needed.
+    folder: src/content/albums
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
     create: true
-    slug: "{{fields.title | default('{{fields.alt}}')}}"
-    identifier_field: alt
-    summary: '{{alt}}'
-    thumbnail: image
-    media_folder: files
-    public_folder: ./files
-    sortable_fields: [date, category]
-    view_filters:
-      - { label: Featured, field: featured, pattern: true }
-      - { label: Landscape, field: category, pattern: landscape }
-      - { label: City, field: category, pattern: city }
-      - { label: Events, field: category, pattern: event }
+    slug: '{{title}}'
+    summary: "{{title}} · {{date | date('YYYY-MM')}}"
+    thumbnail: cover
     fields:
-      - { name: image, label: Photo, widget: image }
-      - { name: alt, label: Description (for screen readers), widget: string }
-      - { name: title, label: Title, widget: string, required: false }
-      - { name: place, label: Place, widget: string, required: false }
-      - {
-          name: date,
-          label: Date,
-          widget: datetime,
-          time_format: false,
-          date_format: YYYY-MM-DD,
-          format: YYYY-MM-DD,
-          required: false,
-        }
-      - name: category
-        label: Category
-        widget: select
-        default: other
-        options: [landscape, city, event, people, other]
-      - { name: tags, label: Tags, widget: list, required: false }
-      - {
-          name: event,
-          label: Event,
-          widget: relation,
-          collection: events,
-          value_field: '{{slug}}',
-          search_fields: [title],
-          display_fields: [title],
-          required: false,
-        }
-      - {
-          name: featured,
-          label: Featured on the home page,
-          widget: boolean,
-          default: false,
-        }
-      - { name: hidden, label: Hidden, widget: boolean, default: false }
-
+      - name: title
+        label: Title
+        widget: string
+      - name: date
+        label: Date
+        widget: datetime
+        time_format: false
+        date_format: YYYY-MM-DD
+        format: YYYY-MM-DD
+      - name: place
+        label: Place
+        widget: string
+        required: false
+      - name: photos
+        label: Photos
+        widget: image
+        multiple: true
+        required: false
+        hint: Upload photos here. They are stored in the album folder.
+      - name: cover
+        label: Cover photo
+        widget: image
+      - name: featured
+        label: Show on the home page
+        widget: boolean
+        default: false
+      - name: highlights
+        label: Highlights (file names, in order)
+        widget: list
+        required: false
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+      - name: body
+        label: Text
+        widget: markdown
+        required: false
   - name: posts
     label: Posts
     label_singular: Post
@@ -92,166 +81,66 @@ collections:
     slug: '{{title}}'
     summary: "{{title}} · {{published | date('YYYY-MM-DD')}}"
     thumbnail: cover
-    sortable_fields: [published, title]
+    sortable_fields:
+      - published
+      - title
     fields:
-      - { name: title, label: Title, widget: string }
-      - { name: description, label: Description, widget: text }
-      - {
-          name: published,
-          label: Published,
-          widget: datetime,
-          time_format: false,
-          date_format: YYYY-MM-DD,
-          format: YYYY-MM-DD,
-        }
-      - {
-          name: updated,
-          label: Updated,
-          widget: datetime,
-          time_format: false,
-          date_format: YYYY-MM-DD,
-          format: YYYY-MM-DD,
-          required: false,
-        }
-      - { name: tags, label: Tags, widget: list, required: false }
-      - { name: cover, label: Cover image, widget: image, required: false }
-      - {
-          name: coverAlt,
-          label: Cover description,
-          widget: string,
-          required: false,
-        }
-      - {
-          name: coverCredit,
-          label: Cover credit,
-          widget: string,
-          required: false,
-        }
-      - {
-          name: coverAiGenerated,
-          label: Cover is AI generated,
-          widget: boolean,
-          default: false,
-        }
-      - {
-          name: project,
-          label: Project,
-          widget: relation,
-          collection: projects,
-          value_field: '{{slug}}',
-          search_fields: [name],
-          display_fields: [name],
-          required: false,
-        }
-      - {
-          name: canonical,
-          label: Original URL,
-          widget: string,
-          required: false,
-        }
-      - { name: featured, label: Featured, widget: boolean, default: false }
-      - { name: draft, label: Draft, widget: boolean, default: false }
-      - { name: body, label: Text, widget: markdown }
-
-  - name: notes
-    label: Updates
-    label_singular: Update
-    description: Short dated updates for /now and the home page.
-    folder: src/content/notes
-    create: true
-    slug: '{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}'
-    summary: "{{date | date('YYYY-MM-DD')}} · {{body | truncate(60)}}"
-    media_folder: images
-    public_folder: ./images
-    fields:
-      - {
-          name: date,
-          label: Date,
-          widget: datetime,
-          time_format: false,
-          date_format: YYYY-MM-DD,
-          format: YYYY-MM-DD,
-          default: '{{now}}',
-        }
-      - { name: body, label: Text, widget: markdown, minimal: true }
-      - { name: image, label: Image, widget: image, required: false }
-      - {
-          name: imageAlt,
-          label: Image description,
-          widget: string,
-          required: false,
-        }
-      - name: link
-        label: Link
-        widget: object
+      - name: title
+        label: Title
+        widget: string
+      - name: description
+        label: Description
+        widget: text
+      - name: published
+        label: Published
+        widget: datetime
+        time_format: false
+        date_format: YYYY-MM-DD
+        format: YYYY-MM-DD
+      - name: updated
+        label: Updated
+        widget: datetime
+        time_format: false
+        date_format: YYYY-MM-DD
+        format: YYYY-MM-DD
         required: false
-        fields:
-          - { name: label, label: Label, widget: string }
-          - { name: href, label: URL, widget: string }
-
-  - name: events
-    label: Events
-    label_singular: Event
-    folder: src/content/events
-    create: true
-    slug: '{{title}}-{{year}}'
-    summary: "{{title}} · {{date | date('YYYY-MM')}}"
-    thumbnail: cover
-    media_folder: images
-    public_folder: ./images
-    fields:
-      - { name: title, label: Title, widget: string }
-      - {
-          name: date,
-          label: Date,
-          widget: datetime,
-          time_format: false,
-          date_format: YYYY-MM-DD,
-          format: YYYY-MM-DD,
-        }
-      - {
-          name: endDate,
-          label: End date,
-          widget: datetime,
-          time_format: false,
-          date_format: YYYY-MM-DD,
-          format: YYYY-MM-DD,
-          required: false,
-        }
-      - { name: place, label: Place, widget: string, required: false }
-      - {
-          name: role,
-          label: What I did,
-          widget: select,
-          options: [shot, played, team, taught, spoke, attended],
-        }
-      - { name: tags, label: Tags, widget: list, required: false }
-      - {
-          name: project,
-          label: Project,
-          widget: relation,
-          collection: projects,
-          value_field: '{{slug}}',
-          search_fields: [name],
-          display_fields: [name],
-          required: false,
-        }
-      - { name: cover, label: Cover image, widget: image, required: false }
-      - {
-          name: coverAlt,
-          label: Cover description,
-          widget: string,
-          required: false,
-        }
-      - name: links
-        label: Links
+      - name: tags
+        label: Tags
         widget: list
         required: false
-        fields:
-          - { name: label, label: Label, widget: string }
-          - { name: href, label: URL, widget: string }
-      - { name: body, label: Text, widget: markdown, required: false }
-
+      - name: cover
+        label: Cover image
+        widget: image
+        required: false
+      - name: coverAlt
+        label: Cover description
+        widget: string
+        required: false
+      - name: project
+        label: Project
+        widget: relation
+        collection: projects
+        value_field: '{{slug}}'
+        search_fields:
+          - name
+        display_fields:
+          - name
+        required: false
+      - name: canonical
+        label: Original URL
+        widget: string
+        required: false
+      - name: featured
+        label: Featured
+        widget: boolean
+        default: false
+      - name: draft
+        label: Draft
+        widget: boolean
+        default: false
+      - name: body
+        label: Text
+        widget: markdown
   - name: projects
     label: Projects
     label_singular: Project
@@ -263,99 +152,196 @@ collections:
     thumbnail: cover
     media_folder: images
     public_folder: ./images
-    sortable_fields: [order, name]
+    sortable_fields:
+      - order
+      - name
     fields:
-      - { name: name, label: Name, widget: string }
-      - { name: tagline, label: Tagline, widget: string }
-      - {
-          name: kind,
-          label: Kind,
-          widget: string,
-          hint: 'e.g. Mobile app, Open source, Client',
-        }
-      - {
-          name: status,
-          label: Status,
-          widget: select,
-          default: live,
-          options: [live, in-progress, archived],
-        }
-      - {
-          name: year,
-          label: Year,
-          widget: number,
-          value_type: int,
-          required: false,
-        }
-      - { name: stack, label: Stack, widget: list, required: false }
-      - {
-          name: tags,
-          label: Tags,
-          widget: list,
-          required: false,
-          hint: 'Shared tags connect this project to posts, events and photos',
-        }
+      - name: name
+        label: Name
+        widget: string
+      - name: tagline
+        label: Tagline
+        widget: string
+      - name: kind
+        label: Kind
+        widget: string
+        hint: e.g. Mobile app, Open source, Client
+      - name: status
+        label: Status
+        widget: select
+        default: live
+        options:
+          - live
+          - in-progress
+          - archived
+      - name: year
+        label: Year
+        widget: number
+        value_type: int
+        required: false
+      - name: role
+        label: My role
+        widget: string
+        required: false
+      - name: stack
+        label: Stack
+        widget: list
+        required: false
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+        hint: Shared tags connect this project to posts, events and photos
       - name: links
         label: Links
         widget: list
         required: false
         fields:
-          - { name: label, label: Label, widget: string }
-          - { name: href, label: URL, widget: string }
-      - { name: cover, label: Cover image, widget: image, required: false }
-      - {
-          name: coverAlt,
-          label: Cover description,
-          widget: string,
-          required: false,
-        }
-      - {
-          name: shape,
-          label: Image shape,
-          widget: select,
-          default: square,
-          options: [square, circle, arch, diamond, half],
-        }
-      - { name: featured, label: Featured, widget: boolean, default: false }
-      - {
-          name: order,
-          label: Order,
-          widget: number,
-          value_type: int,
-          default: 100,
-        }
-      - { name: body, label: Text, widget: markdown }
-
-  - name: recommendations
-    label: Recommended
-    label_singular: Recommendation
-    folder: src/content/recommendations
-    extension: yaml
-    format: yaml
+          - name: label
+            label: Label
+            widget: string
+          - name: href
+            label: URL
+            widget: string
+      - name: cover
+        label: Cover image
+        widget: image
+        required: false
+      - name: coverAlt
+        label: Cover description
+        widget: string
+        required: false
+      - name: featured
+        label: Featured
+        widget: boolean
+        default: false
+      - name: order
+        label: Order
+        widget: number
+        value_type: int
+        default: 100
+      - name: body
+        label: Text
+        widget: markdown
+  - name: events
+    label: Events
+    label_singular: Event
+    folder: src/content/events
     create: true
-    slug: '{{name}}'
-    identifier_field: name
-    summary: '{{kind}} · {{name}}'
-    sortable_fields: [order, name]
+    slug: '{{title}}-{{year}}'
+    summary: "{{title}} · {{date | date('YYYY-MM')}}"
+    thumbnail: cover
+    media_folder: images
+    public_folder: ./images
     fields:
-      - { name: name, label: Name, widget: string }
-      - {
-          name: kind,
-          label: Kind,
-          widget: select,
-          options: [podcast, site, newsletter, book, tool],
-        }
-      - { name: url, label: URL, widget: string }
-      - { name: topic, label: Topic, widget: string }
-      - { name: note, label: Why I recommend it, widget: text, required: false }
-      - {
-          name: order,
-          label: Order,
-          widget: number,
-          value_type: int,
-          default: 100,
-        }
-
+      - name: title
+        label: Title
+        widget: string
+      - name: date
+        label: Date
+        widget: datetime
+        time_format: false
+        date_format: YYYY-MM-DD
+        format: YYYY-MM-DD
+      - name: endDate
+        label: End date
+        widget: datetime
+        time_format: false
+        date_format: YYYY-MM-DD
+        format: YYYY-MM-DD
+        required: false
+      - name: place
+        label: Place
+        widget: string
+        required: false
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+      - name: project
+        label: Project
+        widget: relation
+        collection: projects
+        value_field: '{{slug}}'
+        search_fields:
+          - name
+        display_fields:
+          - name
+        required: false
+      - name: cover
+        label: Cover image
+        widget: image
+        required: false
+      - name: coverAlt
+        label: Cover description
+        widget: string
+        required: false
+      - name: album
+        label: Album
+        widget: relation
+        collection: albums
+        value_field: '{{slug}}'
+        search_fields:
+          - title
+        display_fields:
+          - title
+        required: false
+      - name: links
+        label: Links
+        widget: list
+        required: false
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - name: href
+            label: URL
+            widget: string
+      - name: body
+        label: Text
+        widget: markdown
+        required: false
+  - name: notes
+    label: Updates
+    label_singular: Update
+    description: Short dated updates for /now and the home page.
+    folder: src/content/notes
+    create: true
+    slug: '{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}'
+    summary: "{{date | date('YYYY-MM-DD')}} · {{body | truncate(60)}}"
+    media_folder: images
+    public_folder: ./images
+    fields:
+      - name: date
+        label: Date
+        widget: datetime
+        time_format: false
+        date_format: YYYY-MM-DD
+        format: YYYY-MM-DD
+        default: '{{now}}'
+      - name: body
+        label: Text
+        widget: markdown
+        minimal: true
+      - name: image
+        label: Image
+        widget: image
+        required: false
+      - name: imageAlt
+        label: Image description
+        widget: string
+        required: false
+      - name: link
+        label: Link
+        widget: object
+        required: false
+        fields:
+          - name: label
+            label: Label
+            widget: string
+          - name: href
+            label: URL
+            widget: string
   - name: experience
     label: Experience
     label_singular: Role
@@ -366,40 +352,96 @@ collections:
     slug: '{{company}}-{{role}}'
     identifier_field: role
     summary: '{{role}} · {{company}}'
-    sortable_fields: [order]
+    sortable_fields:
+      - order
     fields:
-      - { name: role, label: Role, widget: string }
-      - { name: company, label: Company, widget: string }
-      - {
-          name: companyUrl,
-          label: Company URL,
-          widget: string,
-          required: false,
-        }
-      - {
-          name: start,
-          label: Start (YYYY-MM),
-          widget: string,
-          required: false,
-          pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM'],
-        }
-      - {
-          name: end,
-          label: 'End (YYYY-MM), empty while ongoing',
-          widget: string,
-          required: false,
-          pattern: ['^\d{4}-\d{2}$', 'Use YYYY-MM'],
-        }
-      - { name: summary, label: Summary, widget: text, required: false }
-      - { name: stack, label: Skills, widget: list, required: false }
-      - {
-          name: order,
-          label: Order,
-          widget: number,
-          value_type: int,
-          default: 100,
-        }
-
+      - name: role
+        label: Role
+        widget: string
+      - name: company
+        label: Company
+        widget: string
+      - name: companyUrl
+        label: Company URL
+        widget: string
+        required: false
+      - name: kind
+        label: Kind
+        widget: select
+        default: work
+        options:
+          - work
+          - education
+          - volunteering
+          - community
+      - name: start
+        label: Start (YYYY-MM)
+        widget: string
+        required: false
+        pattern:
+          - ^\d{4}-\d{2}$
+          - Use YYYY-MM
+      - name: end
+        label: End (YYYY-MM), empty while ongoing
+        widget: string
+        required: false
+        pattern:
+          - ^\d{4}-\d{2}$
+          - Use YYYY-MM
+      - name: summary
+        label: Summary
+        widget: text
+        required: false
+      - name: skills
+        label: Skills
+        widget: list
+        required: false
+      - name: order
+        label: Order
+        widget: number
+        value_type: int
+        default: 100
+  - name: recommendations
+    label: Recommended
+    label_singular: Recommendation
+    folder: src/content/recommendations
+    extension: yaml
+    format: yaml
+    create: true
+    slug: '{{name}}'
+    identifier_field: name
+    summary: '{{kind}} · {{name}}'
+    sortable_fields:
+      - order
+      - name
+    fields:
+      - name: name
+        label: Name
+        widget: string
+      - name: kind
+        label: Kind
+        widget: select
+        options:
+          - podcast
+          - site
+          - newsletter
+          - book
+          - tool
+      - name: url
+        label: URL
+        widget: string
+      - name: topic
+        label: Topic
+        widget: string
+      - name: note
+        label: Why I recommend it
+        widget: text
+        required: false
+      - name: order
+        label: Order
+        widget: number
+        value_type: int
+        default: 100
   - name: site
     label: Site
     files:
@@ -407,44 +449,81 @@ collections:
         label: Settings
         file: src/content/site/settings.yaml
         fields:
-          - { name: name, label: Name, widget: string }
-          - { name: title, label: Site title, widget: string }
-          - {
-              name: description,
-              label: Description (search engines),
-              widget: text,
-            }
-          - { name: location, label: Location, widget: string }
-          - { name: email, label: Email, widget: string }
-          - { name: now, label: What I'm doing now, widget: text }
-          - { name: about, label: About, widget: text }
-          - {
-              name: heroVideo,
-              label: Header video (path under public/),
-              widget: string,
-              required: false,
-            }
-          - name: socials
-            label: Links
+          - name: name
+            label: Name
+            widget: string
+          - name: description
+            label: Description (search engines)
+            widget: text
+          - name: email
+            label: Email
+            widget: string
+          - name: headline
+            label: Headline on the home page
+            widget: string
+          - name: intro
+            label: Intro on the home page
+            widget: text
+          - name: now
+            label: What I'm doing now
+            widget: text
+          - name: about
+            label: About (paragraphs separated by an empty line)
+            widget: text
+          - name: heroPhotos
+            label: Home page photos (album/file.jpg)
+            widget: list
+            required: false
+          - name: portrait
+            label: Portrait
+            widget: image
+            required: false
+          - name: portraitAlt
+            label: Portrait description
+            widget: string
+            required: false
+          - name: skills
+            label: Skills
             widget: list
             fields:
-              - { name: label, label: Label, widget: string }
-              - { name: href, label: URL, widget: string }
-
+              - name: group
+                label: Group
+                widget: string
+              - name: items
+                label: Skills
+                widget: list
+          - name: socials
+            label: Profiles
+            widget: list
+            fields:
+              - name: label
+                label: Label
+                widget: string
+              - name: href
+                label: URL
+                widget: string
+        media_folder: ''
+        public_folder: ./
   - name: legal
     label: Legal
     folder: src/content/legal
     create: false
     fields:
-      - { name: title, label: Title, widget: string }
-      - { name: description, label: Description, widget: text }
-      - { name: version, label: Version, widget: string }
-      - {
-          name: updated,
-          label: Updated,
-          widget: datetime,
-          time_format: false,
-          date_format: YYYY-MM-DD,
-          format: YYYY-MM-DD,
-        }
-      - { name: body, label: Text, widget: markdown }
+      - name: title
+        label: Title
+        widget: string
+      - name: description
+        label: Description
+        widget: text
+      - name: version
+        label: Version
+        widget: string
+      - name: updated
+        label: Updated
+        widget: datetime
+        time_format: false
+        date_format: YYYY-MM-DD
+        format: YYYY-MM-DD
+      - name: body
+        label: Text
+        widget: markdown
