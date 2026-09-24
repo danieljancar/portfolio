@@ -1,179 +1,143 @@
 ---
+import ButtonLink from '~/components/ui/ButtonLink.astro';
 import Photo from '~/components/media/Photo.astro';
 import type { Photo as PhotoType } from '~/lib/photos';
 
 interface Props {
+  headline: string;
+  intro: string;
   photos: PhotoType[];
-  video?: string;
-  tagline: string;
 }
 
-const { photos, video, tagline } = Astro.props;
-const ring = photos.slice(0, 10);
-const step = 360 / Math.max(ring.length, 1);
+const { headline, intro, photos } = Astro.props;
+const stack = photos.slice(0, 3);
 ---
 
-<section class="hero" aria-label="Intro">
-  {video && (
-    <video
-      class="video"
-      src={video}
-      autoplay
-      muted
-      loop
-      playsinline
-      aria-hidden="true"
-    />
-  )}
-  <div class="stage" aria-hidden="true">
-    <div class="tilt">
-      <div class="ring">
-        {ring.map((photo, i) => (
-          <div class="card" style={`--angle:${i * step}deg`}>
-            <Photo
-              photo={photo}
-              widths={[240, 360]}
-              sizes="180px"
-              loading="eager"
-            />
-          </div>
-        ))}
-      </div>
+<section class="hero container">
+  <div class="text">
+    <p class="eyebrow">Daniel Jancar</p>
+    <h1>{headline}</h1>
+    <p class="intro">{intro}</p>
+    <div class="actions">
+      <ButtonLink href="/projects">See my projects</ButtonLink>
+      <ButtonLink href="/about" variant="outline">
+        More about me
+      </ButtonLink>
     </div>
   </div>
-  <div class="name">
-    <div class="meta">
-      <p>{tagline}</p>
-      <span class="mono">Scroll ↓</span>
-    </div>
-    <h1 class="display">
-      Daniel
-      <br />
-      Jancar
-    </h1>
+  <div class="stack" aria-hidden="true">
+    {stack.map((photo, i) => (
+      <div class="card" style={`--i:${i}`}>
+        <Photo
+          photo={photo}
+          widths={[400, 700, 1000]}
+          sizes="(max-width: 860px) 60vw, 26vw"
+          loading="eager"
+        />
+      </div>
+    ))}
   </div>
 </section>
 
 <style>
   .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(32px, 6vw, 96px);
+    min-height: calc(100svh - var(--bar-height));
+    padding-block: 48px 72px;
+  }
+
+  h1 {
+    margin-top: 18px;
+    font-size: clamp(44px, 6.4vw, 92px);
+    letter-spacing: -0.035em;
+    line-height: 0.98;
+    animation: rise 0.9s var(--ease-out) both;
+  }
+
+  .intro {
+    max-width: 52ch;
+    margin-top: 28px;
+    font-size: clamp(18px, 1.6vw, 21px);
+    color: var(--ink-soft);
+    animation: rise 0.9s 0.12s var(--ease-out) both;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 36px;
+    animation: rise 0.9s 0.24s var(--ease-out) both;
+  }
+
+  .stack {
     position: relative;
-    height: calc(100svh - var(--bar-height));
-    min-height: 620px;
-    overflow: hidden;
-    background: var(--night);
-    color: var(--night-ink);
-  }
-
-  .video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.45;
-  }
-
-  .stage {
-    position: absolute;
-    left: 50%;
-    top: 44%;
-    perspective: 1400px;
-  }
-
-  .tilt,
-  .ring {
-    transform-style: preserve-3d;
-  }
-
-  .tilt {
-    transform: rotateX(-8deg);
-  }
-
-  .ring {
-    animation: turn 48s linear infinite;
+    aspect-ratio: 4 / 5;
+    width: min(100%, 520px);
+    justify-self: center;
   }
 
   .card {
     position: absolute;
-    left: -90px;
-    top: -120px;
-    width: 180px;
-    height: 240px;
-    transform: rotateY(var(--angle)) translateZ(430px);
-    outline: 1px solid rgb(255 255 255 / 0.15);
+    inset: 8% 14%;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: 0 30px 60px -20px rgb(0 0 0 / 0.35);
+    transform: rotate(calc((var(--i) - 1) * 7deg))
+      translateX(calc((var(--i) - 1) * 18%));
+    transition: transform 0.8s var(--ease-out);
+    animation: deal 1s calc(0.2s + var(--i) * 0.12s) var(--ease-out) backwards;
   }
 
-  .name {
-    position: absolute;
-    inset: auto 0 0;
+  .card:nth-child(2) {
     z-index: 2;
-    padding: 0 var(--gutter) var(--gutter);
-    color: #fff;
-    mix-blend-mode: difference;
   }
 
-  .meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 24px;
-    margin-bottom: 18px;
-  }
-
-  .meta p {
-    max-width: 420px;
-    font-size: 18px;
-    line-height: 1.35;
-  }
-
-  h1 {
-    font-size: 17.5vw;
+  .stack:hover .card {
+    transform: rotate(calc((var(--i) - 1) * 11deg))
+      translateX(calc((var(--i) - 1) * 32%));
   }
 
   @supports (animation-timeline: scroll()) {
-    .tilt {
-      animation: tilt-away linear both;
+    .stack {
+      animation: drift linear both;
       animation-timeline: scroll(root);
-      animation-range: 0 100vh;
-    }
-
-    .name {
-      animation: lift linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 90vh;
+      animation-range: 0 80vh;
     }
   }
 
-  @keyframes turn {
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+
+  @keyframes deal {
+    from {
+      opacity: 0;
+      transform: translateY(40px) rotate(0);
+    }
+  }
+
+  @keyframes drift {
     to {
-      transform: rotateY(-360deg);
+      transform: translateY(-8%) rotate(-3deg);
     }
   }
 
-  @keyframes tilt-away {
-    to {
-      transform: rotateX(-38deg) scale(0.7);
-    }
-  }
-
-  @keyframes lift {
-    to {
-      transform: translateY(-12vh);
-    }
-  }
-
-  @media (max-width: 700px) {
-    .card {
-      left: -60px;
-      top: -80px;
-      width: 120px;
-      height: 160px;
-      transform: rotateY(var(--angle)) translateZ(260px);
+  @media (max-width: 860px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      padding-top: 40px;
     }
 
-    .meta {
-      flex-direction: column;
-      align-items: start;
+    .stack {
+      width: min(80%, 380px);
     }
   }
 </style>

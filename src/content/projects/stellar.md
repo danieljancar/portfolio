@@ -10,8 +10,7 @@ links:
   - label: dev.to
     href: https://dev.to/danieljancar
 cover: ../posts/winning-stellar-dev-challenge-award/cover.png
-coverAlt: AI generated image of a mix between beach and computers
-shape: diamond
+coverAlt: Illustration of a constellation of stars next to a play button
 order: 3
 ---
 

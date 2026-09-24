@@ -4,7 +4,6 @@ import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-const shape = z.enum(['square', 'circle', 'arch', 'diamond', 'half']);
 const link = z.object({ label: z.string(), href: z.url() });
 
 const posts = defineCollection({
@@ -18,8 +17,6 @@ const posts = defineCollection({
       tags: z.array(z.string()).default([]),
       cover: image().optional(),
       coverAlt: z.string().default(''),
-      coverCredit: z.string().optional(),
-      coverAiGenerated: z.boolean().default(false),
       project: reference('projects').optional(),
       canonical: z.url().optional(),
       featured: z.boolean().default(false),
@@ -36,14 +33,28 @@ const projects = defineCollection({
       kind: z.string(),
       status: z.enum(['live', 'in-progress', 'archived']).default('live'),
       year: z.number().int().optional(),
+      role: z.string().optional(),
       stack: z.array(z.string()).default([]),
       tags: z.array(z.string()).default([]),
       links: z.array(link).default([]),
       cover: image().optional(),
       coverAlt: z.string().default(''),
-      shape: shape.default('square'),
       featured: z.boolean().default(false),
       order: z.number().default(100),
+    }),
+});
+
+const albums = defineCollection({
+  loader: glob({ pattern: '*/index.md', base: './src/content/albums' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.coerce.date(),
+      place: z.string().optional(),
+      cover: image(),
+      featured: z.boolean().default(false),
+      highlights: z.array(z.string()).default([]),
+      tags: z.array(z.string()).default([]),
     }),
 });
 
@@ -55,31 +66,12 @@ const events = defineCollection({
       date: z.coerce.date(),
       endDate: z.coerce.date().optional(),
       place: z.string().optional(),
-      role: z.enum(['shot', 'played', 'team', 'taught', 'spoke', 'attended']),
-      tags: z.array(z.string()).default([]),
-      project: reference('projects').optional(),
       cover: image().optional(),
       coverAlt: z.string().default(''),
-      links: z.array(link).default([]),
-    }),
-});
-
-const photos = defineCollection({
-  loader: glob({ pattern: '*.{yaml,yml}', base: './src/content/photos' }),
-  schema: ({ image }) =>
-    z.object({
-      image: image(),
-      alt: z.string().default(''),
-      title: z.string().optional(),
-      place: z.string().optional(),
-      date: z.coerce.date().optional(),
-      category: z
-        .enum(['landscape', 'city', 'event', 'people', 'other'])
-        .default('other'),
+      album: reference('albums').optional(),
+      project: reference('projects').optional(),
       tags: z.array(z.string()).default([]),
-      event: reference('events').optional(),
-      featured: z.boolean().default(false),
-      hidden: z.boolean().default(false),
+      links: z.array(link).default([]),
     }),
 });
 
@@ -112,10 +104,13 @@ const experience = defineCollection({
     role: z.string(),
     company: z.string(),
     companyUrl: z.url().optional(),
+    kind: z
+      .enum(['work', 'education', 'volunteering', 'community'])
+      .default('work'),
     start: z.string().optional(),
     end: z.string().optional(),
     summary: z.string().optional(),
-    stack: z.array(z.string()).default([]),
+    skills: z.array(z.string()).default([]),
     order: z.number().default(100),
   }),
 });
@@ -132,24 +127,30 @@ const legal = defineCollection({
 
 const site = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/site' }),
-  schema: z.object({
-    name: z.string(),
-    title: z.string(),
-    description: z.string(),
-    location: z.string(),
-    email: z.email(),
-    now: z.string(),
-    heroVideo: z.string().optional(),
-    about: z.string(),
-    socials: z.array(link),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      description: z.string(),
+      email: z.email(),
+      headline: z.string(),
+      intro: z.string(),
+      now: z.string(),
+      about: z.string(),
+      heroPhotos: z.array(z.string()).default([]),
+      portrait: image().optional(),
+      portraitAlt: z.string().default(''),
+      skills: z.array(
+        z.object({ group: z.string(), items: z.array(z.string()) }),
+      ),
+      socials: z.array(link),
+    }),
 });
 
 export const collections = {
   posts,
   projects,
+  albums,
   events,
-  photos,
   notes,
   recommendations,
   experience,

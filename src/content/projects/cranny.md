@@ -11,7 +11,6 @@ links:
     href: https://the-cranny.com
 cover: ../posts/developing-a-mobile-app-from-scratch-with-expo/mobile-app-development-expo-react-native.jpeg
 coverAlt: The Cranny app in front of a bench in a forest
-shape: circle
 featured: true
 order: 1
 ---

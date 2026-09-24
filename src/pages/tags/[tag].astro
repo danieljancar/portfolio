@@ -1,7 +1,7 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
-import SectionHead from '~/components/ui/SectionHead.astro';
 import RelatedList from '~/components/ui/RelatedList.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getTags, type Kind } from '~/lib/tags';
 
 export async function getStaticPaths() {
@@ -14,7 +14,7 @@ const groups: { kind: Kind; title: string }[] = [
   { kind: 'project', title: 'Projects' },
   { kind: 'post', title: 'Posts' },
   { kind: 'event', title: 'Events' },
-  { kind: 'photo', title: 'Photos' },
+  { kind: 'album', title: 'Albums' },
 ];
 const byDate = (a: { date?: Date }, b: { date?: Date }) =>
   (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0);
@@ -24,20 +24,24 @@ const byDate = (a: { date?: Date }, b: { date?: Date }) =>
   title={`#${tag.label}`}
   description={`Everything tagged ${tag.label}.`}
 >
-  <SectionHead title={`#${tag.label}`} href="/tags" linkLabel="All tags">
-    <span>{tag.items.length} items</span>
-  </SectionHead>
+  <section class="container page">
+    <SectionHead
+      title={`#${tag.label}`}
+      href="/tags"
+      linkLabel="All tags"
+      as="h1"
+    />
+  </section>
   {groups.map(group => (
     <RelatedList
       title={group.title}
-      items={tag.items.filter(i => i.kind === group.kind).sort(byDate)}
+      items={tag.items.filter(item => item.kind === group.kind).sort(byDate)}
     />
   ))}
-  <div class="space"></div>
 </BaseLayout>
 
 <style>
-  .space {
-    height: 64px;
+  .page {
+    padding-top: clamp(48px, 7vw, 96px);
   }
 </style>

@@ -1,7 +1,6 @@
 import type { ImageMetadata } from 'astro';
-import type { Photo } from './photos';
 
-export type Kind = 'post' | 'project' | 'event' | 'photo';
+export type Kind = 'post' | 'project' | 'event' | 'album';
 
 export interface Item {
   kind: Kind;
@@ -12,7 +11,6 @@ export interface Item {
   tags: string[];
   links: string[];
   image?: ImageMetadata;
-  photo?: Photo;
 }
 
 export interface Tag {
@@ -25,7 +23,7 @@ export const kindLabels: Record<Kind, string> = {
   post: 'Post',
   project: 'Project',
   event: 'Event',
-  photo: 'Photo',
+  album: 'Album',
 };
 
 export function tagSlug(tag: string): string {

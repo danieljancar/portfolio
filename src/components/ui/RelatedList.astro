@@ -1,6 +1,5 @@
 ---
 import Cover from '~/components/media/Cover.astro';
-import Photo from '~/components/media/Photo.astro';
 import { formatMonth } from '~/lib/dates';
 import { kindLabels, type Item } from '~/lib/related';
 
@@ -13,34 +12,26 @@ const { items, title = 'Related' } = Astro.props;
 ---
 
 {items.length > 0 && (
-  <section class="related wrap" aria-label={title}>
-    <h2 class="display">{title}</h2>
+  <section class="related container" aria-label={title}>
+    <h2>{title}</h2>
     <ul>
       {items.map(item => (
         <li>
           <a class="card" href={item.href}>
             <div class="thumb">
-              {item.photo ? (
-                <Photo
-                  photo={item.photo}
-                  widths={[400, 700]}
-                  sizes="(max-width: 700px) 100vw, 25vw"
-                />
-              ) : item.image ? (
+              {item.image && (
                 <Cover
                   src={item.image}
                   alt=""
                   widths={[400, 700]}
                   sizes="(max-width: 700px) 100vw, 25vw"
                 />
-              ) : (
-                <span class="display letter">{item.title.slice(0, 1)}</span>
               )}
             </div>
-            <div class="line mono">
+            <p class="meta">
               <span>{kindLabels[item.kind]}</span>
               {item.date && <span>{formatMonth(item.date)}</span>}
-            </div>
+            </p>
             <h3>{item.title}</h3>
           </a>
         </li>
@@ -51,18 +42,18 @@ const { items, title = 'Related' } = Astro.props;
 
 <style>
   .related {
-    padding-block: 64px 32px;
+    padding-top: clamp(64px, 8vw, 96px);
   }
 
   h2 {
-    margin-bottom: 24px;
-    font-size: clamp(40px, 6vw, 88px);
+    margin-bottom: 28px;
+    font-size: clamp(32px, 4vw, 48px);
   }
 
   ul {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 28px 20px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -71,33 +62,26 @@ const { items, title = 'Related' } = Astro.props;
   .card {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   .thumb {
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    background: var(--surface-2);
+    border-radius: 14px;
+    background: var(--surface);
   }
 
-  .letter {
-    display: grid;
-    place-items: center;
-    height: 100%;
-    font-size: 96px;
-    background: var(--accent);
-    color: var(--on-accent);
-  }
-
-  .line {
+  .meta {
     display: flex;
-    justify-content: space-between;
-    color: var(--ink-soft);
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-text);
   }
 
   h3 {
     font-size: 20px;
-    font-weight: 600;
     line-height: 1.25;
   }
 

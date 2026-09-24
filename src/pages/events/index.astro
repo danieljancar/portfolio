@@ -1,25 +1,27 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
+import EventCard from '~/components/cards/EventCard.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
-import EventTickets from '~/components/home/EventTickets.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getEvents } from '~/lib/content';
 
 const events = await getEvents();
 ---
 
-<BaseLayout
-  title="Events"
-  description="Events Daniel Jancar shot, played, worked on or taught at."
->
-  <SectionHead title="Events">
-    <span>Shot, played, worked on, taught</span>
-  </SectionHead>
-  <EventTickets events={events} />
-  <div class="space"></div>
+<BaseLayout title="Events" description="Events Daniel Jancar was part of.">
+  <section class="container page">
+    <SectionHead title="Events" as="h1">
+      <p>Events I photographed, organised, taught at or went to.</p>
+    </SectionHead>
+    <div>
+      {events.map(event => (
+        <EventCard event={event} />
+      ))}
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .space {
-    height: 96px;
+  .page {
+    padding-top: clamp(48px, 7vw, 96px);
   }
 </style>

@@ -6,8 +6,7 @@ tags:
 - prettier
 - github-actions
 cover: ./cover.png
-coverAlt: Image of a website with the Prettier logo and the Github logo, styled in a robot-like way.
-coverAiGenerated: true
+coverAlt: Illustration of messy code lines on the left and neatly formatted lines on the right
 ---
 
 Keeping formatting consistent is one of those small things that quietly eats your time. Prettier takes care of it for you, but running it by hand on every change gets old fast. The nice part is that you can let GitHub Actions do it automatically on every pull request. Here is how I set that up.

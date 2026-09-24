@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
+import { formatDate } from '~/lib/dates';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+  large?: boolean;
+}
+
+const { post, large = false } = Astro.props;
+const { title, description, published, cover, coverAlt } = post.data;
+---
+
+<a class:list={['card', { large }]} href={`/blog/${post.id}`}>
+  <div class="media">
+    {cover && (
+      <Cover
+        src={cover}
+        alt={coverAlt}
+        widths={[500, 800, 1300]}
+        sizes={
+          large
+            ? '(max-width: 860px) 100vw, 55vw'
+            : '(max-width: 860px) 100vw, 33vw'
+        }
+      />
+    )}
+  </div>
+  <div class="text">
+    <time datetime={published.toISOString()}>{formatDate(published)}</time>
+    <h3>{title}</h3>
+    {large && <p>{description}</p>}
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .large {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    align-items: center;
+    gap: clamp(24px, 4vw, 56px);
+  }
+
+  .media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .media :global(img) {
+    transition:
+      transform 0.7s var(--ease-out),
+      filter 0.5s var(--ease-out);
+  }
+
+  .card:hover .media :global(img) {
+    transform: scale(1.04);
+  }
+
+  time {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-text);
+  }
+
+  h3 {
+    margin-top: 8px;
+    font-size: 23px;
+    line-height: 1.2;
+  }
+
+  .large h3 {
+    font-size: clamp(30px, 3.6vw, 48px);
+    line-height: 1.05;
+  }
+
+  p {
+    margin-top: 16px;
+    color: var(--ink-soft);
+  }
+
+  .card:hover h3 {
+    color: var(--accent-text);
+  }
+
+  @media (max-width: 860px) {
+    .large {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,22 +1,64 @@
 name: Daniel Jancar
-title: Daniel Jancar
-description: Daniel Jancar is a software developer and project manager from Lucerne, Switzerland who likes building things end-to-end and taking photos.
-location: Lucerne, Switzerland
+description: Daniel Jancar is a project manager and software developer from Lucerne, Switzerland, who builds apps, organises events and takes photos.
 email: daniel@danieljancar.dev
-now: Project Management Assistant at Luzerner Kantonalbank. Building Cranny. Working on NG Switzerland.
-about: >-
-  I'm a generalist at heart. I'd rather understand a whole system than one
-  slice of it, so I follow a problem wherever it goes and do whatever it takes
-  to get something up and working. I have a background in software development
-  and now work in project management. Outside of work I take on projects in
-  different areas, from apps and websites to design, branding, photography and
-  events.
+headline: I'd rather understand the whole system than one slice of it.
+intro: >-
+  I'm Daniel, a project manager with a software developer's background at
+  Luzerner Kantonalbank. After work I build apps with friends, co-organise the
+  JavaScript Lucerne meetup and take photos of the city and its people.
+now: Project Management Assistant at Luzerner Kantonalbank. Building Cranny with friends. Working on NG Switzerland.
+about: |-
+  I'm a generalist at heart. I'd rather understand a whole system than one slice of it, so I follow a problem wherever it goes and do whatever it takes to get something up and working.
+
+  I did my apprenticeship as an application developer at Luzerner Kantonalbank, building Angular and Ionic apps, among them the e-banking app, and now work there in project management. Outside of work I take on projects in different areas, from apps and websites to design, branding, photography and events. I like meeting new people and hearing about their stories and passions.
+
+  When I'm not at a keyboard you'll probably find me outside, in the gym, making music with my Guggenmusig, reading, enjoying a good meal or hiking in the mountains.
+heroPhotos:
+  - lucerne-old-town/DSCF1157.jpg
+  - lucerne-old-town/DSCF1133.jpg
+  - lucerne-old-town/DSCF1164.jpg
+portrait: ./portrait.jpg
+portraitAlt: Portrait of Daniel Jancar
+skills:
+  - group: Project management
+    items:
+      [
+        Agile project management,
+        Project planning,
+        Requirements engineering,
+        Stakeholder management,
+        Risk management,
+        Budgeting and cost analysis,
+        Vendor management,
+        Negotiation,
+      ]
+  - group: Development
+    items:
+      [
+        Angular,
+        Ionic,
+        React Native,
+        Expo,
+        TypeScript,
+        NestJS,
+        Laravel,
+        PostgreSQL,
+        PostGIS,
+        Supabase,
+        Firebase,
+        PL/SQL,
+        Avaloq,
+        Docker,
+        CI/CD,
+        Test automation,
+        Software architecture,
+      ]
+  - group: Creative
+    items: [Photography, Design, Branding, Video editing, Adobe Photoshop]
+  - group: People
+    items: [Teaching, Mentoring, Customer service]
 socials:
   - label: GitHub
     href: https://github.com/danieljancar
   - label: LinkedIn
     href: https://www.linkedin.com/in/danieljancar/
-  - label: dev.to
-    href: https://dev.to/danieljancar
-  - label: Stack Overflow
-    href: https://stackoverflow.com/users/20283236/daniel-jancar

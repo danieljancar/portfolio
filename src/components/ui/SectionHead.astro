@@ -1,19 +1,25 @@
 ---
 interface Props {
   title: string;
-  id?: string;
   href?: string;
   linkLabel?: string;
+  as?: 'h1' | 'h2';
 }
-const { title, id, href, linkLabel = 'All' } = Astro.props;
+
+const { title, href, linkLabel = 'See all', as: Tag = 'h2' } = Astro.props;
 ---
 
-<div class="head wrap" id={id}>
-  <h2 class="display">{title}</h2>
-  <div class="meta mono">
+<div class="head">
+  <div>
+    <Tag>{title}</Tag>
     <slot />
-    {href && <a href={href}>{linkLabel} →</a>}
   </div>
+  {href && (
+    <a class="more" href={href}>
+      {linkLabel}
+      <span aria-hidden="true">→</span>
+    </a>
+  )}
 </div>
 
 <style>
@@ -21,22 +27,49 @@ const { title, id, href, linkLabel = 'All' } = Astro.props;
     display: flex;
     justify-content: space-between;
     align-items: end;
-    gap: 16px 24px;
-    padding-top: clamp(64px, 8vw, 96px);
-    padding-bottom: 24px;
+    gap: 16px 32px;
+    margin-bottom: clamp(28px, 4vw, 48px);
   }
 
+  h1,
   h2 {
-    font-size: clamp(52px, 9vw, 150px);
+    font-size: clamp(40px, 6vw, 76px);
+    letter-spacing: -0.03em;
   }
 
-  .meta {
-    display: flex;
-    gap: 16px;
-    white-space: nowrap;
+  .more {
+    flex-shrink: 0;
+    padding: 10px 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-weight: 500;
+    transition:
+      border-color 0.2s,
+      background 0.2s;
   }
 
-  @media (max-width: 700px) {
+  .more span {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .more:hover {
+    border-color: var(--accent);
+  }
+
+  .more:hover span {
+    transform: translateX(4px);
+  }
+
+  .head :global(p) {
+    max-width: 58ch;
+    margin-top: 16px;
+    font-size: 19px;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 640px) {
     .head {
       flex-direction: column;
       align-items: start;

@@ -1,35 +1,111 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
+import { render } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
-import NotesList from '~/components/home/NotesList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getNotes, getSettings } from '~/lib/content';
+import { formatDate } from '~/lib/dates';
+import { linkAttrs } from '~/lib/links';
 
 const [settings, notes] = await Promise.all([getSettings(), getNotes()]);
+const updates = await Promise.all(
+  notes.map(async note => ({ note, ...(await render(note)) })),
+);
 ---
 
-<BaseLayout
-  title="Now"
-  description="What Daniel Jancar is doing right now, and short updates."
->
-  <SectionHead title="Now" />
-  <p class="now wrap">{settings.now}</p>
-  <SectionHead title="Updates">
-    <span>{notes.length} updates</span>
-  </SectionHead>
-  <NotesList notes={notes} />
-  <div class="space"></div>
+<BaseLayout title="Now" description="What Daniel Jancar is doing right now.">
+  <section class="container page">
+    <SectionHead title="Now" as="h1" />
+    <p class="now">{settings.now}</p>
+
+    <h2>Updates</h2>
+    <ol class="updates">
+      {updates.map(({ note, Content }) => (
+        <li>
+          <time datetime={note.data.date.toISOString()}>
+            {formatDate(note.data.date)}
+          </time>
+          <div class="text">
+            <Content />
+            {note.data.link && (
+              <a href={note.data.link.href} {...linkAttrs(note.data.link.href)}>
+                {note.data.link.label} →
+              </a>
+            )}
+          </div>
+          {note.data.image && (
+            <div class="thumb">
+              <Cover
+                src={note.data.image}
+                alt={note.data.imageAlt}
+                widths={[300, 600]}
+                sizes="220px"
+              />
+            </div>
+          )}
+        </li>
+      ))}
+    </ol>
+  </section>
 </BaseLayout>
 
 <style>
-  .now {
-    max-width: 30ch;
-    font-size: clamp(28px, 3.4vw, 48px);
-    font-weight: 300;
-    font-stretch: 62%;
-    line-height: 1.1;
+  .page {
+    padding-top: clamp(48px, 7vw, 96px);
   }
 
-  .space {
-    height: 96px;
+  .now {
+    max-width: 28ch;
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.6vw, 48px);
+    line-height: 1.15;
+  }
+
+  h2 {
+    margin: clamp(56px, 7vw, 96px) 0 20px;
+    font-size: clamp(28px, 3vw, 40px);
+  }
+
+  .updates {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .updates li {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr) auto;
+    gap: 16px 32px;
+    padding-block: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  time {
+    font-weight: 500;
+    color: var(--accent-text);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 20px;
+  }
+
+  .text a {
+    font-weight: 600;
+  }
+
+  .thumb {
+    width: 220px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  @media (max-width: 700px) {
+    .updates li {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

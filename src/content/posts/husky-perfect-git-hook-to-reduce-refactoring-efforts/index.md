@@ -6,8 +6,7 @@ tags:
 - husky
 - git-hooks
 cover: ./cover.png
-coverAlt: Image of a cartoon husky sitting in front of a coding IDE's.
-coverAiGenerated: true
+coverAlt: Illustration of a git history with a hook that checks commits before they land
 ---
 
 Husky lets you hook into Git events in a Node.js project and run checks automatically, like linting your code or validating commit messages before they ever land. In this guide I’ll walk through setting it up so everyone on your project follows the same rules without having to remember to.

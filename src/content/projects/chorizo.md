@@ -5,10 +5,11 @@ kind: Open source
 status: live
 stack: [Angular, TypeScript, Firebase]
 tags: [angular, firebase, open-source]
+cover: ./chorizo-cover.png
+coverAlt: Illustration of a course calendar with sessions and participants
 links:
   - label: GitHub
     href: https://github.com/danieljancar/chorizo
-shape: arch
 order: 2
 ---
 

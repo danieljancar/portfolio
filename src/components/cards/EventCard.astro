@@ -1,0 +1,74 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
+import { formatMonth } from '~/lib/dates';
+
+interface Props {
+  event: CollectionEntry<'events'>;
+}
+
+const { event } = Astro.props;
+const { title, date, place, cover, coverAlt } = event.data;
+---
+
+<a class="card" href={`/events/${event.id}`}>
+  <div class="media">
+    {cover && (
+      <Cover
+        src={cover}
+        alt={coverAlt}
+        widths={[400, 700, 1000]}
+        sizes="(max-width: 860px) 100vw, 40vw"
+      />
+    )}
+  </div>
+  <div class="text">
+    <p class="when">{formatMonth(date)}</p>
+    <h3>{title}</h3>
+    {place && <p class="where">{place}</p>}
+  </div>
+</a>
+
+<style>
+  .card {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: clamp(20px, 3vw, 40px);
+    align-items: center;
+    padding-block: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .media {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .when {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent-text);
+  }
+
+  h3 {
+    margin-top: 8px;
+    font-size: clamp(26px, 3vw, 40px);
+  }
+
+  .where {
+    margin-top: 8px;
+    color: var(--ink-soft);
+  }
+
+  .card:hover h3 {
+    color: var(--accent-text);
+  }
+
+  @media (max-width: 640px) {
+    .card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

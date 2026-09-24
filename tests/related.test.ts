@@ -35,7 +35,7 @@ describe('rankRelated', () => {
     '2026-06-05',
   );
   const other = item('post', 'husky', ['git-hooks'], [], '2024-02-21');
-  const photo = item('photo', 'bench', ['supabase'], [], '2026-05-01');
+  const photo = item('album', 'bench', ['supabase'], [], '2026-05-01');
 
   it('ranks explicit links above shared tags', () => {
     const related = rankRelated(cranny, [cranny, post, other, photo]);
@@ -49,7 +49,7 @@ describe('rankRelated', () => {
 
   it('filters by kind and limit', () => {
     const related = rankRelated(cranny, [post, photo], {
-      kinds: ['photo'],
+      kinds: ['album'],
       limit: 1,
     });
     expect(related.map(i => i.id)).toEqual(['bench']);

@@ -1,28 +1,29 @@
 ---
+import ButtonLink from '~/components/ui/ButtonLink.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Not found" noindex>
-  <section class="wrap">
-    <span class="mono">404</span>
-    <h1 class="display">Nothing here</h1>
-    <p>This page moved or never existed.</p>
-    <a class="mono" href="/">
-      Back to the start →
-    </a>
+  <section class="container page">
+    <p class="eyebrow">404</p>
+    <h1>This page doesn't exist.</h1>
+    <p class="muted">It moved or never existed.</p>
+    <ButtonLink href="/">Back to the start</ButtonLink>
   </section>
 </BaseLayout>
 
 <style>
-  section {
+  .page {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    min-height: 70vh;
+    align-items: start;
     justify-content: center;
+    gap: 20px;
+    min-height: 70vh;
   }
 
   h1 {
-    font-size: clamp(56px, 12vw, 200px);
+    font-size: clamp(44px, 8vw, 120px);
+    letter-spacing: -0.04em;
   }
 </style>

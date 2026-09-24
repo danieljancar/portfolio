@@ -13,9 +13,7 @@ const { tags, label = 'Tags' } = Astro.props;
   <ul class="tags" aria-label={label}>
     {tags.map(tag => (
       <li>
-        <a class="mono" href={tagHref(tag)}>
-          #{tag}
-        </a>
+        <a href={tagHref(tag)}>#{tag}</a>
       </li>
     ))}
   </ul>
@@ -25,7 +23,7 @@ const { tags, label = 'Tags' } = Astro.props;
   .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -33,8 +31,15 @@ const { tags, label = 'Tags' } = Astro.props;
 
   a {
     display: inline-block;
-    padding: 5px 9px;
+    padding: 6px 12px;
     border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      background 0.2s,
+      border-color 0.2s,
+      color 0.2s;
   }
 
   a:hover {

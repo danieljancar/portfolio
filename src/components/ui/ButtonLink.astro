@@ -1,0 +1,54 @@
+---
+import { linkAttrs } from '~/lib/links';
+
+interface Props {
+  href: string;
+  variant?: 'solid' | 'outline';
+}
+
+const { href, variant = 'solid' } = Astro.props;
+---
+
+<a class:list={['button', variant]} href={href} {...linkAttrs(href)}>
+  <slot />
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      border-color 0.2s,
+      transform 0.3s var(--ease-out);
+  }
+
+  .button:hover {
+    transform: translateY(-2px);
+  }
+
+  .solid {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  .solid:hover {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .outline {
+    border: 1px solid var(--line-strong);
+  }
+
+  .outline:hover {
+    border-color: var(--accent);
+    color: var(--accent-text);
+  }
+</style>

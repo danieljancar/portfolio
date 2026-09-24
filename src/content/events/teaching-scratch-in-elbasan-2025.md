@@ -2,7 +2,6 @@
 title: Teaching Scratch in Elbasan
 date: 2025-04-01
 place: Elbasan, Albania
-role: taught
 tags: [iStep, Scratch, Volunteering]
 cover: ../posts/teaching-scratch-in-elbasan-2025/istep_4_2025.jpeg
 coverAlt: Scratch workshop with kids

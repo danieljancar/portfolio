@@ -1,0 +1,46 @@
+---
+import ProjectCard from '~/components/cards/ProjectCard.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getProjects } from '~/lib/content';
+
+const projects = await getProjects();
+---
+
+<BaseLayout
+  title="Projects"
+  description="Apps, tools and side projects Daniel Jancar has built."
+>
+  <section class="container page">
+    <SectionHead title="Projects" as="h1">
+      <p>Apps, tools and side projects, from the idea to the store listing.</p>
+    </SectionHead>
+    <div class="grid">
+      {projects.map((project, i) => (
+        <ProjectCard project={project} large={i === 0} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-top: clamp(48px, 7vw, 96px);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(40px, 5vw, 64px) clamp(20px, 3vw, 40px);
+  }
+
+  .grid > :global(:first-child) {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 760px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

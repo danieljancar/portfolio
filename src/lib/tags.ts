@@ -1,5 +1,5 @@
 import { getEvents, getPosts, getProjects } from './content';
-import { getPhotos } from './photos';
+import { getAlbums } from './photos';
 import {
   rankRelated,
   tagSlug,
@@ -25,11 +25,11 @@ export function getItems(): Promise<Item[]> {
 }
 
 async function loadItems(): Promise<Item[]> {
-  const [posts, projects, events, photos] = await Promise.all([
+  const [posts, projects, events, albums] = await Promise.all([
     getPosts(),
     getProjects(),
     getEvents(),
-    getPhotos(),
+    getAlbums(),
   ]);
   return [
     ...posts.map((p): Item => ({
@@ -46,7 +46,7 @@ async function loadItems(): Promise<Item[]> {
       kind: 'project',
       id: p.id,
       title: p.data.name,
-      href: `/work/${p.id}`,
+      href: `/projects/${p.id}`,
       tags: p.data.tags,
       links: [],
       image: p.data.cover,
@@ -58,18 +58,21 @@ async function loadItems(): Promise<Item[]> {
       href: `/events/${e.id}`,
       date: e.data.date,
       tags: e.data.tags,
-      links: e.data.project ? [`project:${e.data.project.id}`] : [],
+      links: [
+        ...(e.data.project ? [`project:${e.data.project.id}`] : []),
+        ...(e.data.album ? [`album:${e.data.album.id}`] : []),
+      ],
       image: e.data.cover,
     })),
-    ...photos.map((p): Item => ({
-      kind: 'photo',
-      id: p.id,
-      title: p.data.title ?? p.data.alt,
-      href: `/photos/${p.id}`,
-      date: p.data.date,
-      tags: p.data.tags,
-      links: p.data.event ? [`event:${p.data.event.id}`] : [],
-      photo: p,
+    ...albums.map((a): Item => ({
+      kind: 'album',
+      id: a.id,
+      title: a.data.title,
+      href: `/photos/${a.id}`,
+      date: a.data.date,
+      tags: a.data.tags,
+      links: [],
+      image: a.data.cover,
     })),
   ];
 }

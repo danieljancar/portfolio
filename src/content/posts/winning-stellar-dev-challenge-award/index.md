@@ -9,8 +9,7 @@ tags:
 - tutorial
 - award
 cover: ./cover.png
-coverAlt: AI generated image of a mix between beach and computers.
-coverAiGenerated: true
+coverAlt: Illustration of a constellation of stars next to a play button
 project: stellar
 ---
 

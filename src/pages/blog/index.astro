@@ -1,43 +1,62 @@
 ---
-import BaseLayout from '~/layouts/BaseLayout.astro';
+import PostCard from '~/components/cards/PostCard.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
-import PostList from '~/components/blog/PostList.astro';
 import TagList from '~/components/ui/TagList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getPosts } from '~/lib/content';
 
 const posts = await getPosts();
-const tags = [...new Set(posts.flatMap(p => p.data.tags))].slice(0, 16);
+const [lead, ...rest] = posts;
+const tags = [...new Set(posts.flatMap(post => post.data.tags))].slice(0, 16);
 ---
 
 <BaseLayout
-  title="Writing"
-  description="Notes on things I've built, learned, or found worth sharing."
+  title="Blog"
+  description="Notes on things Daniel Jancar built, learned, or found worth sharing."
 >
-  <SectionHead title="Writing">
-    <a href="/rss.xml">RSS</a>
-  </SectionHead>
-  <p class="lede wrap">
-    Notes on things I've built, learned, or found worth sharing.
-  </p>
-  <div class="wrap filters">
+  <section class="container page">
+    <SectionHead title="Blog" as="h1">
+      <p>Notes on things I built, learned, or found worth sharing.</p>
+    </SectionHead>
     <TagList tags={tags} label="Topics" />
-  </div>
-  <PostList posts={posts} />
-  <div class="space"></div>
+    {lead && (
+      <div class="lead">
+        <PostCard post={lead} large />
+      </div>
+    )}
+    <div class="grid">
+      {rest.map(post => (
+        <PostCard post={post} />
+      ))}
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .lede {
-    max-width: 60ch;
-    margin-bottom: 32px;
-    font-size: 19px;
+  .page {
+    padding-top: clamp(48px, 7vw, 96px);
   }
 
-  .filters {
-    margin-bottom: 32px;
+  .lead {
+    margin-top: clamp(40px, 5vw, 64px);
   }
 
-  .space {
-    height: 96px;
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(40px, 5vw, 56px) clamp(20px, 3vw, 36px);
+    margin-top: clamp(48px, 6vw, 80px);
+  }
+
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

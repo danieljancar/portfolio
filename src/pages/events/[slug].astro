@@ -1,15 +1,15 @@
 ---
+import { getEntry, render } from 'astro:content';
+import Gallery from '~/components/media/Gallery.astro';
 import Cover from '~/components/media/Cover.astro';
-import { render } from 'astro:content';
-import BaseLayout from '~/layouts/BaseLayout.astro';
-import PhotoGrid from '~/components/media/PhotoGrid.astro';
-import TagList from '~/components/ui/TagList.astro';
+import ButtonLink from '~/components/ui/ButtonLink.astro';
 import RelatedList from '~/components/ui/RelatedList.astro';
-import { getRelated } from '~/lib/tags';
+import TagList from '~/components/ui/TagList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getEvents } from '~/lib/content';
 import { formatDate } from '~/lib/dates';
-import { getPhotosForEvent } from '~/lib/photos';
-import { themeStyle } from '~/lib/color';
+import { getAlbum } from '~/lib/photos';
+import { getRelated } from '~/lib/tags';
 import '~/styles/prose.css';
 
 export async function getStaticPaths() {
@@ -22,104 +22,139 @@ export async function getStaticPaths() {
 
 const { event } = Astro.props;
 const { Content } = await render(event);
-const photos = await getPhotosForEvent(event.id);
+const { title, date, endDate, place, cover, coverAlt, tags, links } =
+  event.data;
+const album = event.data.album
+  ? await getAlbum(event.data.album.id)
+  : undefined;
+const project = event.data.project
+  ? await getEntry(event.data.project)
+  : undefined;
 const related = await getRelated('event', event.id, {
+  limit: 4,
   kinds: ['post', 'project', 'event'],
-  limit: 6,
 });
-const theme = photos[0] ? themeStyle(photos[0].theme) : undefined;
-const dates = [event.data.date, event.data.endDate]
-  .filter(Boolean)
-  .map(d => formatDate(d as Date))
-  .join(' – ');
+const when = endDate
+  ? `${formatDate(date)} to ${formatDate(endDate)}`
+  : formatDate(date);
 ---
 
 <BaseLayout
-  title={event.data.title}
-  description={`${dates}${event.data.place ? `, ${event.data.place}` : ''}`}
-  image={event.data.cover?.src}
+  title={title}
+  description={place ? `${when}, ${place}` : when}
+  image={cover?.src}
 >
-  <header class="head" style={theme}>
-    {event.data.cover && (
-      <Cover
-        src={event.data.cover}
-        alt={event.data.coverAlt}
-        widths={[800, 1400, 2200]}
-        sizes="100vw"
-        loading="eager"
-      />
-    )}
-    <div class="text wrap">
-      <div class="mono">
-        {[dates, event.data.place].filter(Boolean).join(' · ')}
+  <article class="container page">
+    <a class="back" href="/events">
+      ← Events
+    </a>
+    <h1>{title}</h1>
+    <p class="meta">
+      <span>{when}</span>
+      {place && <span>{place}</span>}
+    </p>
+    {cover && (
+      <div class="cover">
+        <Cover
+          src={cover}
+          alt={coverAlt}
+          widths={[800, 1400, 2200]}
+          sizes="(max-width: 1400px) 100vw, 1320px"
+          loading="eager"
+        />
       </div>
-      <h1 class="display">{event.data.title}</h1>
-    </div>
-  </header>
-  <div class="body wrap">
-    <div class="prose">
-      <Content />
-    </div>
-    <TagList tags={event.data.tags} />
-    {event.data.links.length > 0 && (
-      <ul class="links">
-        {event.data.links.map(l => (
-          <li>
-            <a href={l.href}>{l.label} ↗</a>
-          </li>
-        ))}
-      </ul>
     )}
-  </div>
-  {photos.length > 0 && <PhotoGrid photos={photos} />}
+    <div class="body">
+      <div class="prose">
+        <Content />
+      </div>
+      <aside>
+        {links.map(link => (
+          <ButtonLink href={link.href} variant="outline">
+            {link.label} ↗
+          </ButtonLink>
+        ))}
+        {project && (
+          <ButtonLink href={`/projects/${project.id}`} variant="outline">
+            {project.data.name}
+          </ButtonLink>
+        )}
+        <TagList tags={tags} />
+      </aside>
+    </div>
+    {album && (
+      <section class="album">
+        <h2>Photos</h2>
+        <Gallery photos={album.photos} label={album.data.title} />
+      </section>
+    )}
+  </article>
   <RelatedList items={related} />
-  <div class="space"></div>
 </BaseLayout>
 
 <style>
-  .head {
-    position: relative;
-    height: 70vh;
-    min-height: 420px;
-    overflow: hidden;
-    background: var(--tint);
+  .page {
+    padding-top: clamp(40px, 6vw, 80px);
   }
 
-  .text {
-    position: absolute;
-    inset: auto 0 0;
-    padding-bottom: 40px;
-    color: #fff;
-    background: linear-gradient(transparent, rgb(0 0 0 / 0.6) 55%);
+  .back {
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+
+  .back:hover {
+    color: var(--accent-text);
   }
 
   h1 {
-    max-width: 1100px;
-    margin-top: 12px;
-    font-size: clamp(40px, 7vw, 110px);
+    max-width: 18ch;
+    margin-top: 20px;
+    font-size: clamp(40px, 6.4vw, 88px);
+    letter-spacing: -0.04em;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-top: 16px;
+    font-weight: 500;
+    color: var(--accent-text);
+  }
+
+  .cover {
+    margin-top: 40px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
   }
 
   .body {
+    display: grid;
+    grid-template-columns: minmax(0, 680px) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 80px);
+    padding-top: 48px;
+  }
+
+  aside {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 32px;
-    padding-block: 48px;
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
   }
 
-  .prose {
-    max-width: 680px;
+  .album {
+    padding-top: clamp(56px, 7vw, 96px);
   }
 
-  .links {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    font-size: 20px;
-    font-weight: 600;
+  .album h2 {
+    margin-bottom: 28px;
+    font-size: clamp(32px, 4vw, 48px);
   }
 
-  .space {
-    height: 96px;
+  @media (max-width: 860px) {
+    .body {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
