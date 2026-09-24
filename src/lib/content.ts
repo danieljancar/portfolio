@@ -1,4 +1,4 @@
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 export async function getSettings() {
   const entry = await getEntry('site', 'settings');
@@ -18,7 +18,11 @@ export async function getPosts() {
 
 export async function getProjects() {
   const projects = await getCollection('projects');
-  return projects.sort((a, b) => a.data.order - b.data.order);
+  return projects.sort(
+    (a, b) =>
+      Number(b.data.featured) - Number(a.data.featured) ||
+      a.data.order - b.data.order,
+  );
 }
 
 export async function getEvents() {
@@ -31,9 +35,13 @@ export async function getNotes() {
   return notes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
-export async function getRecommendations() {
-  const items = await getCollection('recommendations');
-  return items.sort((a, b) => a.data.order - b.data.order);
+let recommendations: Promise<CollectionEntry<'recommendations'>[]> | undefined;
+
+export function getRecommendations() {
+  recommendations ??= getCollection('recommendations').then(items =>
+    items.sort((a, b) => a.data.order - b.data.order),
+  );
+  return recommendations;
 }
 
 export async function getExperience() {

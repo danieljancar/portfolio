@@ -1,115 +1,117 @@
 ---
 import { getCollection } from 'astro:content';
-import { getSettings } from '~/lib/content';
+import { getRecommendations, getSettings } from '~/lib/content';
 import { linkAttrs } from '~/lib/links';
 
-const settings = await getSettings();
-const legal = await getCollection('legal');
+const [settings, legal, recommendations] = await Promise.all([
+  getSettings(),
+  getCollection('legal'),
+  getRecommendations(),
+]);
+const links = [
+  ...settings.socials,
+  { label: 'Email', href: `mailto:${settings.email}` },
+];
 const more = [
   { href: '/now', label: 'Now' },
-  { href: '/recommended', label: 'Recommended' },
+  ...(recommendations.length > 0
+    ? [{ href: '/recommended', label: 'Recommended' }]
+    : []),
   { href: '/tags', label: 'Tags' },
   { href: '/rss.xml', label: 'RSS' },
+  ...legal.map(doc => ({ href: `/legal/${doc.id}`, label: doc.data.title })),
 ];
+const handle = (href: string) =>
+  href.startsWith('mailto:')
+    ? href.slice(7)
+    : href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---
 
-<footer class="foot">
-  <div class="container">
-    <p class="lead">Let's talk.</p>
-    <a class="mail" href={`mailto:${settings.email}`}>
-      {settings.email}
-    </a>
-
-    <div class="columns">
-      <nav aria-label="Profiles">
-        {settings.socials.map(link => (
-          <a href={link.href} {...linkAttrs(link.href)}>
-            {link.label}
-            <span aria-hidden="true">↗</span>
-          </a>
-        ))}
-      </nav>
-      <nav aria-label="More">
-        {more.map(link => (
-          <a href={link.href}>{link.label}</a>
-        ))}
-      </nav>
-      <nav aria-label="Legal">
-        {legal.map(doc => (
-          <a href={`/legal/${doc.id}`}>{doc.data.title}</a>
-        ))}
-      </nav>
-    </div>
-
-    <p class="copy">
+<footer class="foot" id="links">
+  <p class="mono">Say hello</p>
+  <ul>
+    {links.map(link => (
+      <li>
+        <a href={link.href} {...linkAttrs(link.href)}>
+          <span class="display name">{link.label}</span>
+          <span class="mono">{handle(link.href)}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <div class="row mono">
+    <nav aria-label="More">
+      {more.map(link => (
+        <a href={link.href}>{link.label}</a>
+      ))}
+    </nav>
+    <span>
       © {new Date().getFullYear()} {settings.name}
-    </p>
+    </span>
   </div>
 </footer>
 
 <style>
   .foot {
-    margin-top: clamp(80px, 10vw, 140px);
-    padding-block: 72px 32px;
+    margin-top: clamp(64px, 8vw, 120px);
+    padding: 40px var(--gutter) 24px;
     background: var(--green);
     color: var(--on-accent);
   }
 
-  .lead {
-    font-size: 18px;
-    font-weight: 500;
+  ul {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .mail {
-    display: inline-block;
-    margin-top: 8px;
-    font-family: var(--font-display);
-    font-size: clamp(32px, 6vw, 72px);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    word-break: break-word;
-    background: linear-gradient(currentColor, currentColor) 0 100% / 0 3px
-      no-repeat;
-    transition: background-size 0.4s var(--ease-out);
+  li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgb(11 13 10 / 0.3);
   }
 
-  .mail:hover {
-    background-size: 100% 3px;
+  li a:hover {
+    color: inherit;
   }
 
-  .columns {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 32px;
-    margin-top: 64px;
+  .name {
+    font-size: clamp(40px, 8vw, 128px);
+    transition: font-stretch 0.45s var(--ease-out);
+  }
+
+  li a:hover .name {
+    font-stretch: 62%;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-top: 32px;
+    color: var(--green-deep);
   }
 
   nav {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  nav a {
-    width: fit-content;
-    font-weight: 500;
+    flex-wrap: wrap;
+    gap: 8px 20px;
   }
 
   nav a:hover {
+    color: var(--on-accent);
     text-decoration: underline;
-    text-underline-offset: 4px;
+    text-underline-offset: 3px;
   }
 
-  .copy {
-    margin-top: 56px;
-    font-size: 14px;
-    opacity: 0.75;
-  }
-
-  @media (max-width: 640px) {
-    .columns {
-      grid-template-columns: 1fr 1fr;
+  @media (max-width: 600px) {
+    li a {
+      flex-direction: column;
+      gap: 0;
     }
   }
 </style>

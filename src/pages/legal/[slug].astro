@@ -14,11 +14,12 @@ const { Content } = await render(doc);
 ---
 
 <BaseLayout title={doc.data.title} description={doc.data.description}>
-  <article class="container page">
-    <p class="meta">
-      Version {doc.data.version}, updated {formatDate(doc.data.updated)}
-    </p>
-    <h1>{doc.data.title}</h1>
+  <article class="wrap">
+    <ul class="mono meta">
+      <li>Version {doc.data.version}</li>
+      <li>{formatDate(doc.data.updated)}</li>
+    </ul>
+    <h1 class="display">{doc.data.title}</h1>
     <div class="prose">
       <Content />
     </div>
@@ -26,18 +27,22 @@ const { Content } = await render(doc);
 </BaseLayout>
 
 <style>
-  .page {
-    max-width: calc(760px + 2 * var(--gutter));
-    padding-top: clamp(48px, 7vw, 96px);
+  article {
+    max-width: 780px;
+    padding-block: 64px 0;
   }
 
   .meta {
-    font-weight: 500;
-    color: var(--accent-text);
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-soft);
   }
 
   h1 {
     margin: 12px 0 40px;
-    font-size: clamp(40px, 6vw, 72px);
+    font-size: clamp(40px, 6vw, 80px);
   }
 </style>

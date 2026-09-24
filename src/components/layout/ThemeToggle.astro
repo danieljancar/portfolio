@@ -59,18 +59,17 @@
     height: 40px;
     padding: 0;
     border: 1px solid var(--line);
-    border-radius: 999px;
     background: transparent;
     color: var(--ink);
     cursor: pointer;
     transition:
-      border-color 0.2s,
-      transform 0.4s var(--ease-out);
+      background 0.2s,
+      color 0.2s;
   }
 
   .toggle:hover {
-    border-color: var(--accent);
-    transform: rotate(20deg);
+    background: var(--ink);
+    color: var(--ground);
   }
 
   .toggle svg {

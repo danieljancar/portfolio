@@ -1,26 +1,33 @@
 ---
 import Photo from '~/components/media/Photo.astro';
-import type { Album, Photo as PhotoType } from '~/lib/photos';
+import { themeStyle } from '~/lib/color';
+import type { Photo as PhotoType } from '~/lib/photos';
 
 interface Props {
   center: PhotoType;
   around: PhotoType[];
-  album: Album;
+  caption: string;
 }
 
-const { center, around, album } = Astro.props;
+const { center, around, caption } = Astro.props;
 const positions = [
   { w: '22vw', h: '28vh', x0: '-30vw', y0: '-26vh', x1: '-80vw', y1: '-70vh' },
   { w: '18vw', h: '24vh', x0: '30vw', y0: '-28vh', x1: '80vw', y1: '-70vh' },
   { w: '16vw', h: '30vh', x0: '-34vw', y0: '22vh', x1: '-90vw', y1: '70vh' },
   { w: '20vw', h: '22vh', x0: '32vw', y0: '26vh', x1: '90vw', y1: '70vh' },
+  { w: '12vw', h: '16vh', x0: '0vw', y0: '-36vh', x1: '0vw', y1: '-90vh' },
+  { w: '12vw', h: '16vh', x0: '0vw', y0: '36vh', x1: '0vw', y1: '90vh' },
 ];
 const flyers = around
   .slice(0, positions.length)
   .map((photo, i) => ({ photo, ...positions[i] }));
 ---
 
-<section class="zoom" aria-label={album.data.title}>
+<section
+  class="zoom-in"
+  style={themeStyle(center.theme)}
+  aria-label="Featured photo"
+>
   <div class="stick">
     {flyers.map(f => (
       <div
@@ -31,20 +38,22 @@ const flyers = around
       </div>
     ))}
     <div class="center">
-      <Photo photo={center} widths={[800, 1400, 2000, 2400]} sizes="100vw" />
+      <Photo photo={center} widths={[800, 1400, 2000, 2800]} sizes="100vw" />
     </div>
-    <a class="caption container" href={`/photos/${album.id}`}>
-      <span class="title">{album.data.title}</span>
-      <span class="link">Open the album →</span>
+    <a class="caption" href={center.href}>
+      <span class="mono">{caption}</span>
+      <h2 class="display">Look closer</h2>
     </a>
   </div>
 </section>
 
 <style>
-  .zoom {
+  .zoom-in {
     position: relative;
-    height: 320vh;
-    view-timeline-name: --zoom;
+    height: 360vh;
+    background: var(--tint);
+    --dim-strength: 1;
+    view-timeline-name: --zoom-in;
   }
 
   .stick {
@@ -58,66 +67,58 @@ const flyers = around
     position: absolute;
     left: 50%;
     top: 50%;
-    overflow: hidden;
-    border-radius: 14px;
-    transform: translate(-50%, -50%) translate(var(--x0), var(--y0)) scale(0.6);
+    transform: translate(-50%, -50%) translate(var(--x0), var(--y0)) scale(0.5);
   }
 
   .center {
     position: absolute;
     inset: 0;
-    clip-path: inset(34% 38% round 24px);
+    clip-path: inset(38% 40% round 999px);
   }
 
   .caption {
     position: absolute;
     inset: auto 0 0;
+    padding: 80px var(--gutter) var(--gutter);
+    background: linear-gradient(transparent, rgb(0 0 0 / 0.55));
     z-index: 3;
     display: flex;
-    justify-content: space-between;
-    align-items: end;
-    gap: 16px;
-    max-width: none;
-    padding-block: 120px 36px;
-    color: #f4f3ee;
-    background: linear-gradient(transparent, rgb(0 0 0 / 0.55));
+    flex-direction: column;
+    gap: 6px;
+    color: #fff;
+    text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
   }
 
-  .title {
-    font-family: var(--font-display);
-    font-size: clamp(32px, 5vw, 64px);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    line-height: 1;
+  .caption:hover {
+    color: #fff;
   }
 
-  .link {
-    font-weight: 600;
-    white-space: nowrap;
+  h2 {
+    font-size: 9vw;
   }
 
   @supports (animation-timeline: view()) {
     .flyer {
       animation: fly linear both;
-      animation-timeline: --zoom;
+      animation-timeline: --zoom-in;
       animation-range: contain 0% contain 100%;
     }
 
     .center {
       animation: open linear both;
-      animation-timeline: --zoom;
+      animation-timeline: --zoom-in;
       animation-range: contain 0% contain 80%;
     }
 
     .caption {
-      animation: show linear both;
-      animation-timeline: --zoom;
+      animation: rise linear both;
+      animation-timeline: --zoom-in;
       animation-range: contain 60% contain 90%;
     }
   }
 
   @supports not (animation-timeline: view()) {
-    .zoom {
+    .zoom-in {
       height: auto;
     }
 
@@ -138,21 +139,24 @@ const flyers = around
   @keyframes fly {
     to {
       transform: translate(-50%, -50%) translate(var(--x1), var(--y1))
-        scale(2.4);
+        scale(2.6);
       opacity: 0;
     }
   }
 
   @keyframes open {
+    60% {
+      clip-path: inset(20% 24% round 40px);
+    }
     to {
       clip-path: inset(0 0 round 0);
     }
   }
 
-  @keyframes show {
+  @keyframes rise {
     from {
       opacity: 0;
-      transform: translateY(32px);
+      transform: translateY(40px);
     }
   }
 </style>

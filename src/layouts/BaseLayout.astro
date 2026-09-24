@@ -8,6 +8,7 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  themeStyle?: string;
   noindex?: boolean;
 }
 
@@ -16,6 +17,7 @@ const {
   title,
   description = settings.description,
   image = '/og.jpg',
+  themeStyle,
   noindex = false,
 } = Astro.props;
 const fullTitle = title ? `${title} | ${settings.name}` : settings.name;
@@ -54,7 +56,7 @@ const ogImage = new URL(image, Astro.site);
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="theme-color"
-      content="#f4f3ee"
+      content="#ecebe4"
       media="(prefers-color-scheme: light)"
     />
     <meta
@@ -78,8 +80,8 @@ const ogImage = new URL(image, Astro.site);
       href="/rss.xml"
     />
   </head>
-  <body>
-    <a class="skip" href="#main">
+  <body style={themeStyle}>
+    <a class="skip mono" href="#main">
       Skip to content
     </a>
     <SiteHeader />
@@ -97,7 +99,6 @@ const ogImage = new URL(image, Astro.site);
     left: 8px;
     z-index: 100;
     padding: 10px 14px;
-    border-radius: 999px;
     background: var(--ink);
     color: var(--ground);
     transform: translateY(-200%);

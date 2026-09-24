@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.props;
 const groups: { kind: Kind; title: string }[] = [
-  { kind: 'project', title: 'Projects' },
+  { kind: 'project', title: 'Work' },
   { kind: 'post', title: 'Posts' },
   { kind: 'event', title: 'Events' },
   { kind: 'album', title: 'Albums' },
@@ -24,14 +24,12 @@ const byDate = (a: { date?: Date }, b: { date?: Date }) =>
   title={`#${tag.label}`}
   description={`Everything tagged ${tag.label}.`}
 >
-  <section class="container page">
-    <SectionHead
-      title={`#${tag.label}`}
-      href="/tags"
-      linkLabel="All tags"
-      as="h1"
-    />
-  </section>
+  <SectionHead
+    title={`#${tag.label}`}
+    href="/tags"
+    linkLabel="All tags"
+    as="h1"
+  />
   {groups.map(group => (
     <RelatedList
       title={group.title}
@@ -39,9 +37,3 @@ const byDate = (a: { date?: Date }, b: { date?: Date }) =>
     />
   ))}
 </BaseLayout>
-
-<style>
-  .page {
-    padding-top: clamp(48px, 7vw, 96px);
-  }
-</style>

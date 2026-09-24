@@ -5,16 +5,16 @@ interface Props {
   headings: MarkdownHeading[];
 }
 
-const items = Astro.props.headings.filter(heading => heading.depth === 2);
+const items = Astro.props.headings.filter(h => h.depth === 2);
 ---
 
 {items.length > 1 && (
   <nav class="toc" aria-label="Contents">
-    <h2>Contents</h2>
+    <span class="mono label">Contents</span>
     <ol>
-      {items.map(heading => (
+      {items.map(h => (
         <li>
-          <a href={`#${heading.slug}`}>{heading.text}</a>
+          <a href={`#${h.slug}`}>{h.text}</a>
         </li>
       ))}
     </ol>
@@ -22,12 +22,15 @@ const items = Astro.props.headings.filter(heading => heading.depth === 2);
 )}
 
 <style>
-  h2 {
+  .toc {
+    position: sticky;
+    top: calc(var(--bar-height) + 32px);
+    align-self: start;
+  }
+
+  .label {
+    display: block;
     margin-bottom: 12px;
-    font-family: var(--font-body);
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0;
     color: var(--ink-soft);
   }
 
@@ -35,23 +38,19 @@ const items = Astro.props.headings.filter(heading => heading.depth === 2);
     margin: 0;
     padding: 0;
     list-style: none;
-    border-left: 1px solid var(--line);
   }
 
   a {
     display: block;
-    padding: 6px 0 6px 16px;
-    margin-left: -1px;
-    border-left: 2px solid transparent;
-    font-size: 15px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 14px;
     color: var(--ink-soft);
-    transition:
-      color 0.2s,
-      border-color 0.2s;
   }
 
   a:hover {
     color: var(--ink);
-    border-left-color: var(--accent);
+    box-shadow: inset 3px 0 0 var(--accent);
+    padding-left: 10px;
   }
 </style>

@@ -2,6 +2,8 @@ import type { ImageMetadata } from 'astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import rawMeta from '../generated/photo-meta.json';
 import type { PhotoMeta } from '../integrations/photo-meta/core';
+import { themeFromPalette, type Theme } from './color';
+import { photoSlug } from './photo-slug';
 
 export type { PhotoMeta };
 
@@ -9,8 +11,11 @@ export interface Photo {
   id: string;
   album: string;
   file: string;
+  slug: string;
+  href: string;
   image: ImageMetadata;
   meta: PhotoMeta;
+  theme: Theme;
 }
 
 export type Album = CollectionEntry<'albums'> & { photos: Photo[] };
@@ -47,12 +52,17 @@ function photosIn(album: string): Photo[] {
     .filter(([path]) => path.startsWith(prefix))
     .map(([path, image]) => {
       const file = path.slice(prefix.length);
+      const slug = photoSlug(file);
+      const data = meta[`${album}/${file}`] ?? fallback;
       return {
         id: `${album}/${file}`,
         album,
         file,
+        slug,
+        href: `/photos/${album}/${slug}`,
         image,
-        meta: meta[`${album}/${file}`] ?? fallback,
+        meta: data,
+        theme: themeFromPalette(data.palette),
       };
     })
     .sort(byTakenAt);
@@ -87,9 +97,14 @@ function interleave<T>(lists: T[][]): T[] {
     .filter((item): item is T => item !== undefined);
 }
 
-export async function getPhotos(ids: string[]): Promise<Photo[]> {
-  const photos = (await getAlbums()).flatMap(album => album.photos);
-  return ids
-    .map(id => photos.find(photo => photo.id === id))
-    .filter((photo): photo is Photo => photo !== undefined);
+export function cameraLine(photo: Photo): string[] {
+  const { camera, focalLength, aperture, shutter, iso } = photo.meta.exif;
+  return [camera, focalLength, aperture, shutter, iso].filter(
+    (value): value is string => Boolean(value),
+  );
+}
+
+export function takenAt(photo: Photo): Date | undefined {
+  const value = photo.meta.exif.takenAt;
+  return value ? new Date(value) : undefined;
 }

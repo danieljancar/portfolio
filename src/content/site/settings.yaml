@@ -13,10 +13,6 @@ about: |-
   I did my apprenticeship as an application developer at Luzerner Kantonalbank, building Angular and Ionic apps, among them the e-banking app, and now work there in project management. Outside of work I take on projects in different areas, from apps and websites to design, branding, photography and events. I like meeting new people and hearing about their stories and passions.
 
   When I'm not at a keyboard you'll probably find me outside, in the gym, making music with my Guggenmusig, reading, enjoying a good meal or hiking in the mountains.
-heroPhotos:
-  - lucerne-old-town/DSCF1157.jpg
-  - lucerne-old-town/DSCF1133.jpg
-  - lucerne-old-town/DSCF1164.jpg
 portrait: ./portrait.jpg
 portraitAlt: Portrait of Daniel Jancar
 skills:

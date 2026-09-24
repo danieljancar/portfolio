@@ -1,0 +1,188 @@
+---
+import { render } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
+import RelatedList from '~/components/ui/RelatedList.astro';
+import TagList from '~/components/ui/TagList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getProjects } from '~/lib/content';
+import { linkAttrs } from '~/lib/links';
+import { getRelated } from '~/lib/tags';
+import '~/styles/prose.css';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map(project => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const related = await getRelated('project', project.id, { limit: 8 });
+const { name, tagline, kind, status, year, role, stack, tags, links } =
+  project.data;
+const statusLabel = {
+  live: 'Live',
+  'in-progress': 'In progress',
+  archived: 'Archived',
+}[status];
+const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
+---
+
+<BaseLayout title={name} description={tagline} image={project.data.cover?.src}>
+  <header class="head wrap">
+    <div>
+      <a class="mono back" href="/work">
+        ← Work
+      </a>
+      <h1 class="display">{name}</h1>
+      <p class="tagline">{tagline}</p>
+      <ul class="facts mono">
+        {facts.map(fact => (
+          <li>{fact}</li>
+        ))}
+      </ul>
+    </div>
+    <div class:list={['image', !project.data.cover && 'empty']}>
+      {project.data.cover && (
+        <Cover
+          src={project.data.cover}
+          alt={project.data.coverAlt}
+          widths={[500, 900, 1200]}
+          sizes="(max-width: 900px) 100vw, 480px"
+          loading="eager"
+        />
+      )}
+    </div>
+  </header>
+  <div class="body wrap">
+    <div class="prose">
+      <Content />
+    </div>
+    <aside>
+      {links.length > 0 && (
+        <div>
+          <span class="mono soft">Links</span>
+          <ul class="links">
+            {links.map(link => (
+              <li>
+                <a href={link.href} {...linkAttrs(link.href)}>
+                  {link.label} ↗
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {stack.length > 0 && (
+        <div>
+          <span class="mono soft">Stack</span>
+          <ul class="stack">
+            {stack.map(item => (
+              <li class="mono">{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {tags.length > 0 && (
+        <div>
+          <span class="mono soft">Tags</span>
+          <TagList tags={tags} />
+        </div>
+      )}
+    </aside>
+  </div>
+  <RelatedList items={related} title="Connected" />
+</BaseLayout>
+
+<style>
+  .head {
+    display: grid;
+    grid-template-columns: 1fr 480px;
+    gap: 40px;
+    align-items: end;
+    padding-top: 48px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .back {
+    color: var(--ink-soft);
+  }
+
+  h1 {
+    margin-top: 28px;
+    font-size: clamp(56px, 10vw, 160px);
+  }
+
+  .tagline {
+    margin-top: 16px;
+    font-size: 24px;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-soft);
+  }
+
+  .image {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .empty {
+    background: var(--accent);
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: minmax(0, 680px) 1fr;
+    gap: 64px;
+    padding-top: 48px;
+  }
+
+  aside {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  aside ul {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .stack li {
+    padding: 4px 8px;
+    border: 1px solid var(--line);
+  }
+
+  .links li + li {
+    margin-top: 8px;
+  }
+
+  .links a {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .head,
+    .body {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

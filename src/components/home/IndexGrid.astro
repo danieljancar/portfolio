@@ -1,0 +1,295 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import Cover from '~/components/media/Cover.astro';
+import Photo from '~/components/media/Photo.astro';
+import type { Photo as PhotoType } from '~/lib/photos';
+
+interface Props {
+  workImage?: ImageMetadata;
+  photos: PhotoType[];
+  eventImage?: ImageMetadata;
+  portrait?: ImageMetadata;
+  now: string;
+  recommendations: boolean;
+}
+
+const { workImage, photos, eventImage, portrait, now, recommendations } =
+  Astro.props;
+---
+
+<section class="index" aria-label="Index">
+  <a class="cell c5 m2 tall" href="/work">
+    <span class="arrow" aria-hidden="true">
+      →
+    </span>
+    {workImage && (
+      <div class="media big">
+        <Cover
+          src={workImage}
+          alt=""
+          widths={[500, 900]}
+          sizes="(max-width: 900px) 90vw, 38vw"
+        />
+      </div>
+    )}
+    <h3 class="display">Work</h3>
+  </a>
+
+  <a class="cell c4" href="/photos">
+    <span class="arrow" aria-hidden="true">
+      →
+    </span>
+    <div class="strip">
+      {photos.slice(0, 3).map(photo => (
+        <div class="media">
+          <Photo photo={photo} widths={[240, 400]} sizes="120px" />
+        </div>
+      ))}
+    </div>
+    <h3 class="display">Photos</h3>
+  </a>
+
+  <a class="cell c3" href="/about">
+    <span class="arrow" aria-hidden="true">
+      →
+    </span>
+    {portrait && (
+      <div class="media portrait">
+        <Image src={portrait} alt="" widths={[200, 400]} sizes="120px" />
+      </div>
+    )}
+    <h3 class="display small">About</h3>
+  </a>
+
+  <a class="cell c4 m2" href="/events">
+    <span class="arrow" aria-hidden="true">
+      →
+    </span>
+    {eventImage && (
+      <div class="media event">
+        <Cover src={eventImage} alt="" widths={[300, 600]} sizes="240px" />
+      </div>
+    )}
+    <h3 class="display">Events</h3>
+  </a>
+
+  <a class="cell c3 m2 accent" href="/blog">
+    <span class="arrow" aria-hidden="true">
+      →
+    </span>
+    <h3 class="display">Blog</h3>
+  </a>
+
+  {recommendations && (
+    <>
+      <a class="cell c4" href="/recommended#listening">
+        <span class="arrow" aria-hidden="true">
+          →
+        </span>
+        <h3 class="display small">Listen</h3>
+      </a>
+      <a class="cell c4" href="/recommended#reading">
+        <span class="arrow" aria-hidden="true">
+          →
+        </span>
+        <h3 class="display small">Read</h3>
+      </a>
+    </>
+  )}
+
+  <a class:list={['cell m2', recommendations ? 'c4' : 'c8']} href="/now">
+    <span class="arrow" aria-hidden="true">
+      →
+    </span>
+    <p class="now">{now}</p>
+    <h3 class="display small">Now</h3>
+  </a>
+
+  {!recommendations && (
+    <a class="cell c4 m2" href="#links">
+      <span class="arrow" aria-hidden="true">
+        ↓
+      </span>
+      <h3 class="display small">Say hello</h3>
+    </a>
+  )}
+</section>
+
+<style>
+  .index {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 240px;
+    padding: 20px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+
+  .cell:hover {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  .c3 {
+    grid-column: span 3;
+  }
+
+  .c4 {
+    grid-column: span 4;
+  }
+
+  .c5 {
+    grid-column: span 5;
+  }
+
+  .c8 {
+    grid-column: span 8;
+  }
+
+  .tall {
+    grid-row: span 2;
+  }
+
+  .accent {
+    justify-content: end;
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  h3 {
+    font-size: clamp(36px, 3.6vw, 52px);
+  }
+
+  h3.small {
+    font-size: clamp(30px, 3vw, 40px);
+  }
+
+  .arrow {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 20px;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .cell:hover .arrow {
+    transform: rotate(-45deg);
+  }
+
+  .media {
+    overflow: hidden;
+  }
+
+  .media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .cell:hover .media :global(img) {
+    transform: scale(1.05);
+  }
+
+  .big {
+    flex-grow: 1;
+    max-height: 340px;
+    margin-top: 28px;
+  }
+
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    max-width: 380px;
+    margin-top: 28px;
+  }
+
+  .strip .media {
+    aspect-ratio: 3 / 4;
+  }
+
+  .portrait {
+    width: 96px;
+    aspect-ratio: 4 / 5;
+  }
+
+  .event {
+    width: 200px;
+    aspect-ratio: 3 / 2;
+  }
+
+  .now {
+    max-width: 32ch;
+    padding-right: 24px;
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  @supports (animation-timeline: view()) {
+    .cell {
+      animation: fade linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .index {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c3,
+    .c4,
+    .c5,
+    .c8 {
+      grid-column: span 1;
+    }
+
+    .m2 {
+      grid-column: span 2;
+    }
+
+    .tall {
+      grid-row: auto;
+    }
+
+    .cell {
+      min-height: 180px;
+      padding: 16px;
+    }
+
+    h3,
+    h3.small {
+      font-size: clamp(24px, 7.4vw, 40px);
+    }
+
+    .big {
+      max-height: 260px;
+    }
+
+    .event {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,70 +1,51 @@
 ---
-import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
 import { getTags } from '~/lib/tags';
 
 const tags = await getTags();
+const max = Math.max(1, ...tags.map(t => t.items.length));
+const size = (count: number) => 28 + Math.round((count / max) * 72);
 ---
 
 <BaseLayout title="Tags" description="Everything on the site by topic.">
-  <section class="container page">
-    <SectionHead title="Tags" as="h1">
-      <p>Posts, projects, events and albums, grouped by topic.</p>
-    </SectionHead>
-    <ul class="tags">
-      {tags.map(tag => (
-        <li>
-          <a href={`/tags/${tag.slug}`}>
-            #{tag.label}
-            <span>{tag.items.length}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
+  <SectionHead title="Tags" as="h1" />
+  <ul class="cloud wrap">
+    {tags.map(tag => (
+      <li>
+        <a
+          href={`/tags/${tag.slug}`}
+          style={`font-size:${size(tag.items.length)}px`}
+        >
+          <span class="display">{tag.label}</span>
+          <sup class="mono">{tag.items.length}</sup>
+        </a>
+      </li>
+    ))}
+  </ul>
 </BaseLayout>
 
 <style>
-  .page {
-    padding-top: clamp(48px, 7vw, 96px);
-  }
-
-  .tags {
+  .cloud {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    align-items: baseline;
+    gap: 8px 28px;
     margin: 0;
-    padding: 0;
     list-style: none;
   }
 
-  a {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 18px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    font-size: 18px;
-    font-weight: 500;
-    transition:
-      background 0.2s,
-      border-color 0.2s,
-      color 0.2s;
+  a:hover .display {
+    color: var(--accent-text);
+    font-stretch: 62%;
   }
 
-  a span {
-    font-size: 14px;
+  .display {
+    transition: font-stretch 0.4s var(--ease-out);
+  }
+
+  sup {
+    margin-left: 4px;
     color: var(--ink-soft);
-  }
-
-  a:hover {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: var(--on-accent);
-  }
-
-  a:hover span {
-    color: inherit;
   }
 </style>

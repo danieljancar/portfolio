@@ -34,7 +34,7 @@ publishes the site to GitHub Pages.
 | Collection        | Format                     | Used on                                  |
 | ----------------- | -------------------------- | ---------------------------------------- |
 | `posts`           | Markdown folder per post   | `/blog`, `/blog/<slug>`, home, RSS, tags |
-| `projects`        | Markdown                   | `/projects`, `/projects/<slug>`, home    |
+| `projects`        | Markdown                   | `/work`, `/work/<slug>`, home            |
 | `albums`          | Markdown folder + photos   | `/photos`, `/photos/<album>`, home       |
 | `events`          | Markdown                   | `/events`, `/events/<slug>`              |
 | `experience`      | YAML                       | `/about`                                 |
@@ -51,8 +51,10 @@ project, a post to a project. A broken reference fails the build.
 Photos live in albums, one folder per shoot. Every image in the folder is part
 of the album; there is no per-photo entry and no description to write. The
 album's `index.md` holds the title, date, place, cover, whether it shows on the
-home page, and an optional ordered list of highlights. The home page hero uses
-the photos listed in `heroPhotos` in the site settings.
+home page, and an optional ordered list of highlights. Highlights of featured
+albums feed the photo ring, the zoom scenes and the index grid on the home page.
+Every photo also gets its own page at `/photos/<album>/<photo>`, tinted with
+the colours of the photo.
 
 1. Before the content layer loads, `src/integrations/photo-meta` reads every
    album photo: size, average brightness, colour palette (`node-vibrant`) and
@@ -61,8 +63,8 @@ the photos listed in `heroPhotos` in the site settings.
    `node_modules/.cache`.
 2. `src/lib/photos.ts` finds the images with `import.meta.glob` and joins them
    with that data. Astro's image service builds the responsive sizes.
-3. Galleries use a masonry layout and a `<dialog>` lightbox with keyboard and
-   swipe navigation.
+3. Grids link to the photo pages, which have previous and next links and
+   arrow key navigation within the album.
 4. Photos never carry a location. The CMS converts uploads to WebP at 2400 px,
    which drops all metadata. For files added by hand, `npm run photos -- --clean`
    removes GPS and scales anything above 2400 px down, keeping camera model and

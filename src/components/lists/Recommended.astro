@@ -1,0 +1,120 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { linkAttrs } from '~/lib/links';
+
+interface Props {
+  items: CollectionEntry<'recommendations'>[];
+}
+
+const { items } = Astro.props;
+const columns = [
+  {
+    id: 'listening',
+    title: 'Listening',
+    items: items.filter(i => i.data.kind === 'podcast'),
+  },
+  {
+    id: 'reading',
+    title: 'Reading',
+    items: items.filter(i => i.data.kind !== 'podcast'),
+  },
+].filter(column => column.items.length > 0);
+---
+
+<div class="recs">
+  {columns.map(column => (
+    <div class="column" id={column.id}>
+      <h3 class="display">{column.title}</h3>
+      <ul>
+        {column.items.map(item => (
+          <li>
+            <a class="rec" href={item.data.url} {...linkAttrs(item.data.url)}>
+              <div>
+                <b>{item.data.name}</b>
+                <div class="mono soft">{item.data.topic}</div>
+                {item.data.note && <p>{item.data.note}</p>}
+              </div>
+              <span class="arrow" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .recs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .column {
+    padding: 32px var(--gutter);
+  }
+
+  .column + .column {
+    border-left: 1px solid var(--line);
+  }
+
+  h3 {
+    margin-bottom: 16px;
+    font-size: 40px;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rec {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .rec:hover {
+    color: inherit;
+  }
+
+  .rec:hover b {
+    color: var(--accent-text);
+  }
+
+  b {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .rec p {
+    margin-top: 6px;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  .arrow {
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .rec:hover .arrow {
+    transform: translate(3px, -3px);
+  }
+
+  @media (max-width: 800px) {
+    .recs {
+      grid-template-columns: 1fr;
+    }
+
+    .column + .column {
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

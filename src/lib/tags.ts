@@ -46,7 +46,7 @@ async function loadItems(): Promise<Item[]> {
       kind: 'project',
       id: p.id,
       title: p.data.name,
-      href: `/projects/${p.id}`,
+      href: `/work/${p.id}`,
       tags: p.data.tags,
       links: [],
       image: p.data.cover,

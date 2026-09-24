@@ -1,166 +1,98 @@
 ---
-import AlbumCard from '~/components/cards/AlbumCard.astro';
-import PostCard from '~/components/cards/PostCard.astro';
-import ProjectCard from '~/components/cards/ProjectCard.astro';
 import Hero from '~/components/home/Hero.astro';
+import IndexGrid from '~/components/home/IndexGrid.astro';
 import ZoomIn from '~/components/home/ZoomIn.astro';
-import ButtonLink from '~/components/ui/ButtonLink.astro';
+import ZoomOut from '~/components/home/ZoomOut.astro';
+import EventTickets from '~/components/lists/EventTickets.astro';
+import NotesList from '~/components/lists/NotesList.astro';
+import PostList from '~/components/lists/PostList.astro';
+import Recommended from '~/components/lists/Recommended.astro';
+import WorkBento from '~/components/lists/WorkBento.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
-import { Image } from 'astro:assets';
 import BaseLayout from '~/layouts/BaseLayout.astro';
-import { getPosts, getProjects, getSettings } from '~/lib/content';
-import { getAlbums, getHighlights, getPhotos } from '~/lib/photos';
+import {
+  getEvents,
+  getNotes,
+  getPosts,
+  getProjects,
+  getRecommendations,
+  getSettings,
+} from '~/lib/content';
+import { getAlbums, getHighlights, type Photo } from '~/lib/photos';
 
-const [settings, projects, posts, albums, highlights] = await Promise.all([
-  getSettings(),
-  getProjects(),
-  getPosts(),
-  getAlbums(),
-  getHighlights(),
-]);
+const [settings, work, events, posts, notes, recommendations, albums] =
+  await Promise.all([
+    getSettings(),
+    getProjects(),
+    getEvents(),
+    getPosts(),
+    getNotes(),
+    getRecommendations(),
+    getAlbums(),
+  ]);
+const highlights = await getHighlights();
 
-const heroPhotos = await getPhotos(settings.heroPhotos);
-const [zoomCenter, ...rest] = highlights.filter(
-  photo => !settings.heroPhotos.includes(photo.id),
+const wide = (photo: Photo) => photo.meta.width > photo.meta.height;
+const landscapeAlbums = new Set(
+  albums
+    .filter(album => album.data.tags.includes('landscape'))
+    .map(album => album.id),
 );
+const zoomCenter =
+  highlights.find(photo => wide(photo) && landscapeAlbums.has(photo.album)) ??
+  highlights.find(wide) ??
+  highlights[0];
+const others = highlights.filter(photo => photo !== zoomCenter);
+const zoomAround = others.slice(0, 6);
+const zoomOutMain = others.slice(6).find(wide) ?? others[6];
+const zoomOutRest = others
+  .slice(6)
+  .filter(photo => photo !== zoomOutMain)
+  .concat(zoomAround)
+  .slice(0, 6);
 const zoomAlbum = albums.find(album => album.id === zoomCenter?.album);
-const [leadProject, ...otherProjects] = [...projects].sort(
-  (a, b) => Number(b.data.featured) - Number(a.data.featured),
-);
+const leadWork = work[0];
 ---
 
 <BaseLayout>
-  <Hero
-    headline={settings.headline}
-    intro={settings.intro}
-    photos={heroPhotos}
+  <Hero photos={highlights} tagline={settings.headline} />
+  <IndexGrid
+    workImage={leadWork?.data.cover}
+    photos={others.slice(0, 3)}
+    eventImage={events[0]?.data.cover}
+    portrait={settings.portrait}
+    now={settings.now}
+    recommendations={recommendations.length > 0}
   />
+  {zoomCenter && (
+    <ZoomIn
+      center={zoomCenter}
+      around={zoomAround}
+      caption={zoomAlbum?.data.title ?? 'Photos'}
+    />
+  )}
+  {zoomOutMain && <ZoomOut main={zoomOutMain} others={zoomOutRest} />}
 
-  <section class="container block">
-    <SectionHead title="Projects" href="/projects" linkLabel="All projects" />
-    <div class="projects">
-      {leadProject && <ProjectCard project={leadProject} large />}
-      <div class="side">
-        {otherProjects.slice(0, 2).map(project => (
-          <ProjectCard project={project} />
-        ))}
-      </div>
-    </div>
-  </section>
+  <SectionHead title="Work" href="/work" linkLabel="All work" />
+  <WorkBento work={work.slice(0, 5)} />
 
-  {zoomCenter && zoomAlbum && (
-    <ZoomIn center={zoomCenter} around={rest.slice(0, 4)} album={zoomAlbum} />
+  <SectionHead title="Events" href="/events" linkLabel="All events" />
+  <EventTickets events={events.slice(0, 4)} />
+
+  <SectionHead title="Blog" href="/blog" linkLabel="All posts" />
+  <PostList posts={posts.slice(0, 4)} />
+
+  {notes.length > 0 && (
+    <>
+      <SectionHead title="Updates" href="/now" linkLabel="Now" />
+      <NotesList notes={notes.slice(0, 3)} />
+    </>
   )}
 
-  <section class="container block">
-    <SectionHead title="Blog" href="/blog" linkLabel="All posts" />
-    <div class="posts">
-      {posts.slice(0, 3).map(post => (
-        <PostCard post={post} />
-      ))}
-    </div>
-  </section>
-
-  <section class="container block">
-    <SectionHead title="Photos" href="/photos" linkLabel="All photos" />
-    <div class="albums">
-      {albums.slice(0, 2).map(album => (
-        <AlbumCard album={album} />
-      ))}
-    </div>
-  </section>
-
-  <section class="container block about">
-    {settings.portrait && (
-      <div class="portrait">
-        <Image
-          src={settings.portrait}
-          alt={settings.portraitAlt}
-          widths={[400, 700, 1000]}
-          sizes="(max-width: 860px) 80vw, 30vw"
-        />
-      </div>
-    )}
-    <div>
-      <p class="eyebrow">Right now</p>
-      <h2>{settings.now}</h2>
-      <div class="actions">
-        <ButtonLink href="/about">Experience and skills</ButtonLink>
-      </div>
-    </div>
-  </section>
+  {recommendations.length > 0 && (
+    <>
+      <SectionHead title="Recommended" href="/recommended" linkLabel="All" />
+      <Recommended items={recommendations.slice(0, 10)} />
+    </>
+  )}
 </BaseLayout>
-
-<style>
-  .block {
-    padding-top: clamp(72px, 10vw, 140px);
-  }
-
-  .projects {
-    display: grid;
-    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-    gap: clamp(24px, 3vw, 40px);
-  }
-
-  .side {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(24px, 3vw, 40px);
-  }
-
-  .posts {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(20px, 3vw, 36px);
-  }
-
-  .albums {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(16px, 2vw, 24px);
-  }
-
-  .about {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-    align-items: center;
-    gap: clamp(32px, 6vw, 96px);
-  }
-
-  .portrait {
-    overflow: hidden;
-    aspect-ratio: 4 / 5;
-    border-radius: var(--radius);
-  }
-
-  .portrait :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .about h2 {
-    margin-top: 14px;
-    font-size: clamp(30px, 3.6vw, 48px);
-  }
-
-  .actions {
-    margin-top: 32px;
-  }
-
-  @media (max-width: 860px) {
-    .projects,
-    .about,
-    .albums {
-      grid-template-columns: 1fr;
-    }
-
-    .posts {
-      grid-template-columns: 1fr;
-    }
-
-    .portrait {
-      max-width: 360px;
-    }
-  }
-</style>

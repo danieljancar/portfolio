@@ -12,6 +12,7 @@ links:
 cover: ../posts/developing-a-mobile-app-from-scratch-with-expo/mobile-app-development-expo-react-native.jpeg
 coverAlt: The Cranny app in front of a bench in a forest
 featured: true
+ongoing: true
 order: 1
 ---
 

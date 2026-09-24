@@ -2,10 +2,10 @@
 import ThemeToggle from './ThemeToggle.astro';
 
 const links = [
-  { href: '/projects', label: 'Projects' },
-  { href: '/blog', label: 'Blog' },
+  { href: '/work', label: 'Work' },
   { href: '/photos', label: 'Photos' },
   { href: '/events', label: 'Events' },
+  { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
 ];
 const path = Astro.url.pathname;
@@ -14,36 +14,29 @@ const current = (href: string) =>
 ---
 
 <header class="bar">
-  <div class="inner container">
-    <a class="wordmark" href="/" aria-label="Daniel Jancar, home">
-      daniel<span>.</span>jancar
-    </a>
+  <a class="wordmark" href="/" aria-label="Daniel Jancar, home">
+    daniel<span>.</span>jancar
+  </a>
 
-    <nav class="desktop" aria-label="Main">
-      {links.map(link => (
-        <a href={link.href} aria-current={current(link.href)}>
-          {link.label}
-        </a>
-      ))}
-    </nav>
+  <nav class="desktop" aria-label="Main">
+    {links.map(link => (
+      <a href={link.href} aria-current={current(link.href)}>
+        {link.label}
+      </a>
+    ))}
+  </nav>
 
-    <div class="actions">
-      <ThemeToggle />
-      <button
-        class="burger"
-        type="button"
-        popovertarget="menu"
-        aria-label="Open menu"
-      >
-        <span></span>
-        <span></span>
-      </button>
-    </div>
+  <div class="actions">
+    <ThemeToggle />
+    <button class="burger" type="button" popovertarget="menu" aria-label="Menu">
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
 
 <nav id="menu" class="menu" popover aria-label="Menu">
-  <div class="menu-top container">
+  <div class="menu-top">
     <a class="wordmark" href="/">
       daniel<span>.</span>jancar
     </a>
@@ -58,10 +51,10 @@ const current = (href: string) =>
       <span></span>
     </button>
   </div>
-  <ul class="container">
+  <ul>
     {links.map((link, i) => (
       <li style={`--i:${i}`}>
-        <a href={link.href} aria-current={current(link.href)}>
+        <a class="display" href={link.href} aria-current={current(link.href)}>
           {link.label}
         </a>
       </li>
@@ -74,24 +67,21 @@ const current = (href: string) =>
     position: fixed;
     inset: 0 0 auto;
     z-index: 50;
-    height: var(--bar-height);
-    background: color-mix(in srgb, var(--ground) 82%, transparent);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    height: 100%;
+    height: var(--bar-height);
+    padding-inline: var(--gutter);
+    background: var(--ground);
+    border-bottom: 1px solid var(--line);
+    transition: background-color 0.3s;
   }
 
   .wordmark {
-    font-family: var(--font-display);
-    font-size: 21px;
-    font-weight: 700;
+    justify-self: start;
+    font-size: 19px;
+    font-weight: 800;
+    font-stretch: 112%;
     letter-spacing: -0.02em;
   }
 
@@ -99,36 +89,31 @@ const current = (href: string) =>
     color: var(--accent);
   }
 
+  .wordmark:hover {
+    color: inherit;
+  }
+
   .desktop {
     display: flex;
-    gap: 4px;
+    gap: 2px;
   }
 
   .desktop a {
-    position: relative;
-    padding: 8px 14px;
-    border-radius: 999px;
-    font-size: 16px;
+    padding: 8px 12px;
+    font-size: 14px;
     font-weight: 500;
-    color: var(--ink-soft);
-    transition:
-      color 0.2s,
-      background 0.2s;
   }
 
-  .desktop a:hover {
-    color: var(--ink);
-    background: var(--surface);
-  }
-
+  .desktop a:hover,
   .desktop a[aria-current='page'] {
-    color: var(--ink);
-    background: var(--surface-2);
+    background: var(--ink);
+    color: var(--ground);
   }
 
   .actions {
     display: flex;
     gap: 8px;
+    justify-self: end;
     align-items: center;
   }
 
@@ -138,8 +123,8 @@ const current = (href: string) =>
     display: none;
     width: 40px;
     height: 40px;
+    padding: 0;
     border: 1px solid var(--line);
-    border-radius: 999px;
     background: transparent;
     cursor: pointer;
   }
@@ -150,7 +135,6 @@ const current = (href: string) =>
     left: 11px;
     width: 16px;
     height: 2px;
-    border-radius: 2px;
     background: var(--ink);
     transition: transform 0.4s var(--ease-out);
   }
@@ -173,7 +157,7 @@ const current = (href: string) =>
 
   .close {
     display: block;
-    border-color: color-mix(in srgb, var(--on-accent) 30%, transparent);
+    border-color: rgb(11 13 10 / 0.35);
   }
 
   .close span {
@@ -197,11 +181,11 @@ const current = (href: string) =>
     max-width: none;
     max-height: none;
     margin: 0;
-    padding: 0;
+    padding: 0 var(--gutter);
     border: 0;
     background: var(--green);
     color: var(--on-accent);
-    clip-path: circle(0 at calc(100% - 44px) 32px);
+    clip-path: circle(0 at calc(100% - 40px) 28px);
     transition:
       clip-path 0.6s var(--ease-out),
       display 0.6s allow-discrete,
@@ -209,12 +193,12 @@ const current = (href: string) =>
   }
 
   .menu:popover-open {
-    clip-path: circle(150% at calc(100% - 44px) 32px);
+    clip-path: circle(150% at calc(100% - 40px) 28px);
   }
 
   @starting-style {
     .menu:popover-open {
-      clip-path: circle(0 at calc(100% - 44px) 32px);
+      clip-path: circle(0 at calc(100% - 40px) 28px);
     }
   }
 
@@ -223,6 +207,7 @@ const current = (href: string) =>
     align-items: center;
     justify-content: space-between;
     height: var(--bar-height);
+    border-bottom: 1px solid rgb(11 13 10 / 0.3);
   }
 
   .menu .wordmark span {
@@ -231,24 +216,28 @@ const current = (href: string) =>
 
   .menu ul {
     margin: 0;
-    padding-top: 6vh;
+    padding: 4vh 0 0;
     list-style: none;
   }
 
   .menu li {
     overflow: hidden;
+    border-bottom: 1px solid rgb(11 13 10 / 0.3);
   }
 
   .menu li a {
     display: block;
-    padding: 6px 0;
-    font-family: var(--font-display);
-    font-size: clamp(44px, 13vw, 88px);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
+    padding: 10px 0 4px;
+    font-size: clamp(44px, 14vw, 96px);
     transform: translateY(110%);
-    transition: transform 0.6s var(--ease-out) calc(0.15s + var(--i) * 0.06s);
+    transition:
+      transform 0.6s var(--ease-out) calc(0.15s + var(--i) * 0.06s),
+      font-stretch 0.4s var(--ease-out);
+  }
+
+  .menu li a:hover {
+    color: inherit;
+    font-stretch: 62%;
   }
 
   .menu:popover-open li a {
@@ -262,12 +251,14 @@ const current = (href: string) =>
   }
 
   .menu li a[aria-current='page'] {
-    text-decoration: underline;
-    text-decoration-thickness: 3px;
-    text-underline-offset: 8px;
+    color: var(--ground);
   }
 
-  @media (max-width: 860px) {
+  @media (max-width: 820px) {
+    .bar {
+      grid-template-columns: 1fr auto;
+    }
+
     .desktop {
       display: none;
     }

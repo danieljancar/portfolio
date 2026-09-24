@@ -151,8 +151,8 @@ collections:
         label: Text
         widget: markdown
   - name: projects
-    label: Projects
-    label_singular: Project
+    label: Work
+    label_singular: Work entry
     folder: src/content/projects
     create: true
     slug: '{{name}}'
@@ -188,6 +188,12 @@ collections:
         widget: number
         value_type: int
         required: false
+        hint: For ongoing work, the year it started
+      - name: ongoing
+        label: Ongoing
+        widget: boolean
+        default: false
+        hint: Long-standing work instead of a one-off
       - name: role
         label: My role
         widget: string
@@ -479,10 +485,6 @@ collections:
           - name: about
             label: About (paragraphs separated by an empty line)
             widget: text
-          - name: heroPhotos
-            label: Home page photos (album/file.jpg)
-            widget: list
-            required: false
           - name: portrait
             label: Portrait
             widget: image

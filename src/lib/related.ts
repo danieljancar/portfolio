@@ -21,7 +21,7 @@ export interface Tag {
 
 export const kindLabels: Record<Kind, string> = {
   post: 'Post',
-  project: 'Project',
+  project: 'Work',
   event: 'Event',
   album: 'Album',
 };

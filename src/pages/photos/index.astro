@@ -1,6 +1,5 @@
 ---
-import AlbumCard from '~/components/cards/AlbumCard.astro';
-import Gallery from '~/components/media/Gallery.astro';
+import PhotoGrid from '~/components/media/PhotoGrid.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getAlbums } from '~/lib/photos';
@@ -14,37 +13,74 @@ const photos = albums.flatMap(album => album.photos);
   description="Photos by Daniel Jancar."
   image={albums[0]?.data.cover.src}
 >
-  <section class="container page">
-    <SectionHead title="Photos" as="h1" />
-    <div class="albums">
-      {albums.map(album => (
-        <AlbumCard album={album} />
-      ))}
-    </div>
-    <h2 class="all">All photos</h2>
-    <Gallery photos={photos} label="Photo by Daniel Jancar" />
-  </section>
+  <SectionHead title="Photos" as="h1" />
+  <div class="filters wrap" role="group" aria-label="Albums">
+    <button type="button" data-filter="all" aria-pressed="true">
+      All
+    </button>
+    {albums.map(album => (
+      <button type="button" data-filter={album.id} aria-pressed="false">
+        {album.data.title}
+      </button>
+    ))}
+    <a class="mono open" href="/photos" data-open hidden>
+      Open album →
+    </a>
+  </div>
+  <PhotoGrid photos={photos} label="Photo by Daniel Jancar" />
 </BaseLayout>
 
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-album]');
+  const open = document.querySelector<HTMLAnchorElement>('[data-open]');
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter ?? 'all';
+      for (const other of buttons) {
+        other.setAttribute('aria-pressed', String(other === button));
+      }
+      for (const item of items) {
+        item.hidden = filter !== 'all' && item.dataset.album !== filter;
+      }
+      if (open) {
+        open.hidden = filter === 'all';
+        open.href = `/photos/${filter}`;
+      }
+    });
+  }
+</script>
+
 <style>
-  .page {
-    padding-top: clamp(48px, 7vw, 96px);
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
   }
 
-  .albums {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(16px, 2vw, 24px);
+  button {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font: 500 14px var(--font-sans);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
   }
 
-  @media (max-width: 760px) {
-    .albums {
-      grid-template-columns: 1fr;
-    }
+  button[aria-pressed='true'],
+  button:hover {
+    background: var(--ink);
+    color: var(--ground);
   }
 
-  .all {
-    margin: clamp(64px, 8vw, 112px) 0 28px;
-    font-size: clamp(32px, 4vw, 48px);
+  .open {
+    margin-left: 8px;
   }
 </style>

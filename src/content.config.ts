@@ -33,6 +33,7 @@ const projects = defineCollection({
       kind: z.string(),
       status: z.enum(['live', 'in-progress', 'archived']).default('live'),
       year: z.number().int().optional(),
+      ongoing: z.boolean().default(false),
       role: z.string().optional(),
       stack: z.array(z.string()).default([]),
       tags: z.array(z.string()).default([]),
@@ -136,7 +137,6 @@ const site = defineCollection({
       intro: z.string(),
       now: z.string(),
       about: z.string(),
-      heroPhotos: z.array(z.string()).default([]),
       portrait: image().optional(),
       portraitAlt: z.string().default(''),
       skills: z.array(
