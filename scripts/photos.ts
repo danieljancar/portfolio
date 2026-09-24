@@ -10,5 +10,5 @@ if (process.argv.includes('--shrink')) {
   console.log(`shrunk ${shrunk.length} originals`);
 }
 
-const { count, stubs } = await generatePhotoMeta({ root });
-console.log(`${count} photos analysed, ${stubs.length} new entries`);
+const count = await generatePhotoMeta({ root });
+console.log(`${count} photos analysed`);

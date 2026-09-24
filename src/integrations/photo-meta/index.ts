@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
-import { generatePhotoMeta, PHOTO_DIR } from './core';
+import { ALBUM_DIR, generatePhotoMeta } from './core';
 
 export default function photoMeta(): AstroIntegration {
   let root = process.cwd();
@@ -10,11 +10,11 @@ export default function photoMeta(): AstroIntegration {
     hooks: {
       'astro:config:setup': async ({ config, logger }) => {
         root = fileURLToPath(config.root);
-        const { count } = await generatePhotoMeta({ root, logger });
+        const count = await generatePhotoMeta({ root, logger });
         logger.info(`palette and camera data ready for ${count} photos`);
       },
       'astro:server:setup': ({ server, logger }) => {
-        const dir = path.join(root, PHOTO_DIR);
+        const dir = path.join(root, ALBUM_DIR);
         let timer: ReturnType<typeof setTimeout> | undefined;
         const refresh = (file: string) => {
           if (!file.startsWith(dir)) return;

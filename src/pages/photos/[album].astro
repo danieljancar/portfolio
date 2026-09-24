@@ -1,0 +1,109 @@
+---
+import { getCollection, render } from 'astro:content';
+import Gallery from '~/components/media/Gallery.astro';
+import RelatedList from '~/components/ui/RelatedList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatMonth } from '~/lib/dates';
+import { getAlbums } from '~/lib/photos';
+import { getRelated } from '~/lib/tags';
+
+export async function getStaticPaths() {
+  const albums = await getAlbums();
+  return albums.map(album => ({
+    params: { album: album.id },
+    props: { album },
+  }));
+}
+
+const { album } = Astro.props;
+const { Content } = await render(album);
+const events = await getCollection(
+  'events',
+  event => event.data.album?.id === album.id,
+);
+const related = await getRelated('album', album.id, {
+  limit: 4,
+  kinds: ['post', 'project', 'album'],
+});
+const { title, date, place, cover } = album.data;
+---
+
+<BaseLayout
+  title={title}
+  description={`Photos from ${title}, ${formatMonth(date)}.`}
+  image={cover.src}
+>
+  <section class="container page">
+    <a class="back" href="/photos">
+      ← Photos
+    </a>
+    <h1>{title}</h1>
+    <p class="meta">
+      <span>{formatMonth(date)}</span>
+      {place && <span>{place}</span>}
+    </p>
+    <div class="text">
+      <Content />
+    </div>
+    {events.map(event => (
+      <a class="event" href={`/events/${event.id}`}>
+        About the event: {event.data.title} →
+      </a>
+    ))}
+    <div class="gallery">
+      <Gallery photos={album.photos} label={title} />
+    </div>
+  </section>
+  <RelatedList items={related} />
+</BaseLayout>
+
+<style>
+  .page {
+    padding-top: clamp(40px, 6vw, 80px);
+  }
+
+  .back {
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+
+  .back:hover {
+    color: var(--accent-text);
+  }
+
+  h1 {
+    margin-top: 20px;
+    font-size: clamp(44px, 7vw, 96px);
+    letter-spacing: -0.04em;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin-top: 16px;
+    font-weight: 500;
+    color: var(--accent-text);
+  }
+
+  .text {
+    max-width: 60ch;
+    margin-top: 16px;
+    font-size: 19px;
+    color: var(--ink-soft);
+  }
+
+  .event {
+    display: inline-block;
+    margin-top: 16px;
+    font-weight: 600;
+  }
+
+  .event:hover {
+    color: var(--accent-text);
+  }
+
+  .gallery {
+    margin-top: 48px;
+  }
+</style>

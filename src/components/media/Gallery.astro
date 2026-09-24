@@ -1,0 +1,248 @@
+---
+import { getImage } from 'astro:assets';
+import Photo from '~/components/media/Photo.astro';
+import type { Photo as PhotoType } from '~/lib/photos';
+
+interface Props {
+  photos: PhotoType[];
+  label: string;
+}
+
+const { photos, label } = Astro.props;
+const items = await Promise.all(
+  photos.map(async (photo, i) => ({
+    photo,
+    alt: `${label}, photo ${i + 1} of ${photos.length}`,
+    full: (await getImage({ src: photo.image, width: 2400, format: 'webp' }))
+      .src,
+  })),
+);
+---
+
+<div class="gallery" data-gallery>
+  {items.map(({ photo, alt, full }, i) => (
+    <a
+      class="item"
+      href={full}
+      data-index={i}
+      data-alt={alt}
+      style={`aspect-ratio:${photo.meta.width}/${photo.meta.height}`}
+    >
+      <Photo
+        photo={photo}
+        alt={alt}
+        widths={[400, 700, 1000]}
+        sizes="(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 25vw"
+      />
+    </a>
+  ))}
+</div>
+
+<dialog class="lightbox" data-lightbox aria-label={label}>
+  <img alt="" data-lightbox-image />
+  <button
+    class="nav prev"
+    type="button"
+    data-lightbox-prev
+    aria-label="Previous photo"
+  >
+    ←
+  </button>
+  <button
+    class="nav next"
+    type="button"
+    data-lightbox-next
+    aria-label="Next photo"
+  >
+    →
+  </button>
+  <button class="close" type="button" data-lightbox-close aria-label="Close">
+    ×
+  </button>
+  <p class="count" data-lightbox-count></p>
+</dialog>
+
+<script>
+  for (const gallery of document.querySelectorAll<HTMLElement>(
+    '[data-gallery]',
+  )) {
+    const dialog = gallery.nextElementSibling as HTMLDialogElement;
+    const image = dialog.querySelector<HTMLImageElement>(
+      '[data-lightbox-image]',
+    )!;
+    const count = dialog.querySelector<HTMLElement>('[data-lightbox-count]')!;
+    const links = [
+      ...gallery.querySelectorAll<HTMLAnchorElement>('a[data-index]'),
+    ];
+    let index = 0;
+    let touchX = 0;
+
+    const show = (next: number) => {
+      index = (next + links.length) % links.length;
+      const link = links[index];
+      image.src = link.href;
+      image.alt = link.dataset.alt ?? '';
+      count.textContent = `${index + 1} / ${links.length}`;
+    };
+
+    links.forEach((link, i) =>
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        show(i);
+        dialog.showModal();
+      }),
+    );
+
+    dialog
+      .querySelector('[data-lightbox-prev]')
+      ?.addEventListener('click', () => show(index - 1));
+    dialog
+      .querySelector('[data-lightbox-next]')
+      ?.addEventListener('click', () => show(index + 1));
+    dialog
+      .querySelector('[data-lightbox-close]')
+      ?.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft') show(index - 1);
+      if (event.key === 'ArrowRight') show(index + 1);
+    });
+    dialog.addEventListener(
+      'touchstart',
+      event => (touchX = event.touches[0].clientX),
+      { passive: true },
+    );
+    dialog.addEventListener('touchend', event => {
+      const delta = event.changedTouches[0].clientX - touchX;
+      if (Math.abs(delta) > 50) show(index + (delta < 0 ? 1 : -1));
+    });
+  }
+</script>
+
+<style>
+  .gallery {
+    columns: 4 260px;
+    column-gap: 14px;
+  }
+
+  .item {
+    display: block;
+    margin-bottom: 14px;
+    overflow: hidden;
+    border-radius: 12px;
+    break-inside: avoid;
+    cursor: zoom-in;
+  }
+
+  .item :global(img) {
+    transition:
+      transform 0.6s var(--ease-out),
+      filter 0.5s var(--ease-out);
+  }
+
+  .item:hover :global(img) {
+    transform: scale(1.03);
+  }
+
+  .lightbox {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(8 10 7 / 0.94);
+    color: #e6eadc;
+    opacity: 0;
+    transition:
+      opacity 0.3s,
+      display 0.3s allow-discrete,
+      overlay 0.3s allow-discrete;
+  }
+
+  .lightbox[open] {
+    display: grid;
+    place-items: center;
+    opacity: 1;
+  }
+
+  @starting-style {
+    .lightbox[open] {
+      opacity: 0;
+    }
+  }
+
+  .lightbox::backdrop {
+    background: transparent;
+  }
+
+  .lightbox img {
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 120px);
+    border-radius: 8px;
+    object-fit: contain;
+  }
+
+  .lightbox button {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgb(230 234 220 / 0.3);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .lightbox button:hover {
+    background: rgb(230 234 220 / 0.12);
+  }
+
+  .prev {
+    left: 16px;
+    top: 50%;
+  }
+
+  .next {
+    right: 16px;
+    top: 50%;
+  }
+
+  .close {
+    top: 16px;
+    right: 16px;
+  }
+
+  .count {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 640px) {
+    .gallery {
+      columns: 2;
+      column-gap: 8px;
+    }
+
+    .item {
+      margin-bottom: 8px;
+      border-radius: 8px;
+    }
+
+    .prev,
+    .next {
+      top: auto;
+      bottom: 12px;
+    }
+  }
+</style>

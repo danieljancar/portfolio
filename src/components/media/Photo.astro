@@ -5,6 +5,7 @@ import { dimStyle } from '~/lib/tone';
 
 interface Props {
   photo: Photo;
+  alt?: string;
   widths?: number[];
   sizes?: string;
   class?: string;
@@ -13,6 +14,7 @@ interface Props {
 
 const {
   photo,
+  alt = '',
   widths = [480, 800, 1200, 1800],
   sizes = '100vw',
   class: className,
@@ -21,8 +23,8 @@ const {
 ---
 
 <Image
-  src={photo.data.image}
-  alt={photo.data.alt}
+  src={photo.image}
+  alt={alt}
   widths={widths}
   sizes={sizes}
   loading={loading}

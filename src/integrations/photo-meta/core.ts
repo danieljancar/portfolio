@@ -4,16 +4,14 @@ import path from 'node:path';
 import exifr from 'exifr';
 import { Vibrant } from 'node-vibrant/node';
 import sharp from 'sharp';
-import YAML from 'yaml';
 
-export const PHOTO_DIR = 'src/content/photos';
-export const FILES_DIR = 'files';
+export const ALBUM_DIR = 'src/content/albums';
 export const OUTPUT_FILE = 'src/generated/photo-meta.json';
 
 const CACHE_FILE = 'node_modules/.cache/photo-meta.json';
-const CACHE_VERSION = 3;
+const CACHE_VERSION = 4;
 const IMAGE_EXT = /\.(jpe?g|png|webp|avif|tiff?)$/i;
-const MAX_EDGE = 3000;
+const MAX_EDGE = 2400;
 
 export interface Exif {
   camera?: string;
@@ -50,7 +48,7 @@ interface Logger {
 
 interface Entry {
   id: string;
-  imagePath: string;
+  file: string;
 }
 
 interface CacheEntry {
@@ -67,41 +65,29 @@ interface Cache {
 export async function generatePhotoMeta({
   root,
   logger = console,
-  createStubs = true,
 }: {
   root: string;
   logger?: Logger;
-  createStubs?: boolean;
-}): Promise<{ count: number; stubs: string[] }> {
-  const photoDir = path.join(root, PHOTO_DIR);
-  if (!existsSync(photoDir)) return { count: 0, stubs: [] };
-
-  const entries = await readEntries(photoDir);
-  const stubs = createStubs ? await writeMissingEntries(photoDir, entries) : [];
-  if (stubs.length) {
-    logger.info(`new photo entries: ${stubs.join(', ')}`);
-    entries.push(...(await readEntries(photoDir, stubs)));
-  }
-
+}): Promise<number> {
+  const entries = await listPhotos(path.join(root, ALBUM_DIR));
   const cache = await readJson<Cache>(path.join(root, CACHE_FILE));
   const cached = cache?.version === CACHE_VERSION ? cache.files : {};
   const nextCache: Record<string, CacheEntry> = {};
   const meta: Record<string, PhotoMeta> = {};
 
-  for (const entry of entries) {
-    if (!existsSync(entry.imagePath)) {
-      logger.warn(`photo ${entry.id}: image not found (${entry.imagePath})`);
-      continue;
+  for (const { id, file } of entries) {
+    try {
+      const { mtimeMs, size } = await stat(file);
+      const hit = cached[id];
+      const data =
+        hit?.mtimeMs === mtimeMs && hit.size === size
+          ? hit.data
+          : await analyse(file);
+      nextCache[id] = { mtimeMs, size, data };
+      meta[id] = data;
+    } catch (error) {
+      logger.warn(`could not read ${id}: ${String(error)}`);
     }
-    const { mtimeMs, size } = await stat(entry.imagePath);
-    const key = path.relative(root, entry.imagePath);
-    const hit = cached[key];
-    const data =
-      hit?.mtimeMs === mtimeMs && hit.size === size
-        ? hit.data
-        : await analyse(entry.imagePath);
-    nextCache[key] = { mtimeMs, size, data };
-    meta[entry.id] = data;
   }
 
   await writeJson(path.join(root, OUTPUT_FILE), meta);
@@ -109,25 +95,22 @@ export async function generatePhotoMeta({
     version: CACHE_VERSION,
     files: nextCache,
   });
-  return { count: Object.keys(meta).length, stubs };
+  return entries.length;
 }
 
 export async function shrinkOriginals(root: string): Promise<string[]> {
-  const filesDir = path.join(root, PHOTO_DIR, FILES_DIR);
-  const files = (await readdir(filesDir)).filter(f => IMAGE_EXT.test(f));
   const shrunk: string[] = [];
-  for (const file of files) {
-    const full = path.join(filesDir, file);
-    const { width = 0, height = 0 } = await sharp(full).metadata();
+  for (const { id, file } of await listPhotos(path.join(root, ALBUM_DIR))) {
+    const { width = 0, height = 0 } = await sharp(file).metadata();
     if (Math.max(width, height) <= MAX_EDGE) continue;
-    const buffer = await sharp(full)
+    const buffer = await sharp(file)
       .rotate()
       .resize({ width: MAX_EDGE, height: MAX_EDGE, fit: 'inside' })
       .keepExif()
-      .jpeg({ quality: 88, mozjpeg: true })
+      .jpeg({ quality: 86, mozjpeg: true })
       .toBuffer();
-    await writeFile(full, buffer);
-    shrunk.push(file);
+    await writeFile(file, buffer);
+    shrunk.push(id);
   }
   return shrunk;
 }
@@ -148,61 +131,22 @@ export function formatShutter(seconds: number): string {
   return `1/${Math.round(1 / seconds)}s`;
 }
 
-export function slugify(value: string): string {
-  return value
-    .toLowerCase()
-    .normalize('NFKD')
-    .replace(/[^\w\s-]/g, '')
-    .trim()
-    .replace(/[\s_]+/g, '-')
-    .replace(/-+/g, '-');
-}
-
-async function readEntries(
-  photoDir: string,
-  only?: string[],
-): Promise<Entry[]> {
-  const names = only ?? (await readdir(photoDir));
+async function listPhotos(albumDir: string): Promise<Entry[]> {
+  if (!existsSync(albumDir)) return [];
   const entries: Entry[] = [];
-  for (const name of names) {
-    if (!/\.ya?ml$/.test(name)) continue;
-    const doc = YAML.parse(await readFile(path.join(photoDir, name), 'utf8'));
-    if (typeof doc?.image !== 'string') continue;
-    entries.push({
-      id: name.replace(/\.ya?ml$/, ''),
-      imagePath: path.resolve(photoDir, doc.image),
-    });
+  for (const album of await readdir(albumDir, { withFileTypes: true })) {
+    if (!album.isDirectory()) continue;
+    const dir = path.join(albumDir, album.name);
+    for (const name of (await readdir(dir)).sort()) {
+      if (IMAGE_EXT.test(name)) {
+        entries.push({
+          id: `${album.name}/${name}`,
+          file: path.join(dir, name),
+        });
+      }
+    }
   }
   return entries;
-}
-
-async function writeMissingEntries(
-  photoDir: string,
-  entries: Entry[],
-): Promise<string[]> {
-  const filesDir = path.join(photoDir, FILES_DIR);
-  if (!existsSync(filesDir)) return [];
-  const known = new Set(entries.map(e => e.imagePath));
-  const created: string[] = [];
-  for (const file of (await readdir(filesDir)).sort()) {
-    const imagePath = path.join(filesDir, file);
-    if (!IMAGE_EXT.test(file) || known.has(imagePath)) continue;
-    const name = `${slugify(file.replace(IMAGE_EXT, ''))}.yaml`;
-    const target = path.join(photoDir, name);
-    if (existsSync(target)) continue;
-    const { takenAt } = await readExif(imagePath);
-    const entry = {
-      image: `./${FILES_DIR}/${file}`,
-      alt: '',
-      ...(takenAt && { date: takenAt.slice(0, 10) }),
-      category: 'other',
-      tags: [],
-      featured: false,
-    };
-    await writeFile(target, YAML.stringify(entry));
-    created.push(name);
-  }
-  return created;
 }
 
 async function analyse(file: string): Promise<PhotoMeta> {
