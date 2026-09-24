@@ -5,7 +5,7 @@ import { getTags } from '~/lib/tags';
 
 const tags = await getTags();
 const max = Math.max(1, ...tags.map(t => t.items.length));
-const size = (count: number) => 28 + Math.round((count / max) * 72);
+const size = (count: number) => 20 + Math.round(Math.sqrt(count / max) * 76);
 ---
 
 <BaseLayout title="Tags" description="Everything on the site by topic.">
@@ -35,13 +35,17 @@ const size = (count: number) => 28 + Math.round((count / max) * 72);
     list-style: none;
   }
 
-  a:hover .display {
-    color: var(--accent-text);
-    font-stretch: 62%;
+  a {
+    display: inline-block;
+    line-height: 1;
   }
 
   .display {
-    transition: font-stretch 0.4s var(--ease-out);
+    transition: color 0.2s;
+  }
+
+  a:hover .display {
+    color: var(--accent-text);
   }
 
   sup {
