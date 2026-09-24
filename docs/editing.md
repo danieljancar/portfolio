@@ -10,13 +10,15 @@
 3. Edit, then Save. Every save is one commit on `master`, and the site
    rebuilds on its own.
 
-| I want to                                | Go to                                                                                                         |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Post photos                              | Photos → New. Upload, write a short description, pick a category. Tick "Featured" to put it on the home page. |
-| Write a blog post                        | Posts → New. Images dragged into the text are stored next to the post.                                        |
-| Add an event                             | Events → New, then link photos to it from the photo entries.                                                  |
-| Add a podcast or site                    | Recommended → New.                                                                                            |
-| Change the headline, about text or links | Site → Settings.                                                                                              |
+| I want to                                | Go to                                                                                                                                    |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Post photos                              | Photos → pick or create an album, upload. Uploads are converted to webp and lose their location data. Tick "Featured" for the home page. |
+| Write a blog post                        | Posts → New. Images dragged into the text are stored next to the post.                                                                   |
+| Add an event                             | Events → New, and pick the album with its photos.                                                                                        |
+| Add work                                 | Work → New. Tick "Ongoing" for long-running work, leave it off for one-offs.                                                             |
+| Change a role                            | Experience. Roles of the same company are grouped; leave "End" empty while it's current.                                                 |
+| Add a podcast or site                    | Recommended → New.                                                                                                                       |
+| Change the headline, about text or links | Site → Settings.                                                                                                                         |
 
 ## Locally
 
