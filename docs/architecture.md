@@ -15,19 +15,19 @@ publishes the site to GitHub Pages.
 
 ## Folders
 
-| Path                           | What lives there                                                            |
-| ------------------------------ | --------------------------------------------------------------------------- |
-| `src/content/`                 | All content. One folder per collection, schemas in `src/content.config.ts`. |
-| `src/content/albums/<slug>/`   | An album's `index.md` and all its photos next to it.                        |
-| `src/content/posts/<slug>/`    | A post's `index.md` with its images next to it.                             |
-| `src/pages/`                   | Routes. Each file is thin: load data, hand it to components.                |
-| `src/components/`              | UI: `layout`, `home`, `cards`, `blog`, `media`, `ui`.                       |
-| `src/lib/`                     | Plain TypeScript: content queries, tags, dates, links, image tone. No UI.   |
-| `src/styles/`                  | Design tokens (`tokens.css`), base styles, prose.                           |
-| `src/markdown/`                | Markdown plugins, e.g. external links open in a new tab.                    |
-| `src/integrations/photo-meta/` | Build step that reads brightness, palette and camera data from photos.      |
-| `public/admin/`                | The CMS: `index.html` loads Sveltia, `config.yml` describes the fields.     |
-| `tests/`                       | Vitest unit tests for `src/lib` and the photo pipeline.                     |
+| Path                                | What lives there                                                                 |
+| ----------------------------------- | -------------------------------------------------------------------------------- |
+| `src/content/`                      | All content. One folder per collection, schemas in `src/content.config.ts`.      |
+| `src/content/albums/<slug>/`        | An album's `index.md` and all its photos next to it.                             |
+| `src/content/posts/<slug>/`         | A post's `index.md` with its images next to it.                                  |
+| `src/pages/`                        | Routes. Each file is thin: load data, hand it to components.                     |
+| `src/components/`                   | UI: `layout`, `home`, `cards`, `blog`, `media`, `ui`.                            |
+| `src/lib/`                          | Plain TypeScript: content queries, tags, dates, links, image tone. No UI.        |
+| `src/styles/`                       | Design tokens (`tokens.css`), base styles, prose.                                |
+| `src/markdown/`                     | Markdown plugins, e.g. external links open in a new tab.                         |
+| `src/integrations/photo-meta/`      | Build step that reads brightness, palette and camera data from photos.           |
+| `src/pages/admin/`, `public/admin/` | The CMS: the page loads Sveltia, `public/admin/config.yml` describes the fields. |
+| `tests/`                            | Vitest unit tests for `src/lib` and the photo pipeline.                          |
 
 ## Content model
 

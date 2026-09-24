@@ -11,11 +11,8 @@ const { companies } = Astro.props;
 
 <ol class="companies wrap">
   {companies.map(company => (
-    <li class:list={['company', company.current && 'current']}>
+    <li class="company">
       <div class="head">
-        <span class="mark display" aria-hidden="true">
-          {company.name.slice(0, 1)}
-        </span>
         <div>
           <h3>
             {company.url ? (
@@ -30,7 +27,6 @@ const { companies } = Astro.props;
               company.name
             )}
           </h3>
-          <p class="mono soft">{company.period}</p>
         </div>
       </div>
       <ol class="roles">
@@ -49,6 +45,7 @@ const { companies } = Astro.props;
               <div class="plain">
                 <span class="title">{entry.data.role}</span>
                 <span class="mono period">{period}</span>
+                <span class="toggle blank" aria-hidden="true"></span>
               </div>
             )}
           </li>
@@ -83,23 +80,6 @@ const { companies } = Astro.props;
     align-items: flex-start;
   }
 
-  .mark {
-    display: grid;
-    flex: none;
-    place-items: center;
-    width: 52px;
-    height: 52px;
-    border: 1px solid var(--line);
-    font-size: 26px;
-    line-height: 1;
-  }
-
-  .current .mark {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: var(--on-accent);
-  }
-
   h3 {
     font-size: clamp(22px, 2.2vw, 30px);
     font-stretch: 112%;
@@ -109,10 +89,6 @@ const { companies } = Astro.props;
 
   h3 a:hover {
     color: var(--accent-text);
-  }
-
-  .head .mono {
-    margin-top: 6px;
   }
 
   .roles {
@@ -197,6 +173,11 @@ const { companies } = Astro.props;
     position: relative;
     width: 12px;
     height: 12px;
+  }
+
+  .blank::before,
+  .blank::after {
+    display: none;
   }
 
   .toggle::before,
