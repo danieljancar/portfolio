@@ -1,0 +1,92 @@
+.prose {
+  font-size: 19px;
+  line-height: 1.7;
+}
+
+.prose > * + * {
+  margin-top: 1.1em;
+}
+
+.prose h2 {
+  margin-top: 2.6em;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: clamp(28px, 3vw, 40px);
+  font-stretch: 125%;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.prose h3 {
+  margin-top: 2em;
+  font-size: 22px;
+}
+
+.prose a {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.prose blockquote {
+  margin: 2em 0;
+  padding: 24px 0;
+  border-top: 6px solid var(--accent);
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 300;
+  font-stretch: 62%;
+  line-height: 1.1;
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+.prose img {
+  filter: brightness(0.92);
+  transition: filter 0.4s;
+  width: 100%;
+  height: auto;
+  margin-block: 2em;
+}
+
+.prose img:hover {
+  filter: none;
+}
+
+.prose pre {
+  padding: 20px;
+  overflow-x: auto;
+  font: 14px/1.6 var(--font-mono);
+}
+
+.prose :not(pre) > code {
+  padding: 0.1em 0.35em;
+  background: rgb(230 234 220 / 0.08);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.2em;
+}
+
+.prose li + li {
+  margin-top: 0.4em;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.prose th,
+.prose td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-soft);
+  text-align: left;
+}

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import NotesList from '~/components/home/NotesList.astro';
+import { getNotes, getSettings } from '~/lib/content';
+
+const [settings, notes] = await Promise.all([getSettings(), getNotes()]);
+---
+
+<BaseLayout
+  title="Now"
+  description="What Daniel Jancar is doing right now, and short updates."
+>
+  <SectionHead title="Now" />
+  <p class="now wrap">{settings.now}</p>
+  <SectionHead title="Updates">
+    <span>{notes.length} updates</span>
+  </SectionHead>
+  <NotesList notes={notes} />
+  <div class="space"></div>
+</BaseLayout>
+
+<style>
+  .now {
+    max-width: 30ch;
+    font-size: clamp(28px, 3.4vw, 48px);
+    font-weight: 300;
+    font-stretch: 62%;
+    line-height: 1.1;
+  }
+
+  .space {
+    height: 96px;
+  }
+</style>

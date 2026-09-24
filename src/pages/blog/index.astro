@@ -1,0 +1,43 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import PostList from '~/components/blog/PostList.astro';
+import TagList from '~/components/ui/TagList.astro';
+import { getPosts } from '~/lib/content';
+
+const posts = await getPosts();
+const tags = [...new Set(posts.flatMap(p => p.data.tags))].slice(0, 16);
+---
+
+<BaseLayout
+  title="Writing"
+  description="Notes on things I've built, learned, or found worth sharing."
+>
+  <SectionHead title="Writing">
+    <a href="/rss.xml">RSS</a>
+  </SectionHead>
+  <p class="lede wrap">
+    Notes on things I've built, learned, or found worth sharing.
+  </p>
+  <div class="wrap filters">
+    <TagList tags={tags} label="Topics" />
+  </div>
+  <PostList posts={posts} />
+  <div class="space"></div>
+</BaseLayout>
+
+<style>
+  .lede {
+    max-width: 60ch;
+    margin-bottom: 32px;
+    font-size: 19px;
+  }
+
+  .filters {
+    margin-bottom: 32px;
+  }
+
+  .space {
+    height: 96px;
+  }
+</style>

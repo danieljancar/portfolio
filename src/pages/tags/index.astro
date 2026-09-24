@@ -1,0 +1,53 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import { getTags } from '~/lib/tags';
+
+const tags = await getTags();
+const max = Math.max(1, ...tags.map(t => t.items.length));
+const size = (count: number) => 28 + Math.round((count / max) * 72);
+---
+
+<BaseLayout title="Tags" description="Everything on the site by topic.">
+  <SectionHead title="Tags">
+    <span>{tags.length} tags</span>
+  </SectionHead>
+  <ul class="cloud wrap">
+    {tags.map(tag => (
+      <li>
+        <a
+          href={`/tags/${tag.slug}`}
+          style={`font-size:${size(tag.items.length)}px`}
+        >
+          <span class="display">{tag.label}</span>
+          <sup class="mono">{tag.items.length}</sup>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
+
+<style>
+  .cloud {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 28px;
+    margin: 0 0 96px;
+    list-style: none;
+  }
+
+  a:hover .display {
+    color: var(--accent-text);
+    font-stretch: 62%;
+  }
+
+  .display {
+    transition: font-stretch 0.4s var(--ease-out);
+  }
+
+  sup {
+    margin-left: 4px;
+    color: var(--ink-soft);
+  }
+</style>

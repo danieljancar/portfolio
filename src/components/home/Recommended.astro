@@ -1,0 +1,154 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  items: CollectionEntry<'recommendations'>[];
+}
+
+const { items } = Astro.props;
+const listening = items.filter(i => i.data.kind === 'podcast');
+const reading = items.filter(i => i.data.kind !== 'podcast');
+const columns = [
+  {
+    id: 'listening',
+    title: 'Listening',
+    items: listening,
+    empty: 'Podcast picks are on the way.',
+  },
+  {
+    id: 'reading',
+    title: 'Reading',
+    items: reading,
+    empty: 'Sites and newsletters are on the way.',
+  },
+];
+---
+
+<div class="recs">
+  {columns.map(column => (
+    <div class="column" id={column.id}>
+      <div class="top">
+        <h3 class="display">{column.title}</h3>
+        <div
+          class:list={['icon', column.id === 'listening' ? 'vinyl' : 'diamond']}
+          aria-hidden="true"
+        />
+      </div>
+      {column.items.length === 0 && <p class="mono">{column.empty}</p>}
+      <ul>
+        {column.items.map((item, i) => (
+          <li>
+            <a class="rec" href={item.data.url} rel="noopener">
+              <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <b>{item.data.name}</b>
+                <div class="mono">{item.data.topic}</div>
+                {item.data.note && <p>{item.data.note}</p>}
+              </div>
+              <span class="mono">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .recs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .column {
+    padding: 32px var(--gutter);
+  }
+
+  .column + .column {
+    border-left: 1px solid var(--line);
+  }
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 40px;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rec {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    gap: 16px;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  b {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .rec p {
+    margin-top: 6px;
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+
+  .icon {
+    width: 100px;
+    height: 100px;
+  }
+
+  .vinyl {
+    position: relative;
+    border-radius: 50%;
+    background: repeating-radial-gradient(
+      circle,
+      #1b2016 0 2px,
+      #2c3424 3px 4px
+    );
+    animation: spin 6s linear infinite;
+  }
+
+  .vinyl::after {
+    content: '';
+    position: absolute;
+    inset: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .diamond {
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+    background: var(--ink);
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (max-width: 800px) {
+    .recs {
+      grid-template-columns: 1fr;
+    }
+
+    .column + .column {
+      border-left: 0;
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

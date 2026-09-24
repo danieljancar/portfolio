@@ -1,0 +1,125 @@
+---
+import Cover from '~/components/media/Cover.astro';
+import { render } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PhotoGrid from '~/components/media/PhotoGrid.astro';
+import TagList from '~/components/ui/TagList.astro';
+import RelatedList from '~/components/ui/RelatedList.astro';
+import { getRelated } from '~/lib/tags';
+import { getEvents } from '~/lib/content';
+import { formatDate } from '~/lib/dates';
+import { getPhotosForEvent } from '~/lib/photos';
+import { themeStyle } from '~/lib/color';
+import '~/styles/prose.css';
+
+export async function getStaticPaths() {
+  const events = await getEvents();
+  return events.map(event => ({
+    params: { slug: event.id },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const { Content } = await render(event);
+const photos = await getPhotosForEvent(event.id);
+const related = await getRelated('event', event.id, {
+  kinds: ['post', 'project', 'event'],
+  limit: 6,
+});
+const theme = photos[0] ? themeStyle(photos[0].theme) : undefined;
+const dates = [event.data.date, event.data.endDate]
+  .filter(Boolean)
+  .map(d => formatDate(d as Date))
+  .join(' – ');
+---
+
+<BaseLayout
+  title={event.data.title}
+  description={`${dates}${event.data.place ? `, ${event.data.place}` : ''}`}
+  image={event.data.cover?.src}
+>
+  <header class="head" style={theme}>
+    {event.data.cover && (
+      <Cover
+        src={event.data.cover}
+        alt={event.data.coverAlt}
+        widths={[800, 1400, 2200]}
+        sizes="100vw"
+        loading="eager"
+      />
+    )}
+    <div class="text wrap">
+      <div class="mono">
+        {[dates, event.data.place].filter(Boolean).join(' · ')}
+      </div>
+      <h1 class="display">{event.data.title}</h1>
+    </div>
+  </header>
+  <div class="body wrap">
+    <div class="prose">
+      <Content />
+    </div>
+    <TagList tags={event.data.tags} />
+    {event.data.links.length > 0 && (
+      <ul class="links">
+        {event.data.links.map(l => (
+          <li>
+            <a href={l.href}>{l.label} ↗</a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+  {photos.length > 0 && <PhotoGrid photos={photos} />}
+  <RelatedList items={related} />
+  <div class="space"></div>
+</BaseLayout>
+
+<style>
+  .head {
+    position: relative;
+    height: 70vh;
+    min-height: 420px;
+    overflow: hidden;
+    background: var(--tint);
+  }
+
+  .text {
+    position: absolute;
+    inset: auto 0 0;
+    padding-bottom: 40px;
+    color: #fff;
+    background: linear-gradient(transparent, rgb(0 0 0 / 0.6) 55%);
+  }
+
+  h1 {
+    max-width: 1100px;
+    margin-top: 12px;
+    font-size: clamp(40px, 7vw, 110px);
+  }
+
+  .body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 32px;
+    padding-block: 48px;
+  }
+
+  .prose {
+    max-width: 680px;
+  }
+
+  .links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .space {
+    height: 96px;
+  }
+</style>

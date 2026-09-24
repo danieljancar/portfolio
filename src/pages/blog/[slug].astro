@@ -1,0 +1,212 @@
+---
+import Cover from '~/components/media/Cover.astro';
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Toc from '~/components/blog/Toc.astro';
+import TagList from '~/components/ui/TagList.astro';
+import RelatedList from '~/components/ui/RelatedList.astro';
+import { getRelated } from '~/lib/tags';
+import { getPosts, readingTime } from '~/lib/content';
+import { formatDate } from '~/lib/dates';
+import '~/styles/prose.css';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, next: posts[i + 1] ?? posts[0] },
+  }));
+}
+
+const { post, next } = Astro.props;
+const { Content, headings } = await render(post);
+const project = post.data.project
+  ? await getEntry(post.data.project)
+  : undefined;
+const minutes = readingTime(post.body);
+const related = await getRelated('post', post.id, { limit: 4 });
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.cover?.src}
+>
+  <div class="progress" aria-hidden="true"></div>
+  <header class="cover">
+    {post.data.cover && (
+      <Cover
+        src={post.data.cover}
+        alt={post.data.coverAlt}
+        widths={[800, 1400, 2200]}
+        sizes="100vw"
+        loading="eager"
+      />
+    )}
+    <div class="cover-text">
+      <div class="mono">
+        {formatDate(post.data.published)} · {minutes} min read
+        {post.data.updated && <> · updated {formatDate(post.data.updated)}</>}
+      </div>
+      <h1 class="display">{post.data.title}</h1>
+    </div>
+  </header>
+
+  <div class="layout wrap">
+    <Toc headings={headings} />
+    <article class="prose">
+      <p class="lead">{post.data.description}</p>
+      <Content />
+    </article>
+    <aside class="side">
+      {post.data.tags.length > 0 && (
+        <div class="card">
+          <span class="mono soft">Tags</span>
+          <TagList tags={post.data.tags} />
+        </div>
+      )}
+      {project && (
+        <div class="card">
+          <span class="mono soft">Project</span>
+          <a class="display project" href={`/work/${project.id}`}>
+            {project.data.name}
+          </a>
+        </div>
+      )}
+      {post.data.coverAiGenerated && (
+        <p class="mono soft">Cover image is AI generated.</p>
+      )}
+    </aside>
+  </div>
+
+  <RelatedList items={related} />
+
+  {next && next.id !== post.id && (
+    <a class="next wrap" href={`/blog/${next.id}`}>
+      <span class="mono">Next post</span>
+      <span class="display">{next.data.title}</span>
+      <span class="mono">{formatDate(next.data.published)}</span>
+    </a>
+  )}
+</BaseLayout>
+
+<style>
+  .progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+
+  .cover {
+    position: relative;
+    height: 80vh;
+    min-height: 480px;
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  .cover-text {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 0 var(--gutter) 48px;
+    color: #fff;
+    background: linear-gradient(transparent, rgb(0 0 0 / 0.65) 55%);
+  }
+
+  h1 {
+    max-width: 1100px;
+    margin-top: 16px;
+    font-size: clamp(40px, 6.4vw, 104px);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 680px) 1fr;
+    gap: 64px;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding-block: 96px;
+  }
+
+  .lead {
+    font-size: 24px;
+    line-height: 1.5;
+  }
+
+  .side {
+    position: sticky;
+    top: calc(var(--bar-height) + 32px);
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+
+  .soft {
+    color: var(--ink-soft);
+  }
+
+  .project {
+    font-size: 28px;
+  }
+
+  .next {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-block: 48px;
+    background: var(--night);
+    color: var(--night-ink);
+  }
+
+  .next .display {
+    font-size: clamp(36px, 5vw, 72px);
+  }
+
+  .next:hover {
+    color: var(--accent);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .progress {
+      animation: grow linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+
+  @keyframes grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+      padding-block: 56px;
+    }
+
+    .layout :global(.toc) {
+      display: none;
+    }
+
+    .side {
+      position: static;
+    }
+  }
+</style>

@@ -1,0 +1,114 @@
+---
+const links = [
+  { href: '/work', label: 'Work' },
+  { href: '/photos', label: 'Photos' },
+  { href: '/events', label: 'Events' },
+  { href: '/blog', label: 'Writing' },
+  { href: '/now', label: 'Now' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header class="bar">
+  <a class="logo display" href="/" aria-label="Home">
+    DJ
+  </a>
+  <nav aria-label="Main">
+    <ul>
+      {links.map(link => (
+        <li>
+          <a
+            href={link.href}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+  <span class="clock mono" data-clock>
+    Lucerne
+  </span>
+</header>
+
+<script>
+  const clock = document.querySelector<HTMLElement>('[data-clock]');
+  const format = new Intl.DateTimeFormat('de-CH', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Europe/Zurich',
+  });
+  const tick = () => {
+    if (clock) clock.textContent = `Lucerne ${format.format(new Date())}`;
+  };
+  tick();
+  setInterval(tick, 20_000);
+</script>
+
+<style>
+  .bar {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: var(--bar-height);
+    padding-inline: var(--gutter);
+    background: var(--ground);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .logo {
+    font-size: 22px;
+    justify-self: start;
+  }
+
+  ul {
+    display: flex;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav a {
+    display: block;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  nav a:hover,
+  nav a[aria-current='page'] {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  .clock {
+    justify-self: end;
+  }
+
+  @media (max-width: 760px) {
+    .bar {
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+    }
+
+    nav {
+      justify-self: end;
+      overflow-x: auto;
+    }
+
+    nav a {
+      padding: 8px;
+      font-size: 13px;
+    }
+
+    .clock {
+      display: none;
+    }
+  }
+</style>

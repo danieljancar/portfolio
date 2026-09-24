@@ -1,0 +1,273 @@
+---
+import Photo from '~/components/media/Photo.astro';
+import Star from '~/components/ui/Star.astro';
+import type { Photo as PhotoType } from '~/lib/photos';
+import { formatDate } from '~/lib/dates';
+
+interface Props {
+  photoCount: number;
+  archPhoto?: PhotoType;
+  circlePhoto?: PhotoType;
+  latestProject?: string;
+  latestEvent?: { title: string; date: Date };
+  latestPost?: { title: string };
+  podcastCount: number;
+  siteCount: number;
+  now: string;
+}
+
+const p = Astro.props;
+---
+
+<section class="index" aria-label="Index">
+  <a class="cell c5 tall" href="/work">
+    <div class="num">
+      <span>01</span>
+      <span class="arrow">→</span>
+    </div>
+    {p.archPhoto && (
+      <div class="arch-photo shape-arch">
+        <Photo
+          photo={p.archPhoto}
+          widths={[400, 700]}
+          sizes="(max-width: 900px) 70vw, 30vw"
+        />
+      </div>
+    )}
+    <div>
+      <h3 class="display">Work</h3>
+      {p.latestProject && <p>{p.latestProject}</p>}
+    </div>
+  </a>
+  <a class="cell c4" href="/photos">
+    <div class="num">
+      <span>02</span>
+      <span class="arrow">→</span>
+    </div>
+    <h3 class="display">Photos</h3>
+    <p>{p.photoCount} photos. Landscapes, cities and events.</p>
+  </a>
+  <div class="cell c3 center" aria-hidden="true">
+    <Star />
+  </div>
+  <a class="cell c4" href="/events">
+    <div class="num">
+      <span>03</span>
+      <span class="arrow">→</span>
+    </div>
+    <h3 class="display">Events</h3>
+    {p.latestEvent && (
+      <p>
+        Latest: {p.latestEvent.title}, {formatDate(p.latestEvent.date)}
+      </p>
+    )}
+  </a>
+  <a class="cell c3 accent" href="/blog">
+    <div class="num">
+      <span>04</span>
+      <span class="arrow">→</span>
+    </div>
+    <h3 class="display">Writing</h3>
+    {p.latestPost && <p>Latest: {p.latestPost.title}</p>}
+  </a>
+  <a class="cell c3" href="/recommended#listening">
+    <div class="num">
+      <span>05</span>
+      <span class="arrow">→</span>
+    </div>
+    <div class="vinyl" aria-hidden="true"></div>
+    <h3 class="display small">Listen</h3>
+    <p>
+      {p.podcastCount
+        ? `${p.podcastCount} podcasts I recommend`
+        : 'Podcasts I recommend'}
+    </p>
+  </a>
+  <a class="cell c3" href="/recommended#reading">
+    <div class="num">
+      <span>06</span>
+      <span class="arrow">→</span>
+    </div>
+    <h3 class="display small">Read</h3>
+    <p>
+      {p.siteCount
+        ? `${p.siteCount} sites I read`
+        : 'News sites and blogs I read'}
+    </p>
+  </a>
+  <a class="cell c3" href="/now">
+    <div class="num">
+      <span>07</span>
+      <span>Now</span>
+    </div>
+    <p class="now">{p.now}</p>
+  </a>
+  <a class="cell c3" href="#links">
+    <div class="num">
+      <span>08</span>
+      <span class="arrow">↓</span>
+    </div>
+    {p.circlePhoto && (
+      <div class="circle-photo shape-circle">
+        <Photo photo={p.circlePhoto} widths={[240]} sizes="110px" />
+      </div>
+    )}
+    <h3 class="display small">Links</h3>
+  </a>
+</section>
+
+<style>
+  .index {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    border-left: 1px solid var(--line);
+  }
+
+  .cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 260px;
+    padding: 20px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition:
+      background 0.25s,
+      color 0.25s;
+  }
+
+  a.cell:hover {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  a.cell:hover .arrow {
+    transform: rotate(-45deg);
+  }
+
+  .c3 {
+    grid-column: span 3;
+  }
+  .c4 {
+    grid-column: span 4;
+  }
+  .c5 {
+    grid-column: span 5;
+  }
+  .tall {
+    grid-row: span 2;
+  }
+  .center {
+    align-items: center;
+    justify-content: center;
+  }
+  .accent {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  h3 {
+    font-size: 44px;
+  }
+
+  h3.small {
+    font-size: 36px;
+  }
+
+  .cell p {
+    max-width: 34ch;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .now {
+    font-size: 20px !important;
+  }
+
+  .num {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  .arrow {
+    display: inline-block;
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+
+  .arch-photo {
+    align-self: center;
+    width: 70%;
+    height: 300px;
+    overflow: hidden;
+  }
+
+  .circle-photo {
+    width: 110px;
+    overflow: hidden;
+  }
+
+  .vinyl {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: repeating-radial-gradient(
+      circle,
+      #1b2016 0 2px,
+      #2c3424 3px 4px
+    );
+    animation: spin 6s linear infinite;
+  }
+
+  .vinyl::after {
+    content: '';
+    position: absolute;
+    inset: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .cell {
+      animation: fade linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .index {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c3,
+    .c4,
+    .c5 {
+      grid-column: span 2;
+    }
+
+    .tall {
+      grid-row: auto;
+    }
+
+    .cell {
+      min-height: 180px;
+    }
+  }
+</style>

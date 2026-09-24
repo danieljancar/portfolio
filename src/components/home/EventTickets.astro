@@ -1,0 +1,102 @@
+---
+import Cover from '~/components/media/Cover.astro';
+import type { CollectionEntry } from 'astro:content';
+import { formatMonth } from '~/lib/dates';
+
+interface Props {
+  events: CollectionEntry<'events'>[];
+}
+
+const { events } = Astro.props;
+const roles: Record<string, string> = {
+  shot: 'Shot',
+  played: 'Played',
+  team: 'Team',
+  taught: 'Taught',
+  spoke: 'Spoke',
+  attended: 'Attended',
+};
+---
+
+<ul class="tickets wrap">
+  {events.map(event => (
+    <li>
+      <a class="ticket" href={`/events/${event.id}`}>
+        <div class="image">
+          {event.data.cover && (
+            <Cover
+              src={event.data.cover}
+              alt={event.data.coverAlt}
+              widths={[400, 700]}
+              sizes="(max-width: 900px) 100vw, 25vw"
+            />
+          )}
+        </div>
+        <div class="body">
+          <div class="line mono">
+            <span>{formatMonth(event.data.date)}</span>
+            <span>{roles[event.data.role]}</span>
+          </div>
+          <h3 class="display">{event.data.title}</h3>
+          {event.data.place && <span class="mono">{event.data.place}</span>}
+        </div>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .tickets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 0;
+    list-style: none;
+  }
+
+  .ticket {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 380px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    mask:
+      radial-gradient(circle 14px at 0 62%, #0000 98%, #000) left / 51% 100%
+        no-repeat,
+      radial-gradient(circle 14px at 100% 62%, #0000 98%, #000) right / 51% 100%
+        no-repeat;
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  .ticket:hover {
+    color: inherit;
+    transform: rotate(-2deg) translateY(-6px);
+  }
+
+  .image {
+    height: 62%;
+    min-height: 220px;
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 8px;
+    padding: 16px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .line {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  h3 {
+    font-size: 24px;
+    line-height: 0.95;
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import { tagHref } from '~/lib/related';
+
+interface Props {
+  tags: string[];
+  label?: string;
+}
+
+const { tags, label = 'Tags' } = Astro.props;
+---
+
+{tags.length > 0 && (
+  <ul class="tags" aria-label={label}>
+    {tags.map(tag => (
+      <li>
+        <a class="mono" href={tagHref(tag)}>
+          #{tag}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-block;
+    padding: 5px 9px;
+    border: 1px solid var(--line);
+  }
+
+  a:hover {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+</style>

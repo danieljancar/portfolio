@@ -1,0 +1,25 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import EventTickets from '~/components/home/EventTickets.astro';
+import { getEvents } from '~/lib/content';
+
+const events = await getEvents();
+---
+
+<BaseLayout
+  title="Events"
+  description="Events Daniel Jancar shot, played, worked on or taught at."
+>
+  <SectionHead title="Events">
+    <span>Shot, played, worked on, taught</span>
+  </SectionHead>
+  <EventTickets events={events} />
+  <div class="space"></div>
+</BaseLayout>
+
+<style>
+  .space {
+    height: 96px;
+  }
+</style>

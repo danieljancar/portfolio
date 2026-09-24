@@ -1,0 +1,88 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Hero from '~/components/home/Hero.astro';
+import IndexGrid from '~/components/home/IndexGrid.astro';
+import ZoomIn from '~/components/home/ZoomIn.astro';
+import ZoomOut from '~/components/home/ZoomOut.astro';
+import WorkList from '~/components/home/WorkList.astro';
+import EventTickets from '~/components/home/EventTickets.astro';
+import NotesList from '~/components/home/NotesList.astro';
+import Recommended from '~/components/home/Recommended.astro';
+import PostList from '~/components/blog/PostList.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import { getPhotos } from '~/lib/photos';
+import {
+  getEvents,
+  getNotes,
+  getPosts,
+  getProjects,
+  getRecommendations,
+  getSettings,
+} from '~/lib/content';
+
+const [settings, photos, projects, events, posts, notes, recommendations] =
+  await Promise.all([
+    getSettings(),
+    getPhotos(),
+    getProjects(),
+    getEvents(),
+    getPosts(),
+    getNotes(),
+    getRecommendations(),
+  ]);
+
+const featured = photos.filter(p => p.data.featured);
+const pool = featured.length >= 8 ? featured : photos;
+const landscapes = pool.filter(p => p.data.category === 'landscape');
+const zoomCenter = landscapes[0] ?? pool[0];
+const rest = pool.filter(p => p !== zoomCenter);
+const zoomOutMain = rest[0];
+const zoomOutOthers = [
+  ...rest.slice(7),
+  ...photos.filter(p => !pool.includes(p)),
+].slice(0, 6);
+---
+
+<BaseLayout>
+  <Hero
+    photos={pool}
+    video={settings.heroVideo}
+    tagline="Software, project management and photography. Based in Lucerne."
+  />
+  <IndexGrid
+    photoCount={photos.length}
+    archPhoto={landscapes[1] ?? pool[1]}
+    circlePhoto={pool[2]}
+    latestProject={
+      projects[0] && `${projects[0].data.name}: ${projects[0].data.tagline}`
+    }
+    latestEvent={events[0]?.data}
+    latestPost={posts[0]?.data}
+    podcastCount={recommendations.filter(r => r.data.kind === 'podcast').length}
+    siteCount={recommendations.filter(r => r.data.kind !== 'podcast').length}
+    now={settings.now}
+  />
+  {zoomCenter && <ZoomIn center={zoomCenter} around={rest.slice(1, 7)} />}
+  {zoomOutMain && <ZoomOut main={zoomOutMain} others={zoomOutOthers} />}
+
+  <SectionHead title="Work" href="/work" linkLabel="All work">
+    <span>{projects.length} projects</span>
+  </SectionHead>
+  <WorkList projects={projects} />
+
+  <SectionHead title="Events" href="/events" linkLabel="All events" />
+  <EventTickets events={events.slice(0, 4)} />
+
+  <SectionHead title="Writing" href="/blog" linkLabel="All posts" />
+  <PostList posts={posts.slice(0, 5)} />
+
+  {notes.length > 0 && (
+    <>
+      <SectionHead title="Updates" href="/now" linkLabel="Now" />
+      <NotesList notes={notes.slice(0, 3)} />
+    </>
+  )}
+
+  <SectionHead title="Recommended" href="/recommended" linkLabel="Everything" />
+  <Recommended items={recommendations.slice(0, 10)} />
+</BaseLayout>

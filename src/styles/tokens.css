@@ -1,0 +1,38 @@
+:root {
+  color-scheme: dark;
+
+  --ground: #0b0d0a;
+  --surface: #13170f;
+  --surface-2: #1b2016;
+  --ink: #e6eadc;
+  --ink-soft: #a2a996;
+  --line: rgb(230 234 220 / 0.22);
+  --line-strong: #e6eadc;
+
+  --green: #82a951;
+  --green-light: #b5d98a;
+  --green-deep: #324321;
+  --accent: var(--green);
+  --accent-text: var(--green-light);
+  --on-accent: #0b0d0a;
+
+  --night: #060705;
+  --night-ink: #e6eadc;
+  --night-soft: #8a9080;
+
+  --tint: #13170f;
+  --tint-ink: #e6eadc;
+  --photo-accent: var(--accent-text);
+  --wash: var(--surface-2);
+
+  --dim: 0.85;
+
+  --font-sans: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --bar-height: 52px;
+  --gutter: clamp(16px, 2.5vw, 32px);
+  --max: 1440px;
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

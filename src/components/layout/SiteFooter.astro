@@ -1,0 +1,115 @@
+---
+import { getCollection } from 'astro:content';
+import { getSettings } from '~/lib/content';
+
+const settings = await getSettings();
+const legal = await getCollection('legal');
+const links = [
+  ...settings.socials,
+  { label: 'Email', href: `mailto:${settings.email}` },
+];
+const handle = (href: string) =>
+  href.startsWith('mailto:')
+    ? href.slice(7)
+    : href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+
+<footer class="foot" id="links">
+  <div class="row mono">
+    <span>Links</span>
+    <span>
+      © {new Date().getFullYear()} {settings.name}
+    </span>
+  </div>
+  <ul>
+    {links.map(link => (
+      <li>
+        <a
+          href={link.href}
+          rel={link.href.startsWith('http') ? 'me noopener' : undefined}
+        >
+          <span class="display name">{link.label}</span>
+          <span class="mono">{handle(link.href)}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <div class="row mono soft">
+    <nav aria-label="Legal">
+      {legal.map(doc => (
+        <a href={`/legal/${doc.id}`}>{doc.data.title}</a>
+      ))}
+      <a href="/tags">Tags</a>
+      <a href="/rss.xml">RSS</a>
+    </nav>
+    <span>{settings.location}</span>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    padding: 40px var(--gutter) 24px;
+    background: var(--green);
+    color: var(--on-accent);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+  }
+
+  .soft {
+    margin-top: 32px;
+    color: var(--green-deep);
+  }
+
+  .foot a:hover {
+    color: var(--ground);
+  }
+
+  .soft nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+
+  ul {
+    margin: 24px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgb(11 13 10 / 0.3);
+  }
+
+  .name {
+    font-size: clamp(40px, 8vw, 128px);
+    transition:
+      font-stretch 0.45s var(--ease-out),
+      color 0.2s;
+  }
+
+  li a:hover .name {
+    font-stretch: 62%;
+    color: var(--ground);
+  }
+
+  li a:hover {
+    color: inherit;
+  }
+
+  @media (max-width: 600px) {
+    li a {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+</style>

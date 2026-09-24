@@ -1,0 +1,93 @@
+---
+import '~/styles/base.css';
+import SiteHeader from '~/components/layout/SiteHeader.astro';
+import SiteFooter from '~/components/layout/SiteFooter.astro';
+import { getSettings } from '~/lib/content';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  themeStyle?: string;
+  noindex?: boolean;
+}
+
+const settings = await getSettings();
+const {
+  title,
+  description = settings.description,
+  image = '/og.jpg',
+  themeStyle,
+  noindex = false,
+} = Astro.props;
+const fullTitle = title ? `${title} · ${settings.name}` : `${settings.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={settings.name} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={settings.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/icons/favicon-32x32.png"
+    />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${settings.name} · Writing`}
+      href="/rss.xml"
+    />
+    <meta name="theme-color" content="#0b0d0a" />
+  </head>
+  <body style={themeStyle}>
+    <a class="skip mono" href="#main">
+      Skip to content
+    </a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 100;
+    padding: 10px 14px;
+    background: var(--ink);
+    color: var(--ground);
+    transform: translateY(-200%);
+  }
+
+  .skip:focus {
+    transform: none;
+  }
+
+  main {
+    padding-top: var(--bar-height);
+  }
+</style>

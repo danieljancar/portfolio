@@ -1,0 +1,83 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import PhotoGrid from '~/components/media/PhotoGrid.astro';
+import { getPhotos } from '~/lib/photos';
+
+const photos = await getPhotos();
+const labels: Record<string, string> = {
+  landscape: 'Landscape',
+  city: 'City',
+  event: 'Events',
+  people: 'People',
+  other: 'Other',
+};
+const categories = [...new Set(photos.map(p => p.data.category))];
+---
+
+<BaseLayout
+  title="Photos"
+  description="Photos by Daniel Jancar: landscapes, cities and events."
+  image={photos[0]?.data.image.src}
+>
+  <SectionHead title="Photos">
+    <span>{photos.length} photos</span>
+  </SectionHead>
+  <div class="filters wrap" role="group" aria-label="Filter photos">
+    <button type="button" data-filter="all" aria-pressed="true">
+      All
+    </button>
+    {categories.map(c => (
+      <button type="button" data-filter={c} aria-pressed="false">
+        {labels[c]}
+      </button>
+    ))}
+  </div>
+  <PhotoGrid photos={photos} />
+  <div class="space"></div>
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-category]');
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter;
+      buttons.forEach(b =>
+        b.setAttribute('aria-pressed', String(b === button)),
+      );
+      items.forEach(item => {
+        item.hidden = filter !== 'all' && item.dataset.category !== filter;
+      });
+    });
+  });
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  button {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font: 500 14px var(--font-sans);
+    cursor: pointer;
+  }
+
+  button[aria-pressed='true'],
+  button:hover {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  .space {
+    height: 96px;
+  }
+</style>
