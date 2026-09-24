@@ -1,7 +1,8 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import photoMeta from './src/integrations/photo-meta/index.ts';
+import { satteri } from '@astrojs/markdown-satteri';
+import { defineConfig } from 'astro/config';
+import photoMeta from './src/integrations/photo-meta';
+import { externalLinks } from './src/markdown/external-links';
 
 export default defineConfig({
   site: 'https://danieljancar.dev',
@@ -20,6 +21,9 @@ export default defineConfig({
     build: { cssMinify: 'esbuild' },
   },
   markdown: {
-    shikiConfig: { theme: 'github-dark-dimmed' },
+    processor: satteri({ hastPlugins: [externalLinks] }),
+    shikiConfig: {
+      themes: { light: 'github-light', dark: 'github-dark-dimmed' },
+    },
   },
 });

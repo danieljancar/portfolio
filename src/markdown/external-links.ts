@@ -1,0 +1,16 @@
+import { defineHastPlugin } from 'satteri';
+import { isExternal } from '../lib/links';
+
+export const externalLinks = defineHastPlugin({
+  name: 'external-links',
+  element: {
+    filter: ['a'],
+    visit(node, ctx) {
+      const href = node.properties?.href;
+      if (typeof href === 'string' && isExternal(href)) {
+        ctx.setProperty(node, 'target', '_blank');
+        ctx.setProperty(node, 'rel', 'noopener noreferrer');
+      }
+    },
+  },
+});
