@@ -2,7 +2,8 @@
 name: Lovers Lovers
 tagline: Their first website, for a room full of tattoos, haircuts, coffee and vintage
 kind: Client website
-status: in-progress
+status: live
+ongoing: true
 year: 2026
 tags: [lovers, website, design]
 links:

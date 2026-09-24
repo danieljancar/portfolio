@@ -35,6 +35,6 @@ My website may include links to third-party websites or services provided by thi
 
 ## 8. Photos of People
 
-Some photos on this website show people, for example at events or in public places in Lucerne. The photos are published without location data.
+Some photos on this website show people, for example at events or in public places. The photos are published without location data.
 
 If you are in one of these photos and don't want it on my website, write to me at daniel@danieljancar.dev and include the link to the photo. I will remove it or replace it, without asking for a reason.
