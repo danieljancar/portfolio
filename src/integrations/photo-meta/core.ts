@@ -98,21 +98,53 @@ export async function generatePhotoMeta({
   return entries.length;
 }
 
-export async function shrinkOriginals(root: string): Promise<string[]> {
-  const shrunk: string[] = [];
+export async function hasLocation(file: string): Promise<boolean> {
+  const gps = await exifr.gps(file).catch(() => undefined);
+  return gps?.latitude !== undefined;
+}
+
+export async function cleanOriginals(root: string): Promise<string[]> {
+  const cleaned: string[] = [];
   for (const { id, file } of await listPhotos(path.join(root, ALBUM_DIR))) {
     const { width = 0, height = 0 } = await sharp(file).metadata();
-    if (Math.max(width, height) <= MAX_EDGE) continue;
+    const located = await hasLocation(file);
+    if (!located && Math.max(width, height) <= MAX_EDGE) continue;
+    const raw = await exifr
+      .parse(file, {
+        pick: ['Make', 'Model', 'DateTimeOriginal'],
+        reviveValues: false,
+      })
+      .catch(() => undefined);
     const buffer = await sharp(file)
       .rotate()
-      .resize({ width: MAX_EDGE, height: MAX_EDGE, fit: 'inside' })
-      .keepExif()
+      .resize({
+        width: MAX_EDGE,
+        height: MAX_EDGE,
+        fit: 'inside',
+        withoutEnlargement: true,
+      })
+      .withExif({
+        IFD0: pickStrings({ Make: raw?.Make, Model: raw?.Model }),
+        IFD2: pickStrings({ DateTimeOriginal: raw?.DateTimeOriginal }),
+      })
       .jpeg({ quality: 86, mozjpeg: true })
       .toBuffer();
     await writeFile(file, buffer);
-    shrunk.push(id);
+    cleaned.push(id);
   }
-  return shrunk;
+  return cleaned;
+}
+
+function pickStrings(values: Record<string, unknown>): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(values).filter(
+      (entry): entry is [string, string] => typeof entry[1] === 'string',
+    ),
+  );
+}
+
+export async function listAlbumPhotos(root: string): Promise<Entry[]> {
+  return listPhotos(path.join(root, ALBUM_DIR));
 }
 
 export async function measureBrightness(

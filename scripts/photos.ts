@@ -1,13 +1,15 @@
 import {
+  cleanOriginals,
   generatePhotoMeta,
-  shrinkOriginals,
 } from '../src/integrations/photo-meta/core.ts';
 
 const root = process.cwd();
 
-if (process.argv.includes('--shrink')) {
-  const shrunk = await shrinkOriginals(root);
-  console.log(`shrunk ${shrunk.length} originals`);
+if (process.argv.includes('--clean')) {
+  const cleaned = await cleanOriginals(root);
+  console.log(
+    `cleaned ${cleaned.length} photos: ${cleaned.join(', ') || 'none needed'}`,
+  );
 }
 
 const count = await generatePhotoMeta({ root });

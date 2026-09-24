@@ -33,5 +33,7 @@ dev server picks new files up on refresh.
 In Chrome or Edge the CMS can also work on the local checkout: open
 http://localhost:4321/admin and choose "Work with Local Repository".
 
-Very large camera files: `npm run photos -- --shrink` scales them to 2400 px
-and keeps the EXIF data.
+Phone photos carry the location they were taken at. Run
+`npm run photos -- --clean` after adding photos by hand: it removes GPS data and
+scales very large files to 2400 px. The tests fail as long as a photo still has
+a location.

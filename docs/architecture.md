@@ -63,7 +63,10 @@ the photos listed in `heroPhotos` in the site settings.
    with that data. Astro's image service builds the responsive sizes.
 3. Galleries use a masonry layout and a `<dialog>` lightbox with keyboard and
    swipe navigation.
-4. `npm run photos -- --shrink` scales originals above 2400 px down and keeps EXIF.
+4. Photos never carry a location. The CMS converts uploads to WebP at 2400 px,
+   which drops all metadata. For files added by hand, `npm run photos -- --clean`
+   removes GPS and scales anything above 2400 px down, keeping camera model and
+   date. A test fails CI if any album photo still has GPS data.
 
 ## Themes and images
 

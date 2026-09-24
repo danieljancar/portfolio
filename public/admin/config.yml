@@ -15,6 +15,15 @@ display_url: https://danieljancar.dev
 logo_url: /icons/android-chrome-192x192.png
 media_folder: src/assets/uploads
 public_folder: /src/assets/uploads
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 88
+          width: 2400
+          height: 2400
 slug:
   encoding: ascii
   clean_accents: true
