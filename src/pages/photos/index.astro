@@ -11,7 +11,7 @@ const photos = albums.flatMap(album => album.photos);
 <BaseLayout
   title="Photos"
   description="Photos by Daniel Jancar."
-  image={albums[0]?.data.cover.src}
+  image={albums[0]?.data.cover}
 >
   <SectionHead title="Photos" as="h1" />
   <div class="filters wrap" role="group" aria-label="Albums">

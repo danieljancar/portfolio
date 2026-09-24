@@ -129,6 +129,15 @@ Vite's default CSS minifier (lightningcss) folds `animation-timeline` into the
 `animation` shorthand, which browsers reject. `astro.config.mjs` therefore uses
 esbuild for CSS. Keep it that way until that is fixed upstream.
 
+## Search engines and AI
+
+`BaseLayout` writes the canonical URL, Open Graph and Twitter tags, a 1200x630
+share image cropped from the page's cover (or `public/og.jpg`) and a JSON-LD
+graph with the site and the person. Posts add `BlogPosting`, events add `Event`.
+`/sitemap-index.xml`, `/rss.xml`, `/llms.txt` and `/llms-full.txt` are built
+from the same collections, so they never go out of date. `src/lib/llms.ts`
+builds both text files.
+
 ## Deploy and releases
 
 - `ci.yml` runs format, lint, type check, tests and build on every PR and on `develop`.

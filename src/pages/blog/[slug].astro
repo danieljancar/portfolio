@@ -7,6 +7,7 @@ import TagList from '~/components/ui/TagList.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getPosts, readingTime } from '~/lib/content';
 import { formatDate } from '~/lib/dates';
+import { personId } from '~/lib/seo';
 import { getRelated } from '~/lib/tags';
 import '~/styles/prose.css';
 
@@ -31,9 +32,34 @@ const meta = [
   `${readingTime(post.body)} min read`,
   updated && `Updated ${formatDate(updated)}`,
 ].filter(Boolean);
+const site = Astro.site ?? new URL('https://danieljancar.dev');
+const url = new URL(`/blog/${post.id}/`, site).href;
+const schema = [
+  {
+    '@type': 'BlogPosting',
+    '@id': `${url}#post`,
+    url,
+    headline: title,
+    description,
+    datePublished: published.toISOString(),
+    dateModified: (updated ?? published).toISOString(),
+    keywords: tags,
+    author: { '@id': personId(site) },
+    publisher: { '@id': personId(site) },
+    isPartOf: { '@id': new URL('/#website', site).href },
+    mainEntityOfPage: url,
+  },
+];
 ---
 
-<BaseLayout title={title} description={description} image={cover?.src}>
+<BaseLayout
+  title={title}
+  description={description}
+  image={cover}
+  imageAlt={coverAlt || title}
+  article={{ published, modified: updated, tags }}
+  schema={schema}
+>
   <div class="progress" aria-hidden="true"></div>
   <header class:list={['cover', !cover && 'plain']}>
     {cover && (

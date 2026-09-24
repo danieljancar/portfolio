@@ -30,7 +30,12 @@ const statusLabel = {
 const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
 ---
 
-<BaseLayout title={name} description={tagline} image={project.data.cover?.src}>
+<BaseLayout
+  title={name}
+  description={tagline}
+  image={project.data.cover}
+  imageAlt={project.data.coverAlt || name}
+>
   <header class="head wrap">
     <div>
       <a class="mono back" href="/work">

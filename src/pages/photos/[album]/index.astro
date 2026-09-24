@@ -31,7 +31,7 @@ const { title, date, place, cover } = album.data;
 <BaseLayout
   title={title}
   description={`Photos from ${title}, ${formatMonth(date)}.`}
-  image={cover.src}
+  image={cover}
 >
   <header class="head wrap">
     <a class="mono soft" href="/photos">

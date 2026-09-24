@@ -1,16 +1,16 @@
 ---
-name: Lovers
-tagline: Website for a tattoo, hair, coffee and furniture space in Lucerne
+name: Lovers Lovers
+tagline: Their first website, for a room full of tattoos, haircuts, coffee and vintage
 kind: Client website
 status: in-progress
 year: 2026
 tags: [lovers, website, design]
 links:
-  - label: Lovers on Instagram
+  - label: Lovers Lovers on Instagram
     href: https://www.instagram.com/lovers.lucerne/
-order: 4
+order: 2
 ---
 
-Lovers opened in August 2026 at Spitalstrasse 4 in Lucerne, right by the Kantonsspital. Tattoo, hair, coffee and vintage furniture share one space. So far they only run on Instagram, so I'm building their first website.
+Lovers Lovers is one room at Spitalstrasse 4 in Lucerne where four things happen at once. Someone gets tattooed, someone gets a haircut, the coffee machine is running and the vintage furniture around you is for sale. It opened in August 2026 and until now it only lived on Instagram.
 
-The design is dark with low-light photos, big serif type and the white and bordeaux of their logo. Events and posts come from one list, so a new pop-up is a single entry and moves to the archive by itself once it's over.
+I got to know the team through Jerry, who makes the coffee there, and I shoot their space and their events. Now I'm building their first website. It should feel like walking in: dark, a bit moody, with the photos of the people and the pieces in the room, and every pop-up and event in one place.

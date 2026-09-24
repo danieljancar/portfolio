@@ -39,7 +39,8 @@ const swatches = Object.entries(photo.meta.palette).filter(
 <BaseLayout
   title={album.title}
   description={`Photo from ${album.title} by Daniel Jancar.`}
-  image={photo.image.src}
+  image={photo.image}
+  imageAlt={`${album.title}, photo by Daniel Jancar`}
   themeStyle={themeStyle(photo.theme)}
 >
   <section class="page">

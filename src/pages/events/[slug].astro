@@ -39,12 +39,26 @@ const when = endDate
   ? `${formatDate(date)} to ${formatDate(endDate)}`
   : formatDate(date);
 const theme = album?.photos[0] ? themeStyle(album.photos[0].theme) : undefined;
+const site = Astro.site ?? new URL('https://danieljancar.dev');
+const schema = [
+  {
+    '@type': 'Event',
+    name: title,
+    url: new URL(`/events/${event.id}/`, site).href,
+    startDate: date.toISOString().slice(0, 10),
+    endDate: (endDate ?? date).toISOString().slice(0, 10),
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: place && { '@type': 'Place', name: place, address: place },
+  },
+];
 ---
 
 <BaseLayout
   title={title}
   description={place ? `${when}, ${place}` : when}
-  image={cover?.src}
+  image={cover}
+  imageAlt={coverAlt || title}
+  schema={schema}
 >
   <header class="head" style={theme}>
     {cover && (
