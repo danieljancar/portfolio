@@ -8,7 +8,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
 import { themeStyle } from '~/lib/color';
 import { getEvents } from '~/lib/content';
 import { formatDate } from '~/lib/dates';
-import { linkAttrs } from '~/lib/links';
+import { linkProps } from '~/lib/links';
 import { getAlbum } from '~/lib/photos';
 import { getRelated } from '~/lib/tags';
 import '~/styles/prose.css';
@@ -74,9 +74,7 @@ const theme = album?.photos[0] ? themeStyle(album.photos[0].theme) : undefined;
         <ul class="links">
           {links.map(link => (
             <li>
-              <a href={link.href} {...linkAttrs(link.href)}>
-                {link.label} ↗
-              </a>
+              <a {...linkProps(link.href)}>{link.label} ↗</a>
             </li>
           ))}
           {project && (

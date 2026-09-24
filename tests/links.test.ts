@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isExternal, linkAttrs } from '../src/lib/links';
+import { isExternal, linkProps, withRef } from '../src/lib/links';
 
 describe('links', () => {
   it('treats other hosts as external', () => {
@@ -14,11 +14,28 @@ describe('links', () => {
     expect(isExternal('mailto:daniel@danieljancar.dev')).toBe(false);
   });
 
-  it('adds target and rel only for external links', () => {
-    expect(linkAttrs('https://github.com')).toEqual({
+  it('adds the ref to external links only', () => {
+    expect(withRef('https://github.com/danieljancar')).toBe(
+      'https://github.com/danieljancar?ref=danieljancar.dev',
+    );
+    expect(withRef('https://moebu.ch/?lang=de#shop')).toBe(
+      'https://moebu.ch/?lang=de&ref=danieljancar.dev#shop',
+    );
+    expect(withRef('https://example.com/?ref=other')).toBe(
+      'https://example.com/?ref=other',
+    );
+    expect(withRef('/work')).toBe('/work');
+    expect(withRef('mailto:daniel@danieljancar.dev')).toBe(
+      'mailto:daniel@danieljancar.dev',
+    );
+  });
+
+  it('opens external links in a new tab', () => {
+    expect(linkProps('https://github.com')).toEqual({
+      href: 'https://github.com/?ref=danieljancar.dev',
       target: '_blank',
-      rel: 'noopener noreferrer',
+      rel: 'noopener',
     });
-    expect(linkAttrs('/projects')).toEqual({});
+    expect(linkProps('/work')).toEqual({ href: '/work' });
   });
 });

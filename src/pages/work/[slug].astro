@@ -5,7 +5,7 @@ import RelatedList from '~/components/ui/RelatedList.astro';
 import TagList from '~/components/ui/TagList.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getProjects } from '~/lib/content';
-import { linkAttrs } from '~/lib/links';
+import { linkProps } from '~/lib/links';
 import { getRelated } from '~/lib/tags';
 import '~/styles/prose.css';
 
@@ -67,9 +67,7 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
           <ul class="links">
             {links.map(link => (
               <li>
-                <a href={link.href} {...linkAttrs(link.href)}>
-                  {link.label} ↗
-                </a>
+                <a {...linkProps(link.href)}>{link.label} ↗</a>
               </li>
             ))}
           </ul>

@@ -1,5 +1,5 @@
 import { defineHastPlugin } from 'satteri';
-import { isExternal } from '../lib/links';
+import { linkProps } from '../lib/links';
 
 export const externalLinks = defineHastPlugin({
   name: 'external-links',
@@ -7,10 +7,12 @@ export const externalLinks = defineHastPlugin({
     filter: ['a'],
     visit(node, ctx) {
       const href = node.properties?.href;
-      if (typeof href === 'string' && isExternal(href)) {
-        ctx.setProperty(node, 'target', '_blank');
-        ctx.setProperty(node, 'rel', 'noopener noreferrer');
-      }
+      if (typeof href !== 'string') return;
+      const { target, rel, href: next } = linkProps(href);
+      if (!target || !rel) return;
+      ctx.setProperty(node, 'href', next);
+      ctx.setProperty(node, 'target', target);
+      ctx.setProperty(node, 'rel', rel);
     },
   },
 });

@@ -1,6 +1,6 @@
 ---
 import type { Company } from '~/lib/experience';
-import { linkAttrs } from '~/lib/links';
+import { linkProps } from '~/lib/links';
 
 interface Props {
   companies: Company[];
@@ -16,11 +16,7 @@ const { companies } = Astro.props;
         <div>
           <h3>
             {company.url ? (
-              <a
-                href={company.url}
-                data-cursor="Visit"
-                {...linkAttrs(company.url)}
-              >
+              <a {...linkProps(company.url)} data-cursor="Visit">
                 {company.name} ↗
               </a>
             ) : (

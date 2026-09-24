@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { linkAttrs } from '~/lib/links';
+import { linkProps } from '~/lib/links';
 
 interface Props {
   items: CollectionEntry<'recommendations'>[];
@@ -28,7 +28,7 @@ const columns = [
       <ul>
         {column.items.map(item => (
           <li>
-            <a class="rec" href={item.data.url} {...linkAttrs(item.data.url)}>
+            <a class="rec" {...linkProps(item.data.url)}>
               <div>
                 <b>{item.data.name}</b>
                 <div class="mono soft">{item.data.topic}</div>

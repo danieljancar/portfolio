@@ -1,5 +1,5 @@
 ---
-import { linkAttrs } from '~/lib/links';
+import { linkProps } from '~/lib/links';
 
 interface Props {
   links: { label: string; href: string }[];
@@ -55,12 +55,7 @@ const sections = [
   )}
 
   {links.map(link => (
-    <a
-      class="cell c3 social"
-      href={link.href}
-      data-cursor="Open"
-      {...linkAttrs(link.href)}
-    >
+    <a class="cell c3 social" {...linkProps(link.href)} data-cursor="Open">
       <span class="arrow out" aria-hidden="true">
         ↗
       </span>

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { getRecommendations, getSettings } from '~/lib/content';
-import { linkAttrs } from '~/lib/links';
+import { linkProps } from '~/lib/links';
 
 const [settings, legal, recommendations] = await Promise.all([
   getSettings(),
@@ -31,7 +31,7 @@ const handle = (href: string) =>
   <ul>
     {links.map(link => (
       <li>
-        <a href={link.href} {...linkAttrs(link.href)}>
+        <a {...linkProps(link.href)}>
           <span class="display name">{link.label}</span>
           <span class="mono">{handle(link.href)}</span>
         </a>

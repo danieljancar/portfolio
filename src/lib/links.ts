@@ -5,8 +5,19 @@ export function isExternal(href: string): boolean {
   return new URL(href).hostname.replace(/^www\./, '') !== SITE_HOST;
 }
 
-export function linkAttrs(href: string): { target?: string; rel?: string } {
+export function withRef(href: string): string {
+  if (!isExternal(href)) return href;
+  const url = new URL(href);
+  if (!url.searchParams.has('ref')) url.searchParams.set('ref', SITE_HOST);
+  return url.toString();
+}
+
+export function linkProps(href: string): {
+  href: string;
+  target?: string;
+  rel?: string;
+} {
   return isExternal(href)
-    ? { target: '_blank', rel: 'noopener noreferrer' }
-    : {};
+    ? { href: withRef(href), target: '_blank', rel: 'noopener' }
+    : { href };
 }

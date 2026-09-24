@@ -1,7 +1,7 @@
 ---
 import { getImage } from 'astro:assets';
 import Photo from '~/components/media/Photo.astro';
-import { linkAttrs } from '~/lib/links';
+import { linkProps } from '~/lib/links';
 import type { Photo as PhotoType } from '~/lib/photos';
 import type { Tile } from '~/scripts/helix';
 
@@ -52,9 +52,7 @@ const tiles: Tile[] = await Promise.all(
       <ul class="links mono">
         {links.map(link => (
           <li>
-            <a href={link.href} {...linkAttrs(link.href)}>
-              {link.label} ↗
-            </a>
+            <a {...linkProps(link.href)}>{link.label} ↗</a>
           </li>
         ))}
       </ul>

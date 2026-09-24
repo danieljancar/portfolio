@@ -83,9 +83,14 @@ brightness from the photo-meta step, other images are measured once per build in
 
 ## Links
 
-`src/lib/links.ts` decides what is external. Components spread `linkAttrs()` on
-links, and the `external-links` markdown plugin does the same inside posts, so
-every link off the site opens in a new tab.
+`src/lib/links.ts` decides what is external. Components spread `linkProps()`
+on links, and the `external-links` markdown plugin does the same inside posts.
+Every link off the site opens in a new tab and gets `?ref=danieljancar.dev`,
+unless it already has a `ref`. After changing the plugin, build once with
+`--force`, because rendered Markdown is cached.
+
+The favicon is `public/favicon.svg`, drawn from the wordmark font. The PNG and
+ICO sizes next to it are rendered from that SVG.
 
 ## Tags and related content
 

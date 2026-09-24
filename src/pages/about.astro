@@ -5,7 +5,7 @@ import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getSettings } from '~/lib/content';
 import { getCompanies } from '~/lib/experience';
-import { linkAttrs } from '~/lib/links';
+import { linkProps } from '~/lib/links';
 
 const [settings, companies] = await Promise.all([
   getSettings(),
@@ -35,9 +35,7 @@ const paragraphs = settings.about.split(/\n\s*\n/);
       <ul class="socials mono">
         {settings.socials.map(link => (
           <li>
-            <a href={link.href} {...linkAttrs(link.href)}>
-              {link.label} ↗
-            </a>
+            <a {...linkProps(link.href)}>{link.label} ↗</a>
           </li>
         ))}
       </ul>

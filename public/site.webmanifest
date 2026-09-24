@@ -1,27 +1,27 @@
 {
-  "short_name": "danieljancar",
-  "name": "Daniel Jancar - Passionate Software Developer",
-  "description": "The portfolio of Daniel Jancar, find blog posts about various tech topics.",
+  "name": "Daniel Jancar",
+  "short_name": "daniel.jancar",
+  "description": "Project management, software and photography by Daniel Jancar.",
   "icons": [
     {
-      "src": "/assets/icons/favicon-32x32.png",
-      "sizes": "32x32",
+      "src": "/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/icons/favicon-16x16.png",
-      "sizes": "16x16",
+      "src": "/icons/android-chrome-512x512.png",
+      "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/assets/icons/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png"
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ],
   "start_url": "/",
-  "background_color": "#ffffff",
-  "display": "standalone",
   "scope": "/",
-  "theme_color": "#7480ff"
+  "display": "standalone",
+  "background_color": "#0b0d0a",
+  "theme_color": "#0b0d0a"
 }
