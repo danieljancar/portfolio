@@ -26,11 +26,12 @@ npm install
 npm run dev          # http://localhost:4321, CMS at /admin
 ```
 
-Drop photos into `src/content/photos/files/`. The dev server creates a YAML
-entry for each new file. Fill in `alt`, `category` and `featured` there.
+Drop photos into an album folder in `src/content/albums/`. For a new shoot,
+create a folder with an `index.md` (title, date, cover) next to the photos. The
+dev server picks new files up on refresh.
 
 In Chrome or Edge the CMS can also work on the local checkout: open
 http://localhost:4321/admin and choose "Work with Local Repository".
 
-Very large camera files: `npm run photos -- --shrink` scales them to 3000 px
+Very large camera files: `npm run photos -- --shrink` scales them to 2400 px
 and keeps the EXIF data.
