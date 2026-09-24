@@ -26,6 +26,14 @@ const photos = albums.flatMap(album => album.photos);
     <a class="mono open" href="/photos" data-open hidden>
       Open album →
     </a>
+    <label class="sort">
+      <span class="visually-hidden">Order</span>
+      <select data-sort>
+        <option value="shuffle">Shuffled</option>
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+      </select>
+    </label>
   </div>
   <PhotoGrid photos={photos} label="Photo by Daniel Jancar" />
 </BaseLayout>
@@ -34,6 +42,29 @@ const photos = albums.flatMap(album => album.photos);
   const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
   const items = document.querySelectorAll<HTMLElement>('[data-album]');
   const open = document.querySelector<HTMLAnchorElement>('[data-open]');
+  const sort = document.querySelector<HTMLSelectElement>('[data-sort]');
+  const grid = items[0]?.parentElement;
+
+  const order = (mode: string) => {
+    if (!grid) return;
+    const list = [...items];
+    if (mode === 'shuffle') {
+      for (let i = list.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [list[i], list[j]] = [list[j], list[i]];
+      }
+    } else {
+      const sign = mode === 'newest' ? -1 : 1;
+      list.sort(
+        (a, b) =>
+          sign * (a.dataset.taken ?? '').localeCompare(b.dataset.taken ?? ''),
+      );
+    }
+    grid.append(...list);
+  };
+
+  sort?.addEventListener('change', () => order(sort.value));
+  order(sort?.value ?? 'shuffle');
 
   for (const button of buttons) {
     button.addEventListener('click', () => {
@@ -53,6 +84,28 @@ const photos = albums.flatMap(album => album.photos);
 </script>
 
 <style>
+  .sort {
+    margin-left: auto;
+  }
+
+  select {
+    min-height: 44px;
+    padding: 0 36px 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: transparent
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%2382a951' stroke-width='2'%3E%3Cpath d='m1 1 5 5 5-5'/%3E%3C/svg%3E")
+      no-repeat right 14px center;
+    color: var(--ink);
+    font: 500 14px var(--font-sans);
+    appearance: none;
+    cursor: pointer;
+  }
+
+  select:hover {
+    border-color: var(--ink);
+  }
+
   .filters {
     display: flex;
     flex-wrap: wrap;
