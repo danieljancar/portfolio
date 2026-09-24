@@ -101,8 +101,6 @@ const experience = defineCollection({
     end: z.string().optional(),
     summary: z.string().optional(),
     skills: z.array(z.string()).default([]),
-    work: z.array(reference('projects')).default([]),
-    tags: z.array(z.string()).default([]),
     order: z.number().default(100),
   }),
 });

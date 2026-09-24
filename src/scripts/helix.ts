@@ -25,7 +25,6 @@ const RADIUS = 3.4;
 const STEP = (Math.PI * 2) / 7;
 const PITCH = 0.36;
 const HEIGHT = 1.3;
-const BACKGROUND = 0x060705;
 const RESTING = 0.78;
 
 function curvedPlane(width: number, height: number): PlaneGeometry {
@@ -56,7 +55,16 @@ export function mountHelix(
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   const scene = new Scene();
-  scene.fog = new Fog(BACKGROUND, 7, 15);
+  const fog = new Fog(0x000000, 7, 15);
+  scene.fog = fog;
+  const syncFog = () => fog.color.set(getComputedStyle(root).backgroundColor);
+  syncFog();
+  new MutationObserver(syncFog).observe(document.documentElement, {
+    attributeFilter: ['data-theme'],
+  });
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', syncFog);
   const camera = new PerspectiveCamera(38, 1, 0.1, 60);
   const helix = new Group();
   scene.add(helix);

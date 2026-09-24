@@ -26,3 +26,7 @@ export function formatYearMonth(value: string): string {
 export function isoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
+
+export function formatDay(date: Date): string {
+  return date.toLocaleDateString(locale, { day: 'numeric', timeZone: zone });
+}

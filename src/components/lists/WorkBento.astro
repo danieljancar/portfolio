@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import Cover from '~/components/media/Cover.astro';
 
 interface Props {
   work: CollectionEntry<'projects'>[];
@@ -8,39 +7,25 @@ interface Props {
 
 const { work } = Astro.props;
 const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
-  ongoing ? (year ? `Since ${year}` : 'Ongoing') : year?.toString();
+  ongoing ? (year ? `Since ${year}` : undefined) : year?.toString();
 ---
 
 <ul class="bento" data-bento>
   {work.map((item, i) => (
-    <li data-slot={i % 5} data-type={item.data.ongoing ? 'ongoing' : 'one-off'}>
+    <li data-slot={i % 4} data-type={item.data.ongoing ? 'ongoing' : 'one-off'}>
       <a class="tile" href={`/work/${item.id}`} data-cursor="Open">
+        <ul class="meta mono">
+          <li class:list={[item.data.ongoing && 'live']}>
+            {item.data.ongoing ? 'Ongoing' : 'One-off'}
+          </li>
+          <li>{item.data.kind}</li>
+          {when(item.data) && <li>{when(item.data)}</li>}
+        </ul>
         <span class="arrow" aria-hidden="true">
           →
         </span>
-        <div class:list={['image', !item.data.cover && 'empty']}>
-          {item.data.cover ? (
-            <Cover
-              src={item.data.cover}
-              alt=""
-              widths={[400, 800, 1200]}
-              sizes="(max-width: 900px) 100vw, 50vw"
-            />
-          ) : (
-            <span class="display">{item.data.name.slice(0, 1)}</span>
-          )}
-        </div>
-        <div class="text">
-          <ul class="meta mono">
-            <li class:list={[item.data.ongoing && 'live']}>
-              {item.data.ongoing ? 'Ongoing' : 'One-off'}
-            </li>
-            <li>{item.data.kind}</li>
-            {when(item.data) && <li>{when(item.data)}</li>}
-          </ul>
-          <h3 class="display">{item.data.name}</h3>
-          <p>{item.data.tagline}</p>
-        </div>
+        <h3 class="display">{item.data.name}</h3>
+        <p>{item.data.tagline}</p>
       </a>
     </li>
   ))}
@@ -50,7 +35,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
   .bento {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-auto-rows: 300px;
+    grid-auto-rows: minmax(240px, auto);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -59,9 +44,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
   }
 
   li[data-slot] {
-    grid-column: span 6;
-    min-height: 0;
-    overflow: hidden;
+    grid-column: span 12;
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
@@ -82,14 +65,27 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
 
   .tile {
     position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
     height: 100%;
     padding: 20px;
+    overflow: hidden;
     transition:
       background-color 0.25s,
       color 0.25s;
+  }
+
+  .tile::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 4px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 0.5s var(--ease-out);
   }
 
   .tile:hover {
@@ -97,59 +93,8 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
     color: var(--ground);
   }
 
-  li[data-slot='0'] .tile {
-    grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1fr) auto;
-  }
-
-  .arrow {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    z-index: 1;
-    font-size: 20px;
-    transition: transform 0.3s var(--ease-out);
-  }
-
-  .tile:hover .arrow {
-    transform: rotate(-45deg);
-  }
-
-  .image {
-    order: 2;
-    min-height: 0;
-    margin-top: 28px;
-    overflow: hidden;
-  }
-
-  li[data-slot='0'] .image {
-    order: 0;
-  }
-
-  .image :global(img) {
-    transition: transform 0.6s var(--ease-out);
-  }
-
-  .tile:hover .image :global(img) {
-    transform: scale(1.04);
-  }
-
-  .empty {
-    display: grid;
-    place-items: center;
-    background: var(--accent);
-    color: var(--on-accent);
-  }
-
-  .empty span {
-    font-size: 96px;
-  }
-
-  .text {
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    gap: 12px;
+  .tile:hover::after {
+    transform: scaleX(1);
   }
 
   .meta {
@@ -157,7 +102,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
     flex-wrap: wrap;
     gap: 4px 16px;
     margin: 0;
-    padding: 0;
+    padding: 0 32px 0 0;
     list-style: none;
   }
 
@@ -169,14 +114,31 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
     color: var(--accent);
   }
 
+  .arrow {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 20px;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .tile:hover .arrow {
+    transform: rotate(-45deg);
+  }
+
   h3 {
-    font-size: clamp(26px, 2.4vw, 40px);
+    margin-top: auto;
+    font-size: clamp(36px, 4.4vw, 72px);
     overflow-wrap: anywhere;
     transition: font-stretch 0.5s var(--ease-out);
   }
 
   li[data-slot='0'] h3 {
-    font-size: clamp(44px, 6vw, 96px);
+    font-size: clamp(56px, 9vw, 150px);
+  }
+
+  li[data-slot='3'] h3 {
+    font-size: clamp(44px, 6vw, 104px);
   }
 
   .tile:hover h3 {
@@ -184,7 +146,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
   }
 
   p {
-    max-width: 36ch;
+    max-width: 40ch;
     font-size: 17px;
     line-height: 1.4;
   }
@@ -207,7 +169,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
   @media (max-width: 900px) {
     .bento {
       grid-template-columns: 1fr;
-      grid-auto-rows: auto;
+      grid-auto-rows: minmax(200px, auto);
     }
 
     li[data-slot],
@@ -216,20 +178,6 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
     li[data-slot='2'] {
       grid-column: auto;
       grid-row: auto;
-    }
-
-    .tile,
-    li[data-slot='0'] .tile {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto;
-    }
-
-    .image,
-    li[data-slot='0'] .image {
-      order: 0;
-      min-height: 0;
-      margin-top: 32px;
-      aspect-ratio: 16 / 10;
     }
   }
 </style>

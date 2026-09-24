@@ -1,6 +1,5 @@
 ---
 import Photo from '~/components/media/Photo.astro';
-import { themeStyle } from '~/lib/color';
 import type { Photo as PhotoType } from '~/lib/photos';
 
 interface Props {
@@ -11,36 +10,86 @@ interface Props {
 
 const { center, around, caption } = Astro.props;
 const positions = [
-  { w: '22vw', h: '28vh', x0: '-30vw', y0: '-26vh', x1: '-80vw', y1: '-70vh' },
-  { w: '18vw', h: '24vh', x0: '30vw', y0: '-28vh', x1: '80vw', y1: '-70vh' },
-  { w: '16vw', h: '30vh', x0: '-34vw', y0: '22vh', x1: '-90vw', y1: '70vh' },
-  { w: '20vw', h: '22vh', x0: '32vw', y0: '26vh', x1: '90vw', y1: '70vh' },
-  { w: '12vw', h: '16vh', x0: '0vw', y0: '-36vh', x1: '0vw', y1: '-90vh' },
-  { w: '12vw', h: '16vh', x0: '0vw', y0: '36vh', x1: '0vw', y1: '90vh' },
+  {
+    w: '22vw',
+    h: '28vh',
+    x0: '-30vw',
+    y0: '-24vh',
+    x1: '-80vw',
+    y1: '-70vh',
+    r: '-18deg',
+  },
+  {
+    w: '18vw',
+    h: '24vh',
+    x0: '30vw',
+    y0: '-26vh',
+    x1: '80vw',
+    y1: '-70vh',
+    r: '14deg',
+  },
+  {
+    w: '16vw',
+    h: '30vh',
+    x0: '-34vw',
+    y0: '22vh',
+    x1: '-90vw',
+    y1: '70vh',
+    r: '10deg',
+  },
+  {
+    w: '20vw',
+    h: '22vh',
+    x0: '32vw',
+    y0: '24vh',
+    x1: '90vw',
+    y1: '70vh',
+    r: '-12deg',
+  },
+  {
+    w: '12vw',
+    h: '16vh',
+    x0: '-6vw',
+    y0: '-36vh',
+    x1: '-10vw',
+    y1: '-90vh',
+    r: '22deg',
+  },
+  {
+    w: '12vw',
+    h: '16vh',
+    x0: '8vw',
+    y0: '36vh',
+    x1: '12vw',
+    y1: '90vh',
+    r: '-24deg',
+  },
 ];
 const flyers = around
   .slice(0, positions.length)
   .map((photo, i) => ({ photo, ...positions[i] }));
 ---
 
-<section
-  class="zoom-in"
-  style={themeStyle(center.theme)}
-  aria-label="Featured photo"
->
+<section class="zoom-in" aria-label="Featured photo">
   <div class="stick">
+    <p class="words display" aria-hidden="true">
+      Look
+      <br />
+      closer
+    </p>
     {flyers.map(f => (
       <div
         class="flyer"
-        style={`width:${f.w};height:${f.h};--x0:${f.x0};--y0:${f.y0};--x1:${f.x1};--y1:${f.y1}`}
+        style={`width:${f.w};height:${f.h};--x0:${f.x0};--y0:${f.y0};--x1:${f.x1};--y1:${f.y1};--r:${f.r}`}
       >
         <Photo photo={f.photo} widths={[480, 800]} sizes="25vw" />
       </div>
     ))}
+    <span class="lens" aria-hidden="true"></span>
     <div class="center">
       <Photo photo={center} widths={[800, 1400, 2000, 2800]} sizes="100vw" />
     </div>
-    <a class="caption" href={center.href}>
+    <a class="caption" href={center.href} data-cursor="View">
       <span class="mono">{caption}</span>
       <h2 class="display">Look closer</h2>
     </a>
@@ -50,9 +99,8 @@ const flyers = around
 <style>
   .zoom-in {
     position: relative;
-    height: 360vh;
-    background: var(--tint);
-    --dim-strength: 1;
+    height: 380vh;
+    background: var(--ground);
     view-timeline-name: --zoom-in;
   }
 
@@ -61,30 +109,57 @@ const flyers = around
     top: 0;
     height: 100vh;
     overflow: hidden;
+    perspective: 1200px;
+  }
+
+  .words {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    margin: 0;
+    font-size: 16vw;
+    line-height: 0.82;
+    text-align: center;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ink);
+    opacity: 0.35;
   }
 
   .flyer {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%) translate(var(--x0), var(--y0)) scale(0.5);
+    transform: translate(-50%, -50%) translate(var(--x0), var(--y0))
+      rotateZ(var(--r)) rotateY(calc(var(--r) * -2)) scale(0.5);
+  }
+
+  .lens {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 30vmin;
+    height: 30vmin;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    translate: -50% -50%;
   }
 
   .center {
     position: absolute;
     inset: 0;
-    clip-path: inset(38% 40% round 999px);
+    clip-path: inset(42% 44% round 999px);
   }
 
   .caption {
     position: absolute;
     inset: auto 0 0;
-    padding: 80px var(--gutter) var(--gutter);
-    background: linear-gradient(transparent, rgb(0 0 0 / 0.55));
     z-index: 3;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    padding: 80px var(--gutter) var(--gutter);
+    background: linear-gradient(transparent, rgb(0 0 0 / 0.55));
     color: #fff;
     text-shadow: 0 1px 12px rgb(0 0 0 / 0.35);
   }
@@ -98,22 +173,34 @@ const flyers = around
   }
 
   @supports (animation-timeline: view()) {
+    .words {
+      animation: through linear both;
+      animation-timeline: --zoom-in;
+      animation-range: contain 0% contain 45%;
+    }
+
     .flyer {
       animation: fly linear both;
       animation-timeline: --zoom-in;
       animation-range: contain 0% contain 100%;
     }
 
+    .lens {
+      animation: focus linear both;
+      animation-timeline: --zoom-in;
+      animation-range: contain 0% contain 60%;
+    }
+
     .center {
       animation: open linear both;
       animation-timeline: --zoom-in;
-      animation-range: contain 0% contain 80%;
+      animation-range: contain 10% contain 80%;
     }
 
     .caption {
       animation: rise linear both;
       animation-timeline: --zoom-in;
-      animation-range: contain 60% contain 90%;
+      animation-range: contain 65% contain 90%;
     }
   }
 
@@ -127,7 +214,9 @@ const flyers = around
       height: 80vh;
     }
 
-    .flyer {
+    .words,
+    .flyer,
+    .lens {
       display: none;
     }
 
@@ -136,17 +225,40 @@ const flyers = around
     }
   }
 
+  @keyframes through {
+    to {
+      transform: scale(9);
+      opacity: 0;
+    }
+  }
+
   @keyframes fly {
     to {
       transform: translate(-50%, -50%) translate(var(--x1), var(--y1))
-        scale(2.6);
+        rotateZ(0deg) rotateY(0deg) scale(2.6);
+      opacity: 0;
+    }
+  }
+
+  @keyframes focus {
+    40% {
+      width: 44vmin;
+      height: 44vmin;
+      opacity: 1;
+    }
+    to {
+      width: 160vmax;
+      height: 160vmax;
       opacity: 0;
     }
   }
 
   @keyframes open {
-    60% {
-      clip-path: inset(20% 24% round 40px);
+    from {
+      clip-path: inset(42% 44% round 999px);
+    }
+    55% {
+      clip-path: inset(22% 26% round 48px);
     }
     to {
       clip-path: inset(0 0 round 0);

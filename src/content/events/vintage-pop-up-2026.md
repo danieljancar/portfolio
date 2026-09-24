@@ -5,7 +5,7 @@ place: Friedentalstrasse 41A, Lucerne
 cover: ../albums/vintage-pop-up/DSCF1473.jpg
 coverAlt: Two visitors with their shopping bags at the entrance of the pop-up
 album: vintage-pop-up
-tags: [vintage, pop-up, event, photography]
+tags: [vintage, pop-up, event, photography, lovers]
 links:
   - label: michelle tamar on Instagram
     href: https://www.instagram.com/michelletamar_/

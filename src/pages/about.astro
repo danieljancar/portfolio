@@ -48,8 +48,8 @@ const paragraphs = settings.about.split(/\n\s*\n/);
   <div class="skills wrap">
     {settings.skills.map(group => (
       <div class="group">
-        <p class="mono soft">{group.group}</p>
-        <ul>
+        <h3>{group.group}</h3>
+        <ul class="chips mono">
           {group.items.map(item => (
             <li>{item}</li>
           ))}
@@ -111,25 +111,62 @@ const paragraphs = settings.about.split(/\n\s*\n/);
 
   .skills {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 32px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
   }
 
-  .group ul {
-    margin: 12px 0 0;
+  .group {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .group:nth-child(odd) {
+    padding-right: 32px;
+  }
+
+  .group:nth-child(even) {
+    padding-left: 32px;
+    border-left: 1px solid var(--line);
+  }
+
+  .group h3 {
+    font-size: 28px;
+    font-stretch: 125%;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .group li {
-    padding: 6px 0;
-    border-bottom: 1px solid var(--line-soft);
-    font-size: 17px;
+  .chips li {
+    padding: 4px 8px;
+    border: 1px solid var(--line);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .chips li:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
   }
 
   @media (max-width: 900px) {
     .skills {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
+    }
+
+    .group:nth-child(n) {
+      padding-inline: 0;
+      border-left: 0;
     }
   }
 

@@ -96,11 +96,6 @@ an event's project or album). That drives `/tags`, `/tags/<tag>` and the related
 blocks on detail pages. Tags are compared by slug, so `React Native` and
 `react-native` meet.
 
-Experience entries have `tags` and a `work` list too. `src/lib/experience.ts`
-uses the same ranking to show what each role is connected to. Roles without an
-end date count as current and get the full treatment; ended roles are listed
-compactly under "Before".
-
 ## Motion
 
 Scroll effects use CSS scroll-driven animations (`animation-timeline`).

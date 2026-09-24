@@ -370,21 +370,6 @@ collections:
         label: Skills
         widget: list
         required: false
-      - name: work
-        label: Connected work
-        widget: relation
-        collection: projects
-        value_field: '{{slug}}'
-        search_fields:
-          - name
-        display_fields:
-          - name
-        multiple: true
-        required: false
-      - name: tags
-        label: Tags (connects posts, events and albums with the same tags)
-        widget: list
-        required: false
       - name: order
         label: Order
         widget: number

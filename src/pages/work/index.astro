@@ -41,7 +41,7 @@ const filters = [
       let slot = 0;
       for (const item of items) {
         item.hidden = filter !== 'all' && item.dataset.type !== filter;
-        if (!item.hidden) item.dataset.slot = String(slot++ % 5);
+        if (!item.hidden) item.dataset.slot = String(slot++ % 4);
       }
     });
   }

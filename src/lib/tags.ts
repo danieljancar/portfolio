@@ -6,7 +6,6 @@ import {
   type Item,
   type Kind,
   type Tag,
-  type Target,
 } from './related';
 
 export {
@@ -102,11 +101,4 @@ export async function getRelated(
   const items = await getItems();
   const target = items.find(i => i.kind === kind && i.id === id);
   return target ? rankRelated(target, items, options) : [];
-}
-
-export async function getConnections(
-  target: Target,
-  options?: { limit?: number; kinds?: Kind[] },
-): Promise<Item[]> {
-  return rankRelated(target, await getItems(), options);
 }

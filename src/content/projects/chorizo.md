@@ -3,6 +3,7 @@ name: Chorizo
 tagline: Course management tool
 kind: Open source
 status: live
+year: 2024
 stack: [Angular, TypeScript, Firebase]
 tags: [angular, firebase, open-source]
 cover: ./chorizo-cover.png

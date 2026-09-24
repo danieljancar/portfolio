@@ -1,21 +1,12 @@
 ---
-import type { ImageMetadata } from 'astro';
-import Cover from '~/components/media/Cover.astro';
-import Photo from '~/components/media/Photo.astro';
 import { linkAttrs } from '~/lib/links';
-import type { Photo as PhotoType } from '~/lib/photos';
 
 interface Props {
-  workImage?: ImageMetadata;
-  photos: PhotoType[];
-  eventImage?: ImageMetadata;
-  current: string[];
   links: { label: string; href: string }[];
   recommendations: boolean;
 }
 
-const { workImage, photos, eventImage, current, links, recommendations } =
-  Astro.props;
+const { links, recommendations } = Astro.props;
 const handle = (href: string) =>
   href.startsWith('mailto:')
     ? href.slice(7)
@@ -23,70 +14,28 @@ const handle = (href: string) =>
         .replace(/^https?:\/\/(www\.)?/, '')
         .replace(/\/$/, '')
         .replace(/^[^/]+\/(in\/)?/, '@');
+const sections = [
+  { href: '/work', label: 'Work', span: 'c5 m2 tall huge' },
+  { href: '/photos', label: 'Photos', span: 'c4' },
+  { href: '/blog', label: 'Blog', span: 'c3 accent' },
+  { href: '/events', label: 'Events', span: 'c4' },
+  { href: '/about', label: 'About', span: 'c3' },
+];
 ---
 
 <section class="index" aria-label="Index">
-  <a class="cell c5 m2 tall" href="/work" data-cursor="Work">
-    <span class="arrow" aria-hidden="true">
-      →
-    </span>
-    {workImage && (
-      <div class="media big">
-        <Cover
-          src={workImage}
-          alt=""
-          widths={[500, 900]}
-          sizes="(max-width: 900px) 90vw, 38vw"
-        />
-      </div>
-    )}
-    <h3 class="display">Work</h3>
-  </a>
-
-  <a class="cell c4" href="/photos" data-cursor="Photos">
-    <span class="arrow" aria-hidden="true">
-      →
-    </span>
-    <div class="strip">
-      {photos.slice(0, 3).map(photo => (
-        <div class="media">
-          <Photo photo={photo} widths={[240, 400]} sizes="120px" />
-        </div>
-      ))}
-    </div>
-    <h3 class="display">Photos</h3>
-  </a>
-
-  <a class="cell c3 accent" href="/blog" data-cursor="Read">
-    <span class="arrow" aria-hidden="true">
-      →
-    </span>
-    <h3 class="display">Blog</h3>
-  </a>
-
-  <a class="cell c4 m2" href="/events" data-cursor="Events">
-    <span class="arrow" aria-hidden="true">
-      →
-    </span>
-    {eventImage && (
-      <div class="media event">
-        <Cover src={eventImage} alt="" widths={[300, 600]} sizes="240px" />
-      </div>
-    )}
-    <h3 class="display">Events</h3>
-  </a>
-
-  <a class="cell c3 m2" href="/about#experience" data-cursor="About">
-    <span class="arrow" aria-hidden="true">
-      →
-    </span>
-    <ul class="current">
-      {current.map(name => (
-        <li>{name}</li>
-      ))}
-    </ul>
-    <h3 class="display small">About</h3>
-  </a>
+  {sections.map(section => (
+    <a
+      class:list={['cell', section.span]}
+      href={section.href}
+      data-cursor={section.label}
+    >
+      <span class="arrow" aria-hidden="true">
+        →
+      </span>
+      <h3 class="display">{section.label}</h3>
+    </a>
+  ))}
 
   {recommendations && (
     <>
@@ -133,7 +82,7 @@ const handle = (href: string) =>
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 20px;
     min-height: 240px;
     padding: 20px;
@@ -176,7 +125,16 @@ const handle = (href: string) =>
   }
 
   h3 {
-    font-size: clamp(36px, 3.6vw, 52px);
+    font-size: clamp(36px, 4.2vw, 64px);
+    transition: font-stretch 0.5s var(--ease-out);
+  }
+
+  .cell:hover h3 {
+    font-stretch: 62%;
+  }
+
+  .huge h3 {
+    font-size: clamp(64px, 10vw, 168px);
   }
 
   h3.small {
@@ -195,56 +153,8 @@ const handle = (href: string) =>
     transform: rotate(-45deg);
   }
 
-  .media {
-    overflow: hidden;
-  }
-
-  .media :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s var(--ease-out);
-  }
-
-  .cell:hover .media :global(img) {
-    transform: scale(1.05);
-  }
-
-  .big {
-    flex-grow: 1;
-    max-height: 340px;
-    margin-top: 28px;
-  }
-
-  .strip {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    max-width: 380px;
-    margin-top: 28px;
-  }
-
-  .strip .media {
-    aspect-ratio: 3 / 4;
-  }
-
-  .event {
-    width: 200px;
-    aspect-ratio: 3 / 2;
-  }
-
-  .current {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin: 28px 0 0;
-    padding: 0;
-    list-style: none;
-    font-size: 17px;
-    font-weight: 500;
-  }
-
   .social {
+    justify-content: space-between;
     min-height: 150px;
   }
 
@@ -301,20 +211,16 @@ const handle = (href: string) =>
       font-size: clamp(24px, 7.4vw, 40px);
     }
 
+    .huge h3 {
+      font-size: clamp(56px, 18vw, 96px);
+    }
+
     .social h3.small {
       font-size: clamp(18px, 5.2vw, 30px);
     }
 
     .social {
       min-height: 120px;
-    }
-
-    .big {
-      max-height: 260px;
-    }
-
-    .event {
-      width: 100%;
     }
   }
 </style>
