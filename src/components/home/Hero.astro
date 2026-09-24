@@ -1,0 +1,238 @@
+---
+import { getImage } from 'astro:assets';
+import Photo from '~/components/media/Photo.astro';
+import { linkProps } from '~/lib/links';
+import type { Photo as PhotoType } from '~/lib/photos';
+import type { Tile } from '~/scripts/helix';
+
+interface Props {
+  photos: PhotoType[];
+  tagline: string;
+  links: { label: string; href: string }[];
+}
+
+const { photos, tagline, links } = Astro.props;
+const ring = photos.slice(0, 10);
+const step = 360 / Math.max(ring.length, 1);
+const tiles: Tile[] = await Promise.all(
+  photos.slice(0, 18).map(async photo => ({
+    src: (await getImage({ src: photo.image, width: 720, format: 'webp' })).src,
+    href: photo.href,
+    aspect: photo.meta.width / Math.max(photo.meta.height, 1),
+  })),
+);
+---
+
+<section class="hero" aria-label="Intro" data-hero>
+  <canvas class="scene" data-scene aria-hidden="true"></canvas>
+  <script
+    type="application/json"
+    data-tiles
+    set:html={JSON.stringify(tiles)}
+  ></script>
+  <div class="stage" aria-hidden="true">
+    <div class="tilt">
+      <div class="ring">
+        {ring.map((photo, i) => (
+          <div class="card" style={`--angle:${i * step}deg`}>
+            <Photo
+              photo={photo}
+              widths={[240, 360]}
+              sizes="180px"
+              loading="eager"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+  <div class="name">
+    <div class="meta">
+      <p>{tagline}</p>
+      <ul class="links mono">
+        {links.map(link => (
+          <li>
+            <a {...linkProps(link.href)}>{link.label} ↗</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <h1 class="display">
+      Daniel
+      <br />
+      Jancar
+    </h1>
+  </div>
+</section>
+
+<script>
+  import type { Tile } from '~/scripts/helix';
+
+  const root = document.querySelector<HTMLElement>('[data-hero]');
+  const canvas = root?.querySelector<HTMLCanvasElement>('[data-scene]');
+  const data = root?.querySelector('[data-tiles]')?.textContent;
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (root && canvas && data && !still) {
+    const tiles = JSON.parse(data) as Tile[];
+    import('~/scripts/helix')
+      .then(({ mountHelix }) => mountHelix(root, canvas, tiles))
+      .catch(() => root.classList.remove('is-3d'));
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    height: calc(100svh - var(--bar-height));
+    min-height: 620px;
+    overflow: hidden;
+    background: var(--ground);
+    color: var(--ink);
+  }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-out);
+  }
+
+  .is-3d .scene {
+    opacity: 1;
+  }
+
+  .is-3d .stage {
+    display: none;
+  }
+
+  .stage {
+    position: absolute;
+    left: 50%;
+    top: 44%;
+    perspective: 1400px;
+  }
+
+  .tilt,
+  .ring {
+    transform-style: preserve-3d;
+  }
+
+  .tilt {
+    transform: rotateX(-8deg);
+  }
+
+  .ring {
+    animation: turn 48s linear infinite;
+  }
+
+  .card {
+    position: absolute;
+    left: -90px;
+    top: -120px;
+    width: 180px;
+    height: 240px;
+    transform: rotateY(var(--angle)) translateZ(430px);
+    outline: 1px solid rgb(255 255 255 / 0.15);
+  }
+
+  .name {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 2;
+    padding: 0 var(--gutter) var(--gutter);
+    color: #fff;
+    mix-blend-mode: difference;
+    pointer-events: none;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    pointer-events: auto;
+  }
+
+  .links a {
+    display: inline-block;
+    padding: 6px 0;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px
+      no-repeat;
+    transition: background-size 0.35s var(--ease-out);
+  }
+
+  .links a:hover {
+    color: inherit;
+    background-size: 100% 1px;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 18px;
+  }
+
+  .meta p {
+    max-width: 440px;
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  h1 {
+    font-size: 17.5vw;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .tilt {
+      animation: tilt-away linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+
+    .name {
+      animation: lift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+  }
+
+  @keyframes turn {
+    to {
+      transform: rotateY(-360deg);
+    }
+  }
+
+  @keyframes tilt-away {
+    to {
+      transform: rotateX(-38deg) scale(0.7);
+    }
+  }
+
+  @keyframes lift {
+    to {
+      transform: translateY(-12vh);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .card {
+      left: -60px;
+      top: -80px;
+      width: 120px;
+      height: 160px;
+      transform: rotateY(var(--angle)) translateZ(260px);
+    }
+
+    .meta {
+      flex-direction: column;
+      align-items: start;
+    }
+  }
+</style>

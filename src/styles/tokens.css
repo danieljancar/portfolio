@@ -1,0 +1,53 @@
+:root {
+  color-scheme: light dark;
+
+  --ground: light-dark(#ecebe4, #0b0d0a);
+  --surface: light-dark(#e2e1d8, #13170f);
+  --surface-2: light-dark(#d6d4c9, #1b2016);
+  --ink: light-dark(#0b0d0a, #e6eadc);
+  --ink-soft: light-dark(#555b4d, #a2a996);
+  --line: light-dark(rgb(11 13 10 / 0.2), rgb(230 234 220 / 0.22));
+  --line-soft: light-dark(rgb(11 13 10 / 0.1), rgb(230 234 220 / 0.12));
+
+  --green: #82a951;
+  --green-light: #b5d98a;
+  --green-deep: #324321;
+  --accent: var(--green);
+  --accent-text: light-dark(#3c5228, #b5d98a);
+  --on-accent: #0b0d0a;
+
+  --night: #060705;
+  --night-ink: #e6eadc;
+
+  --tint: var(--surface);
+  --tint-ink: var(--ink);
+  --wash: var(--surface-2);
+
+  --dim: 0.85;
+  --is-dark: 0;
+  --dim-strength: calc(0.4 + 0.6 * var(--is-dark));
+
+  --font-sans: 'Archivo Variable', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --bar-height: 56px;
+  --gutter: clamp(16px, 2.5vw, 32px);
+  --max: 1440px;
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --is-dark: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --is-dark: 1;
+  }
+}

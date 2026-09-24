@@ -1,0 +1,76 @@
+---
+import WorkBento from '~/components/lists/WorkBento.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getProjects } from '~/lib/content';
+
+const work = await getProjects();
+const filters = [
+  { value: 'all', label: 'All' },
+  { value: 'ongoing', label: 'Ongoing' },
+  { value: 'one-off', label: 'One-off' },
+];
+---
+
+<BaseLayout title="Work" description="Work by Daniel Jancar.">
+  <SectionHead title="Work" as="h1" href="/about" linkLabel="Experience" />
+  <div class="filters wrap" role="group" aria-label="Filter work">
+    {filters.map((filter, i) => (
+      <button
+        type="button"
+        data-filter={filter.value}
+        aria-pressed={i === 0 ? 'true' : 'false'}
+      >
+        {filter.label}
+      </button>
+    ))}
+  </div>
+  <WorkBento work={work} />
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-bento] > li');
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const filter = button.dataset.filter ?? 'all';
+      for (const other of buttons) {
+        other.setAttribute('aria-pressed', String(other === button));
+      }
+      let slot = 0;
+      for (const item of items) {
+        item.hidden = filter !== 'all' && item.dataset.type !== filter;
+        if (!item.hidden) item.dataset.slot = String(slot++ % 4);
+      }
+    });
+  }
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  button {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    font: 500 14px var(--font-sans);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  button[aria-pressed='true'],
+  button:hover {
+    background: var(--ink);
+    color: var(--ground);
+  }
+</style>

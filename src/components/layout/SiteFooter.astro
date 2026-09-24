@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+import { getRecommendations, getSettings } from '~/lib/content';
+import { linkProps } from '~/lib/links';
+
+const [settings, legal, recommendations] = await Promise.all([
+  getSettings(),
+  getCollection('legal'),
+  getRecommendations(),
+]);
+const links = [
+  ...settings.socials,
+  { label: 'Email', href: `mailto:${settings.email}` },
+];
+const more = [
+  ...(recommendations.length > 0
+    ? [{ href: '/recommended', label: 'Recommended' }]
+    : []),
+  { href: '/tags', label: 'Tags' },
+  { href: '/rss.xml', label: 'RSS' },
+  ...legal.map(doc => ({ href: `/legal/${doc.id}`, label: doc.data.title })),
+];
+const handle = (href: string) =>
+  href.startsWith('mailto:')
+    ? href.slice(7)
+    : href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+
+<footer class="foot" id="links">
+  <p class="mono">Say hello</p>
+  <ul>
+    {links.map(link => (
+      <li>
+        <a {...linkProps(link.href)}>
+          <span class="display name">{link.label}</span>
+          <span class="mono">{handle(link.href)}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <div class="row mono">
+    <nav aria-label="More">
+      {more.map(link => (
+        <a href={link.href}>{link.label}</a>
+      ))}
+    </nav>
+    <span>
+      © {new Date().getFullYear()} {settings.name}
+    </span>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    margin-top: clamp(64px, 8vw, 120px);
+    padding: 40px var(--gutter) 24px;
+    background: var(--green);
+    color: var(--on-accent);
+  }
+
+  ul {
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgb(11 13 10 / 0.3);
+  }
+
+  li a:hover {
+    color: inherit;
+  }
+
+  .name {
+    font-size: clamp(40px, 8vw, 128px);
+    transition: font-stretch 0.45s var(--ease-out);
+  }
+
+  li a:hover .name {
+    font-stretch: 62%;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-top: 32px;
+    color: var(--green-deep);
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+
+  nav a:hover {
+    color: var(--on-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 600px) {
+    li a {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+</style>

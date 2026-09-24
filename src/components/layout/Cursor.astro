@@ -1,0 +1,189 @@
+<div class="cursor" aria-hidden="true" data-cursor-root>
+  <span class="ring" data-cursor-ring>
+    <span class="label" data-cursor-label></span>
+  </span>
+  <span class="dot" data-cursor-dot></span>
+</div>
+
+<script>
+  const fine = window.matchMedia('(pointer: fine)').matches;
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = document.querySelector<HTMLElement>('[data-cursor-root]');
+  const ring = document.querySelector<HTMLElement>('[data-cursor-ring]');
+  const dot = document.querySelector<HTMLElement>('[data-cursor-dot]');
+  const label = document.querySelector<HTMLElement>('[data-cursor-label]');
+
+  if (fine && !still && root && ring && dot && label) {
+    const interactive = 'a, button, [data-cursor], label, summary';
+    const target = { x: -100, y: -100 };
+    const current = { x: -100, y: -100 };
+    let magnet: HTMLElement | null = null;
+
+    document.documentElement.classList.add('has-cursor');
+    document.addEventListener(
+      'toggle',
+      event => {
+        if (event.target === root) return;
+        const { newState } = event as ToggleEvent;
+        if (newState === 'open') {
+          root.popover = 'manual';
+          root.showPopover();
+        } else if (root.matches(':popover-open')) {
+          root.hidePopover();
+          root.removeAttribute('popover');
+        }
+      },
+      true,
+    );
+
+    window.addEventListener('pointermove', event => {
+      target.x = event.clientX;
+      target.y = event.clientY;
+      dot.style.translate = `${target.x}px ${target.y}px`;
+      root.classList.remove('hidden');
+
+      const element = (event.target as Element).closest<HTMLElement>(
+        interactive,
+      );
+      const text = element?.dataset.cursor ?? '';
+      root.classList.toggle(
+        'active',
+        Boolean(element) && element?.dataset.cursor !== '',
+      );
+      root.classList.toggle('labelled', text.length > 0);
+      label.textContent = text;
+
+      const next = element?.matches('[data-magnetic]') ? element : null;
+      if (magnet && magnet !== next) magnet.style.translate = '';
+      magnet = next;
+      if (magnet) {
+        const rect = magnet.getBoundingClientRect();
+        const dx = (event.clientX - rect.left - rect.width / 2) * 0.25;
+        const dy = (event.clientY - rect.top - rect.height / 2) * 0.35;
+        magnet.style.translate = `${dx}px ${dy}px`;
+      }
+    });
+
+    document.addEventListener('pointerleave', () =>
+      root.classList.add('hidden'),
+    );
+    window.addEventListener('pointerdown', () => root.classList.add('pressed'));
+    window.addEventListener('pointerup', () =>
+      root.classList.remove('pressed'),
+    );
+
+    const follow = () => {
+      current.x += (target.x - current.x) * 0.2;
+      current.y += (target.y - current.y) * 0.2;
+      ring.style.translate = `${current.x}px ${current.y}px`;
+      requestAnimationFrame(follow);
+    };
+    requestAnimationFrame(follow);
+  }
+</script>
+
+<style>
+  .cursor {
+    display: none;
+    inset: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    border: 0;
+    background: none;
+    pointer-events: none;
+  }
+
+  :global(.has-cursor) .cursor {
+    display: block;
+  }
+
+  :global(.has-cursor),
+  :global(.has-cursor) :global(a),
+  :global(.has-cursor) :global(button),
+  :global(.has-cursor) :global(canvas) {
+    cursor: none !important;
+  }
+
+  .ring,
+  .dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    pointer-events: none;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    border-radius: 50%;
+    background: #fff;
+    mix-blend-mode: difference;
+  }
+
+  .ring {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    mix-blend-mode: difference;
+    transition:
+      width 0.35s var(--ease-out),
+      height 0.35s var(--ease-out),
+      margin 0.35s var(--ease-out),
+      background-color 0.35s,
+      opacity 0.3s,
+      scale 0.2s;
+  }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #000;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .active .ring {
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    background: #fff;
+  }
+
+  .labelled .ring {
+    width: 84px;
+    height: 84px;
+    margin: -42px 0 0 -42px;
+    border-color: var(--accent);
+    background: var(--accent);
+    mix-blend-mode: normal;
+  }
+
+  .labelled .label {
+    color: var(--on-accent);
+    opacity: 1;
+  }
+
+  .active .dot {
+    opacity: 0;
+  }
+
+  .pressed .ring {
+    scale: 0.85;
+  }
+
+  .hidden .ring,
+  .hidden .dot {
+    opacity: 0;
+  }
+</style>

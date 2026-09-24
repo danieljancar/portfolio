@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from 'astro:content';
+import PhotoGrid from '~/components/media/PhotoGrid.astro';
+import RelatedList from '~/components/ui/RelatedList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatMonth } from '~/lib/dates';
+import { getAlbums } from '~/lib/photos';
+import { getRelated } from '~/lib/tags';
+
+export async function getStaticPaths() {
+  const albums = await getAlbums();
+  return albums.map(album => ({
+    params: { album: album.id },
+    props: { album },
+  }));
+}
+
+const { album } = Astro.props;
+const { Content } = await render(album);
+const events = await getCollection(
+  'events',
+  event => event.data.album?.id === album.id,
+);
+const related = await getRelated('album', album.id, {
+  limit: 4,
+  kinds: ['post', 'project', 'album'],
+});
+const { title, date, place, cover } = album.data;
+---
+
+<BaseLayout
+  title={title}
+  description={`Photos from ${title}, ${formatMonth(date)}.`}
+  image={cover}
+>
+  <header class="head wrap">
+    <a class="mono soft" href="/photos">
+      ← Photos
+    </a>
+    <h1 class="display">{title}</h1>
+    <ul class="meta mono">
+      <li>{formatMonth(date)}</li>
+      {place && <li>{place}</li>}
+    </ul>
+    <div class="text">
+      <Content />
+    </div>
+    {events.map(event => (
+      <a class="mono event" href={`/events/${event.id}`}>
+        {event.data.title} →
+      </a>
+    ))}
+  </header>
+  <PhotoGrid photos={album.photos} label={title} />
+  <RelatedList items={related} />
+</BaseLayout>
+
+<style>
+  .head {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+    padding-top: 48px;
+    padding-bottom: 32px;
+  }
+
+  h1 {
+    margin-top: 12px;
+    font-size: clamp(52px, 9vw, 150px);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .text {
+    max-width: 60ch;
+    font-size: 19px;
+  }
+
+  .text:empty {
+    display: none;
+  }
+</style>

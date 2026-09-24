@@ -1,0 +1,135 @@
+---
+import Photo from '~/components/media/Photo.astro';
+import type { Photo as PhotoType } from '~/lib/photos';
+
+interface Props {
+  main: PhotoType;
+  others: PhotoType[];
+}
+
+const { main, others } = Astro.props;
+const [a, b, c, d, e, f] = others;
+const before = [a, b].filter(Boolean);
+const after = [c, d, e, f].filter(Boolean);
+---
+
+<section class="zoom-out" aria-label="More photos">
+  <div class="grid">
+    {before.map(photo => (
+      <a class="tile" href={photo.href} aria-label="Open photo">
+        <Photo photo={photo} widths={[400, 700]} sizes="25vw" />
+      </a>
+    ))}
+    <a class="tile main" href={main.href} aria-label="Open photo">
+      <Photo photo={main} widths={[800, 1400, 2000]} sizes="50vw" />
+    </a>
+    {after.map(photo => (
+      <a class="tile" href={photo.href} aria-label="Open photo">
+        <Photo photo={photo} widths={[400, 700]} sizes="25vw" />
+      </a>
+    ))}
+    <a class="tile more" href="/photos">
+      <span class="mono">All photos</span>
+      <span class="display">Gallery →</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .zoom-out {
+    position: relative;
+    height: 300vh;
+    overflow: clip;
+    view-timeline-name: --zoom-out;
+  }
+
+  .grid {
+    position: sticky;
+    top: var(--bar-height);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    height: calc(100vh - var(--bar-height));
+    padding: 10px var(--gutter) var(--gutter);
+  }
+
+  .tile {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main {
+    grid-column: 2 / span 2;
+    grid-row: 1 / span 2;
+    z-index: 2;
+  }
+
+  .more {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .more .display {
+    font-size: clamp(24px, 3vw, 40px);
+  }
+
+  .more:hover {
+    background: var(--accent-text);
+    color: var(--on-accent);
+  }
+
+  @supports (animation-timeline: view()) {
+    .tile {
+      animation: appear linear both;
+      animation-timeline: --zoom-out;
+      animation-range: contain 20% contain 70%;
+    }
+
+    .main {
+      animation: shrink linear both;
+      animation-timeline: --zoom-out;
+      animation-range: contain 0% contain 60%;
+    }
+  }
+
+  @supports not (animation-timeline: view()) {
+    .zoom-out {
+      height: auto;
+    }
+
+    .grid {
+      position: relative;
+      top: 0;
+      height: 90vh;
+    }
+  }
+
+  @keyframes appear {
+    from {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+  }
+
+  @keyframes shrink {
+    from {
+      transform: scale(2.2);
+    }
+  }
+
+  @media (max-width: 800px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(5, minmax(0, 1fr));
+    }
+
+    .main {
+      grid-column: 1 / span 2;
+    }
+  }
+</style>

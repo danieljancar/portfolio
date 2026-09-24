@@ -1,0 +1,15 @@
+role: Software Developer (Apprentice)
+company: Luzerner Kantonalbank
+companyUrl: https://www.lukb.ch
+start: 2022-08
+end: 2026-08
+summary: I had the privilege of completing my Applikationsentwickler EFZ apprenticeship at LUKB. Alongside the fundamentals I picked up at vocational school and the continuous learning I did privately, those four years gave me the chance to grow both technically and on a human level.
+skills:
+  - Angular
+  - Ionic
+  - Jenkins
+  - OpenShift
+  - Firebase
+  - PL/SQL
+  - Avaloq
+order: 4

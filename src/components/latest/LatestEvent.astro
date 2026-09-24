@@ -1,0 +1,160 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
+import { formatDay, formatMonth } from '~/lib/dates';
+
+interface Props {
+  event: CollectionEntry<'events'>;
+}
+
+const { event } = Astro.props;
+const { title, date, place, cover, coverAlt } = event.data;
+---
+
+<div class="wrap">
+  <a class="ticket" href={`/events/${event.id}`} data-cursor="Open">
+    <div class="stub">
+      <span class="display day">{formatDay(date)}</span>
+      <span class="mono">{formatMonth(date)}</span>
+    </div>
+    <div class="rest">
+      <div class="main">
+        {place && <span class="mono soft">{place}</span>}
+        <h3 class="display">{title}</h3>
+        <span class="more mono">Story and photos →</span>
+      </div>
+      <div class="image">
+        {cover && (
+          <Cover
+            src={cover}
+            alt={coverAlt}
+            widths={[500, 900, 1200]}
+            sizes="(max-width: 900px) 100vw, 40vw"
+          />
+        )}
+      </div>
+    </div>
+  </a>
+</div>
+
+<style>
+  .ticket {
+    --tooth: 10px;
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    min-height: 420px;
+  }
+
+  .ticket:hover {
+    color: inherit;
+  }
+
+  .stub {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px calc(24px + var(--tooth)) 24px 24px;
+    background: var(--accent);
+    color: var(--on-accent);
+    mask:
+      linear-gradient(#000 0 0) left / calc(100% - var(--tooth)) 100% no-repeat,
+      conic-gradient(from -135deg at right, #000 90deg, #0000 0) right 0 top 0 /
+        var(--tooth) calc(var(--tooth) * 2) repeat-y;
+    transform-origin: 0 100%;
+    transition:
+      translate 0.55s var(--ease-out),
+      rotate 0.55s var(--ease-out);
+  }
+
+  .rest {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    margin-left: calc(-1 * var(--tooth));
+    padding-left: var(--tooth);
+    background: var(--surface);
+    mask:
+      linear-gradient(#000 0 0) right / calc(100% - var(--tooth)) 100% no-repeat,
+      conic-gradient(from 45deg at left, #000 90deg, #0000 0) left 0 top
+        var(--tooth) / var(--tooth) calc(var(--tooth) * 2) repeat-y;
+  }
+
+  .ticket:hover .stub {
+    translate: -18px 10px;
+    rotate: -7deg;
+  }
+
+  .day {
+    font-size: clamp(88px, 9vw, 150px);
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 28px;
+  }
+
+  h3 {
+    font-size: clamp(32px, 3.6vw, 60px);
+  }
+
+  .ticket:hover h3 {
+    color: var(--accent-text);
+  }
+
+  .more {
+    color: var(--accent-text);
+  }
+
+  .image {
+    overflow: hidden;
+  }
+
+  .image :global(img) {
+    transition: transform 0.8s var(--ease-out);
+  }
+
+  .ticket:hover .image :global(img) {
+    transform: scale(1.05);
+  }
+
+  @supports (animation-timeline: view()) {
+    .ticket {
+      animation: print linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+  }
+
+  @keyframes print {
+    from {
+      opacity: 0;
+      transform: perspective(1400px) rotateX(55deg) translateY(80px);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .ticket {
+      grid-template-columns: 110px minmax(0, 1fr);
+    }
+
+    .rest {
+      grid-template-columns: 1fr;
+    }
+
+    .image {
+      aspect-ratio: 16 / 10;
+    }
+
+    .day {
+      font-size: 56px;
+    }
+
+    .main {
+      padding: 20px;
+    }
+  }
+</style>

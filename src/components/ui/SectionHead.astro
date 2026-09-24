@@ -1,0 +1,47 @@
+---
+interface Props {
+  title: string;
+  as?: 'h1' | 'h2';
+  id?: string;
+  href?: string;
+  linkLabel?: string;
+}
+
+const { title, as: Tag = 'h2', id, href, linkLabel = 'All' } = Astro.props;
+---
+
+<div class="head wrap" id={id}>
+  <Tag class="display">{title}</Tag>
+  <div class="meta mono">
+    <slot />
+    {href && <a href={href}>{linkLabel} →</a>}
+  </div>
+</div>
+
+<style>
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px 24px;
+    padding-top: clamp(64px, 8vw, 96px);
+    padding-bottom: 24px;
+  }
+
+  .display {
+    font-size: clamp(52px, 9vw, 150px);
+  }
+
+  .meta {
+    display: flex;
+    gap: 16px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 700px) {
+    .head {
+      flex-direction: column;
+      align-items: start;
+    }
+  }
+</style>

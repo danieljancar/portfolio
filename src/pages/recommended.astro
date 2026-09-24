@@ -1,0 +1,16 @@
+---
+import Recommended from '~/components/lists/Recommended.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getRecommendations } from '~/lib/content';
+
+const items = await getRecommendations();
+---
+
+<BaseLayout
+  title="Recommended"
+  description="Podcasts, sites and newsletters Daniel Jancar recommends."
+>
+  <SectionHead title="Recommended" as="h1" />
+  <Recommended items={items} />
+</BaseLayout>

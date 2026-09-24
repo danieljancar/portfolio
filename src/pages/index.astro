@@ -1,0 +1,102 @@
+---
+import Experience from '~/components/experience/Experience.astro';
+import Hero from '~/components/home/Hero.astro';
+import IndexGrid from '~/components/home/IndexGrid.astro';
+import ZoomIn from '~/components/home/ZoomIn.astro';
+import ZoomOut from '~/components/home/ZoomOut.astro';
+import LatestEvent from '~/components/latest/LatestEvent.astro';
+import LatestPost from '~/components/latest/LatestPost.astro';
+import Recommended from '~/components/lists/Recommended.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import {
+  getEvents,
+  getPosts,
+  getRecommendations,
+  getSettings,
+} from '~/lib/content';
+import { getCompanies } from '~/lib/experience';
+import { getAlbums, getHighlights, type Photo } from '~/lib/photos';
+
+const [
+  settings,
+  events,
+  posts,
+  recommendations,
+  albums,
+  companies,
+  highlights,
+] = await Promise.all([
+  getSettings(),
+  getEvents(),
+  getPosts(),
+  getRecommendations(),
+  getAlbums(),
+  getCompanies(),
+  getHighlights(),
+]);
+
+const wide = (photo: Photo) => photo.meta.width > photo.meta.height;
+const landscapeAlbums = new Set(
+  albums
+    .filter(album => album.data.tags.includes('landscape'))
+    .map(album => album.id),
+);
+const zoomCenter =
+  highlights.find(photo => wide(photo) && landscapeAlbums.has(photo.album)) ??
+  highlights.find(wide) ??
+  highlights[0];
+const others = highlights.filter(photo => photo !== zoomCenter);
+const zoomAround = others.slice(0, 6);
+const zoomOutMain = others.slice(6).find(wide) ?? others[6];
+const zoomOutRest = others
+  .slice(6)
+  .filter(photo => photo !== zoomOutMain)
+  .concat(zoomAround)
+  .slice(0, 6);
+const zoomAlbum = albums.find(album => album.id === zoomCenter?.album);
+const links = [
+  ...settings.socials,
+  { label: 'Email', href: `mailto:${settings.email}` },
+];
+const [latestPost] = posts;
+const [latestEvent] = events;
+---
+
+<BaseLayout>
+  <Hero photos={highlights} tagline={settings.headline} links={links} />
+  <IndexGrid links={links} recommendations={recommendations.length > 0} />
+
+  <SectionHead title="Experience" href="/about#experience" linkLabel="About" />
+  <Experience companies={companies} />
+
+  {zoomCenter && (
+    <ZoomIn
+      center={zoomCenter}
+      around={zoomAround}
+      caption={zoomAlbum?.data.title ?? 'Photos'}
+    />
+  )}
+  {zoomOutMain && <ZoomOut main={zoomOutMain} others={zoomOutRest} />}
+
+  {latestPost && (
+    <>
+      <SectionHead title="Blog" href="/blog" linkLabel="All posts" />
+      <LatestPost post={latestPost} />
+    </>
+  )}
+
+  {latestEvent && (
+    <>
+      <SectionHead title="Events" href="/events" linkLabel="All events" />
+      <LatestEvent event={latestEvent} />
+    </>
+  )}
+
+  {recommendations.length > 0 && (
+    <>
+      <SectionHead title="Recommended" href="/recommended" linkLabel="All" />
+      <Recommended items={recommendations.slice(0, 10)} />
+    </>
+  )}
+</BaseLayout>

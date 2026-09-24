@@ -1,0 +1,196 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
+import { readingTime } from '~/lib/content';
+import { formatDate } from '~/lib/dates';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const { title, description, published, cover, tags } = post.data;
+---
+
+<article class="latest wrap">
+  <a class="card" href={`/blog/${post.id}`} data-cursor="Read">
+    <div class="visual">
+      <span class="disc" aria-hidden="true"></span>
+      <div class="thumb">
+        {cover && (
+          <Cover
+            src={cover}
+            alt=""
+            widths={[500, 900]}
+            sizes="(max-width: 900px) 80vw, 40vw"
+          />
+        )}
+      </div>
+    </div>
+    <div class="text">
+      <ul class="meta mono">
+        <li>{formatDate(published)}</li>
+        <li>{readingTime(post.body)} min read</li>
+      </ul>
+      <h3 class="display">{title}</h3>
+      <p>{description}</p>
+      <ul class="tags mono">
+        {tags.slice(0, 4).map(tag => (
+          <li>#{tag}</li>
+        ))}
+      </ul>
+      <span class="more mono">Read the post →</span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: clamp(32px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .card:hover {
+    color: inherit;
+  }
+
+  .visual {
+    position: relative;
+  }
+
+  .disc {
+    position: absolute;
+    right: -6%;
+    bottom: -10%;
+    width: 42%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--accent);
+    transition: translate 0.6s var(--ease-out);
+  }
+
+  .card:hover .disc {
+    translate: 4% -6%;
+  }
+
+  .thumb {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+
+  .thumb :global(img) {
+    transition: transform 0.8s var(--ease-out);
+  }
+
+  .card:hover .thumb :global(img) {
+    transform: scale(1.05);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .meta,
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .meta {
+    color: var(--accent-text);
+  }
+
+  .tags {
+    color: var(--ink-soft);
+  }
+
+  h3 {
+    font-size: clamp(36px, 4.2vw, 68px);
+    font-stretch: 62%;
+    line-height: 0.92;
+  }
+
+  .card:hover h3 {
+    color: var(--accent-text);
+  }
+
+  p {
+    max-width: 52ch;
+    font-size: 19px;
+    line-height: 1.45;
+  }
+
+  .more {
+    display: inline-block;
+    width: fit-content;
+    padding: 12px 16px;
+    background: var(--ink);
+    color: var(--ground);
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+
+  .card:hover .more {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  @supports (animation-timeline: view()) {
+    .thumb {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+
+    .disc {
+      animation: roll linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 45%;
+    }
+
+    .text > * {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+  }
+
+  @keyframes reveal {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+
+  @keyframes roll {
+    from {
+      transform: translate(-80%, 20%) scale(0.2) rotate(-90deg);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

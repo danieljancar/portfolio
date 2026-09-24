@@ -1,0 +1,221 @@
+---
+import { linkProps } from '~/lib/links';
+
+interface Props {
+  links: { label: string; href: string }[];
+  recommendations: boolean;
+}
+
+const { links, recommendations } = Astro.props;
+const handle = (href: string) =>
+  href.startsWith('mailto:')
+    ? href.slice(7)
+    : href
+        .replace(/^https?:\/\/(www\.)?/, '')
+        .replace(/\/$/, '')
+        .replace(/^[^/]+\/(in\/)?/, '@');
+const sections = [
+  { href: '/work', label: 'Work', span: 'c5 m2 tall huge' },
+  { href: '/photos', label: 'Photos', span: 'c4' },
+  { href: '/blog', label: 'Blog', span: 'c3 accent' },
+  { href: '/events', label: 'Events', span: 'c4' },
+  { href: '/about', label: 'About', span: 'c3' },
+];
+---
+
+<section class="index" aria-label="Index">
+  {sections.map(section => (
+    <a
+      class:list={['cell', section.span]}
+      href={section.href}
+      data-cursor={section.label}
+    >
+      <span class="arrow" aria-hidden="true">
+        →
+      </span>
+      <h3 class="display">{section.label}</h3>
+    </a>
+  ))}
+
+  {recommendations && (
+    <>
+      <a class="cell c6" href="/recommended#listening">
+        <span class="arrow" aria-hidden="true">
+          →
+        </span>
+        <h3 class="display small">Listen</h3>
+      </a>
+      <a class="cell c6" href="/recommended#reading">
+        <span class="arrow" aria-hidden="true">
+          →
+        </span>
+        <h3 class="display small">Read</h3>
+      </a>
+    </>
+  )}
+
+  {links.map(link => (
+    <a class="cell c3 social" {...linkProps(link.href)} data-cursor="Open">
+      <span class="arrow out" aria-hidden="true">
+        ↗
+      </span>
+      <span class="mono">{handle(link.href)}</span>
+      <h3 class="display small">{link.label}</h3>
+    </a>
+  ))}
+</section>
+
+<style>
+  .index {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 20px;
+    min-height: 240px;
+    padding: 20px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+
+  .cell:hover {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  .c3 {
+    grid-column: span 3;
+  }
+
+  .c4 {
+    grid-column: span 4;
+  }
+
+  .c5 {
+    grid-column: span 5;
+  }
+
+  .c6 {
+    grid-column: span 6;
+  }
+
+  .tall {
+    grid-row: span 2;
+  }
+
+  .accent {
+    justify-content: end;
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  h3 {
+    font-size: clamp(36px, 4.2vw, 64px);
+    transition: font-stretch 0.5s var(--ease-out);
+  }
+
+  .cell:hover h3 {
+    font-stretch: 62%;
+  }
+
+  .huge h3 {
+    font-size: clamp(64px, 10vw, 168px);
+  }
+
+  h3.small {
+    font-size: clamp(30px, 3vw, 40px);
+  }
+
+  .arrow {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 20px;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .cell:hover .arrow {
+    transform: rotate(-45deg);
+  }
+
+  .social {
+    justify-content: space-between;
+    min-height: 150px;
+  }
+
+  .social .mono {
+    padding-right: 24px;
+    overflow-wrap: anywhere;
+  }
+
+  .cell:hover .out {
+    transform: translate(3px, -3px);
+  }
+
+  @supports (animation-timeline: view()) {
+    .cell {
+      animation: fade linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .index {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .c3,
+    .c4,
+    .c5,
+    .c6 {
+      grid-column: span 1;
+    }
+
+    .m2 {
+      grid-column: span 2;
+    }
+
+    .tall {
+      grid-row: auto;
+    }
+
+    .cell {
+      min-height: 180px;
+      padding: 16px;
+    }
+
+    h3,
+    h3.small {
+      font-size: clamp(24px, 7.4vw, 40px);
+    }
+
+    .huge h3 {
+      font-size: clamp(56px, 18vw, 96px);
+    }
+
+    .social h3.small {
+      font-size: clamp(18px, 5.2vw, 30px);
+    }
+
+    .social {
+      min-height: 120px;
+    }
+  }
+</style>

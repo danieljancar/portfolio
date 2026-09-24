@@ -1,14 +1,13 @@
 # Portfolio
 
-My personal portfolio website, built with [Angular 21](https://angular.dev) and live at [danieljancar.dev](https://danieljancar.dev).
+My personal website, built with [Astro](https://astro.build) and live at [danieljancar.dev](https://danieljancar.dev).
 
 [![CI](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/ci.yml)
 [![Release](https://github.com/danieljancar/portfolio/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/danieljancar/portfolio/actions/workflows/release.yml)
-[![Format](https://github.com/danieljancar/portfolio/actions/workflows/format.yml/badge.svg)](https://github.com/danieljancar/portfolio/actions/workflows/format.yml)
 
 ## About
 
-This is where I share a bit about myself, my work, and some writing.
+This is where I share my work, photos, events and writing. Content is edited through the CMS at [/admin](https://danieljancar.dev/admin). How it fits together is in [docs/architecture.md](docs/architecture.md), how to add content in [docs/editing.md](docs/editing.md).
 
 ## Getting started
 
@@ -22,18 +21,20 @@ cd portfolio
 # install dependencies
 npm install
 
-# run it locally at http://localhost:4200
-npm start
+# run it locally at http://localhost:4321
+npm run dev
 ```
 
 ## Handy commands
 
 ```bash
-npm start          # run the dev server
+npm run dev        # run the dev server
 npm run build      # build for production
+npm run check      # type check and validate content
 npm test           # run the tests
 npm run lint       # check for lint issues
 npm run format     # format the code with Prettier
+npm run photos     # refresh photo entries and colours (Node 22.18+)
 ```
 
 ## Contributing

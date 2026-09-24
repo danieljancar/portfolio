@@ -1,0 +1,183 @@
+---
+import { Image } from 'astro:assets';
+import Experience from '~/components/experience/Experience.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getSettings } from '~/lib/content';
+import { getCompanies } from '~/lib/experience';
+import { linkProps } from '~/lib/links';
+
+const [settings, companies] = await Promise.all([
+  getSettings(),
+  getCompanies(),
+]);
+const paragraphs = settings.about.split(/\n\s*\n/);
+---
+
+<BaseLayout title="About" description={settings.description}>
+  <SectionHead title="About" as="h1" />
+  <section class="intro wrap">
+    {settings.portrait && (
+      <div class="portrait">
+        <Image
+          src={settings.portrait}
+          alt={settings.portraitAlt}
+          widths={[200, 400]}
+          sizes="160px"
+          loading="eager"
+        />
+      </div>
+    )}
+    <div class="text">
+      {paragraphs.map(paragraph => (
+        <p>{paragraph}</p>
+      ))}
+      <ul class="socials mono">
+        {settings.socials.map(link => (
+          <li>
+            <a {...linkProps(link.href)}>{link.label} ↗</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <SectionHead title="Experience" id="experience" />
+  <Experience companies={companies} />
+
+  <SectionHead title="Skills" />
+  <div class="skills wrap">
+    {settings.skills.map(group => (
+      <div class="group">
+        <h3>{group.group}</h3>
+        <ul class="chips mono">
+          {group.items.map(item => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .intro {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 62ch);
+    gap: 32px;
+    align-items: start;
+  }
+
+  .portrait {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .portrait :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .socials a {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .socials a:hover {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  .skills {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .group {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .group:nth-child(odd) {
+    padding-right: 32px;
+  }
+
+  .group:nth-child(even) {
+    padding-left: 32px;
+    border-left: 1px solid var(--line);
+  }
+
+  .group h3 {
+    font-size: 28px;
+    font-stretch: 125%;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chips li {
+    padding: 4px 8px;
+    border: 1px solid var(--line);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .chips li:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+
+  @media (max-width: 900px) {
+    .skills {
+      grid-template-columns: 1fr;
+    }
+
+    .group:nth-child(n) {
+      padding-inline: 0;
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .intro {
+      grid-template-columns: 1fr;
+    }
+
+    .portrait {
+      width: 120px;
+    }
+  }
+</style>

@@ -1,0 +1,197 @@
+---
+import { getEntry, render } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
+import PhotoGrid from '~/components/media/PhotoGrid.astro';
+import RelatedList from '~/components/ui/RelatedList.astro';
+import TagList from '~/components/ui/TagList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { themeStyle } from '~/lib/color';
+import { getEvents } from '~/lib/content';
+import { formatDate } from '~/lib/dates';
+import { linkProps } from '~/lib/links';
+import { getAlbum } from '~/lib/photos';
+import { getRelated } from '~/lib/tags';
+import '~/styles/prose.css';
+
+export async function getStaticPaths() {
+  const events = await getEvents();
+  return events.map(event => ({
+    params: { slug: event.id },
+    props: { event },
+  }));
+}
+
+const { event } = Astro.props;
+const { Content } = await render(event);
+const { title, date, endDate, place, cover, coverAlt, tags, links } =
+  event.data;
+const album = event.data.album
+  ? await getAlbum(event.data.album.id)
+  : undefined;
+const project = event.data.project
+  ? await getEntry(event.data.project)
+  : undefined;
+const related = await getRelated('event', event.id, {
+  limit: 4,
+  kinds: ['post', 'project', 'event'],
+});
+const when = endDate
+  ? `${formatDate(date)} to ${formatDate(endDate)}`
+  : formatDate(date);
+const theme = album?.photos[0] ? themeStyle(album.photos[0].theme) : undefined;
+const site = Astro.site ?? new URL('https://danieljancar.dev');
+const schema = [
+  {
+    '@type': 'Event',
+    name: title,
+    url: new URL(`/events/${event.id}/`, site).href,
+    startDate: date.toISOString().slice(0, 10),
+    endDate: (endDate ?? date).toISOString().slice(0, 10),
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: place && { '@type': 'Place', name: place, address: place },
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={place ? `${when}, ${place}` : when}
+  image={cover}
+  imageAlt={coverAlt || title}
+  schema={schema}
+>
+  <header class="head" style={theme}>
+    {cover && (
+      <Cover
+        src={cover}
+        alt={coverAlt}
+        widths={[800, 1400, 2200]}
+        sizes="100vw"
+        loading="eager"
+      />
+    )}
+    <div class="text wrap">
+      <ul class="meta mono">
+        <li>{when}</li>
+        {place && <li>{place}</li>}
+      </ul>
+      <h1 class="display">{title}</h1>
+    </div>
+  </header>
+
+  <div class="body wrap">
+    <div class="prose">
+      <Content />
+    </div>
+    <aside>
+      {(links.length > 0 || project) && (
+        <ul class="links">
+          {links.map(link => (
+            <li>
+              <a {...linkProps(link.href)}>{link.label} ↗</a>
+            </li>
+          ))}
+          {project && (
+            <li>
+              <a href={`/work/${project.id}`}>{project.data.name} →</a>
+            </li>
+          )}
+        </ul>
+      )}
+      <TagList tags={tags} />
+    </aside>
+  </div>
+
+  {album && album.photos.length > 0 && (
+    <section class="photos" aria-label="Photos">
+      <div class="photos-head wrap">
+        <h2 class="display">Photos</h2>
+        <a class="mono" href={`/photos/${album.id}`}>
+          Album →
+        </a>
+      </div>
+      <PhotoGrid photos={album.photos} label={title} />
+    </section>
+  )}
+
+  <RelatedList items={related} />
+</BaseLayout>
+
+<style>
+  .head {
+    position: relative;
+    height: 70vh;
+    min-height: 420px;
+    overflow: hidden;
+    background: var(--tint);
+    --dim-strength: 1;
+  }
+
+  .text {
+    position: absolute;
+    inset: auto 0 0;
+    padding-bottom: 40px;
+    color: #fff;
+    background: linear-gradient(transparent, rgb(0 0 0 / 0.6) 55%);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  h1 {
+    max-width: 1100px;
+    margin-top: 12px;
+    font-size: clamp(40px, 7vw, 110px);
+  }
+
+  .body {
+    display: grid;
+    grid-template-columns: minmax(0, 680px) 1fr;
+    gap: 64px;
+    padding-block: 48px;
+  }
+
+  aside {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .links li + li {
+    margin-top: 8px;
+  }
+
+  .photos-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 24px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+
+  .photos-head h2 {
+    font-size: clamp(40px, 6vw, 88px);
+  }
+
+  @media (max-width: 900px) {
+    .body {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+</style>

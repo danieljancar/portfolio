@@ -1,0 +1,120 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
+import { formatDate } from '~/lib/dates';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul class="posts wrap">
+  {posts.map(post => (
+    <li>
+      <a class="post" href={`/blog/${post.id}`} data-cursor="Read">
+        <div class="thumb">
+          {post.data.cover && (
+            <Cover
+              src={post.data.cover}
+              alt=""
+              widths={[240, 480]}
+              sizes="(max-width: 800px) 100vw, 200px"
+            />
+          )}
+        </div>
+        <div class="text">
+          <span class="mono soft">{formatDate(post.data.published)}</span>
+          <h3>{post.data.title}</h3>
+          <p>{post.data.description}</p>
+        </div>
+        <span class="mono tags">
+          {post.data.tags.slice(0, 3).map(tag => (
+            <span>#{tag}</span>
+          ))}
+        </span>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .posts {
+    margin: 0;
+    list-style: none;
+  }
+
+  .post {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    gap: 28px;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  li:first-child .post {
+    border-top: 1px solid var(--line);
+  }
+
+  .post:hover {
+    color: inherit;
+  }
+
+  .thumb {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+
+  .thumb :global(img) {
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .post:hover .thumb :global(img) {
+    transform: scale(1.05);
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  h3 {
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  .post:hover h3 {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
+  }
+
+  p {
+    max-width: 62ch;
+    color: var(--ink-soft);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: 4px 12px;
+  }
+
+  @media (max-width: 800px) {
+    .post {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .tags {
+      justify-content: start;
+    }
+  }
+</style>

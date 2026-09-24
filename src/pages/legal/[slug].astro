@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { formatDate } from '~/lib/dates';
+import '~/styles/prose.css';
+
+export async function getStaticPaths() {
+  const docs = await getCollection('legal');
+  return docs.map(doc => ({ params: { slug: doc.id }, props: { doc } }));
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+---
+
+<BaseLayout title={doc.data.title} description={doc.data.description}>
+  <article class="wrap">
+    <ul class="mono meta">
+      <li>Version {doc.data.version}</li>
+      <li>{formatDate(doc.data.updated)}</li>
+    </ul>
+    <h1 class="display">{doc.data.title}</h1>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  article {
+    max-width: 780px;
+    padding-block: 64px 0;
+  }
+
+  .meta {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-soft);
+  }
+
+  h1 {
+    margin: 12px 0 40px;
+    font-size: clamp(40px, 6vw, 80px);
+  }
+</style>

@@ -1,0 +1,246 @@
+---
+import type { Company } from '~/lib/experience';
+import { linkProps } from '~/lib/links';
+
+interface Props {
+  companies: Company[];
+}
+
+const { companies } = Astro.props;
+---
+
+<ol class="companies wrap">
+  {companies.map(company => (
+    <li class="company">
+      <div class="head">
+        <div>
+          <h3>
+            {company.url ? (
+              <a {...linkProps(company.url)} data-cursor="Visit">
+                {company.name} ↗
+              </a>
+            ) : (
+              company.name
+            )}
+          </h3>
+        </div>
+      </div>
+      <ol class="roles">
+        {company.roles.map(({ entry, current, period }) => (
+          <li class:list={['role', current && 'now']}>
+            {entry.data.summary ? (
+              <details open={current}>
+                <summary>
+                  <span class="title">{entry.data.role}</span>
+                  <span class="mono period">{period}</span>
+                  <span class="toggle" aria-hidden="true"></span>
+                </summary>
+                <p class="summary">{entry.data.summary}</p>
+              </details>
+            ) : (
+              <div class="plain">
+                <span class="title">{entry.data.role}</span>
+                <span class="mono period">{period}</span>
+                <span class="toggle blank" aria-hidden="true"></span>
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .companies {
+    margin: 0;
+    list-style: none;
+    interpolate-size: allow-keywords;
+  }
+
+  .company {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 16px 48px;
+    padding: 32px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .company:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .head {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  h3 {
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  h3 a:hover {
+    color: var(--accent-text);
+  }
+
+  .roles {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roles::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    bottom: 14px;
+    left: 6px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .role {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .role + .role {
+    margin-top: 8px;
+  }
+
+  .role::before {
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--ink-soft);
+    border-radius: 50%;
+    background: var(--ground);
+  }
+
+  .now::before {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  summary,
+  .plain {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 4px 16px;
+    align-items: baseline;
+    padding: 4px 0;
+  }
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .title {
+    font-size: 19px;
+    font-weight: 600;
+  }
+
+  summary:hover .title {
+    color: var(--accent-text);
+  }
+
+  .period {
+    color: var(--ink-soft);
+  }
+
+  .now .period {
+    color: var(--accent-text);
+  }
+
+  .toggle {
+    position: relative;
+    width: 12px;
+    height: 12px;
+  }
+
+  .blank::before,
+  .blank::after {
+    display: none;
+  }
+
+  .toggle::before,
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 12px;
+    height: 2px;
+    background: currentColor;
+    transition: rotate 0.3s var(--ease-out);
+  }
+
+  .toggle::after {
+    rotate: 90deg;
+  }
+
+  details[open] .toggle::after {
+    rotate: 0deg;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 0.4s var(--ease-out),
+      content-visibility 0.4s allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+
+  .summary {
+    max-width: 62ch;
+    padding: 8px 0 12px;
+    color: var(--ink-soft);
+  }
+
+  @supports (animation-timeline: view()) {
+    .company {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+  }
+
+  @media (max-width: 800px) {
+    .company {
+      grid-template-columns: 1fr;
+    }
+
+    summary,
+    .plain {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .period {
+      grid-row: 2;
+    }
+  }
+</style>

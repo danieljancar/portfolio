@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://danieljancar.dev/sitemap.xml
+Sitemap: https://danieljancar.dev/sitemap-index.xml

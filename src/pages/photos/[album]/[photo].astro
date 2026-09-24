@@ -1,0 +1,204 @@
+---
+import Photo from '~/components/media/Photo.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getSettings } from '~/lib/content';
+import { themeStyle } from '~/lib/color';
+import { formatDate } from '~/lib/dates';
+import { cameraLine, getAlbums, takenAt } from '~/lib/photos';
+
+export async function getStaticPaths() {
+  const albums = await getAlbums();
+  return albums.flatMap(album =>
+    album.photos.map((photo, i, photos) => ({
+      params: { album: album.id, photo: photo.slug },
+      props: {
+        photo,
+        album: { id: album.id, title: album.data.title },
+        position: i + 1,
+        total: photos.length,
+        prev: photos.at(i - 1) ?? photo,
+        next: photos[(i + 1) % photos.length],
+      },
+    })),
+  );
+}
+
+const { photo, album, position, total, prev, next } = Astro.props;
+const date = takenAt(photo);
+const settings = await getSettings();
+const takedown = `mailto:${settings.email}?subject=${encodeURIComponent(
+  `Photo removal: ${new URL(photo.href, Astro.site)}`,
+)}`;
+const camera = cameraLine(photo);
+const swatches = Object.entries(photo.meta.palette).filter(
+  (entry): entry is [string, string] =>
+    entry[0] !== 'dominant' && entry[1] !== null,
+);
+---
+
+<BaseLayout
+  title={album.title}
+  description={`Photo from ${album.title} by Daniel Jancar.`}
+  image={photo.image}
+  imageAlt={`${album.title}, photo by Daniel Jancar`}
+  themeStyle={themeStyle(photo.theme)}
+>
+  <section class="page">
+    <div class="frame">
+      <Photo
+        photo={photo}
+        alt={`${album.title}, photo ${position} of ${total}`}
+        widths={[800, 1400, 2000, 2400]}
+        sizes="(max-width: 900px) 100vw, 72vw"
+        loading="eager"
+      />
+    </div>
+    <div class="info">
+      <span class="mono">
+        {position} / {total}
+      </span>
+      <a class="display album" href={`/photos/${album.id}`}>
+        {album.title}
+      </a>
+      {date && <span class="mono">{formatDate(date)}</span>}
+      {camera.length > 0 && (
+        <ul class="camera mono">
+          {camera.map(item => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      )}
+      <div class="swatches" aria-hidden="true">
+        {swatches.map(([, hex]) => (
+          <span style={`background:${hex}`}></span>
+        ))}
+      </div>
+      <a class="mono takedown" href={takedown}>
+        In this photo? Ask me to take it down →
+      </a>
+      <nav class="pager mono" aria-label="More photos">
+        <a href={prev.href} data-prev>
+          ← Previous
+        </a>
+        <a href={`/photos/${album.id}`}>Album</a>
+        <a href={next.href} data-next>
+          Next →
+        </a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.addEventListener('keydown', event => {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    const target =
+      event.key === 'ArrowLeft'
+        ? '[data-prev]'
+        : event.key === 'ArrowRight'
+          ? '[data-next]'
+          : null;
+    if (!target) return;
+    document.querySelector<HTMLAnchorElement>(target)?.click();
+  });
+</script>
+
+<style>
+  .page {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(260px, 3fr);
+    gap: 32px;
+    min-height: calc(100svh - var(--bar-height));
+    margin-bottom: calc(-1 * clamp(64px, 8vw, 120px));
+    padding: var(--gutter);
+    background: var(--tint);
+    color: var(--tint-ink);
+    --dim-strength: 0;
+  }
+
+  .frame {
+    display: grid;
+    place-items: center;
+  }
+
+  .frame :global(img) {
+    width: auto;
+    height: auto;
+    max-height: calc(100svh - var(--bar-height) - 2 * var(--gutter));
+    object-fit: contain;
+    background: transparent !important;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-self: end;
+  }
+
+  .album {
+    font-size: clamp(32px, 3.2vw, 52px);
+    overflow-wrap: anywhere;
+  }
+
+  .album:hover {
+    color: inherit;
+    font-stretch: 62%;
+  }
+
+  .album {
+    transition: font-stretch 0.45s var(--ease-out);
+  }
+
+  .camera {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    opacity: 0.75;
+  }
+
+  .swatches {
+    display: flex;
+    gap: 6px;
+  }
+
+  .swatches span {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgb(255 255 255 / 0.3);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  a:hover {
+    color: var(--wash);
+  }
+
+  .takedown {
+    opacity: 0.7;
+  }
+
+  .takedown:hover {
+    opacity: 1;
+  }
+
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid currentColor;
+  }
+
+  @media (max-width: 900px) {
+    .page {
+      grid-template-columns: 1fr;
+      align-content: start;
+    }
+  }
+</style>
