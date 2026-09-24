@@ -1,5 +1,14 @@
 ---
+import SocialIcon from '~/components/ui/SocialIcon.astro';
+import { getSettings } from '~/lib/content';
+import { linkAttrs } from '~/lib/links';
 import ThemeToggle from './ThemeToggle.astro';
+
+const settings = await getSettings();
+const socials = [
+  ...settings.socials,
+  { label: 'Email', href: `mailto:${settings.email}` },
+];
 
 const links = [
   { href: '/work', label: 'Work' },
@@ -12,6 +21,7 @@ const path = Astro.url.pathname;
 const current = (href: string) =>
   path === href || path.startsWith(`${href}/`) ? 'page' : undefined;
 const letters = [...'daniel.jancar'];
+const home = path === '/';
 ---
 
 <header class="bar" data-bar>
@@ -42,6 +52,23 @@ const letters = [...'daniel.jancar'];
   </nav>
 
   <div class="actions">
+    {home && (
+      <ul class="socials">
+        {socials.map(link => (
+          <li>
+            <a
+              href={link.href}
+              aria-label={link.label}
+              data-magnetic
+              data-cursor=""
+              {...linkAttrs(link.href)}
+            >
+              <SocialIcon href={link.href} />
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
     <ThemeToggle />
     <button
       class="burger"
@@ -82,6 +109,20 @@ const letters = [...'daniel.jancar'];
       </li>
     ))}
   </ul>
+  <div class="menu-bottom">
+    <ul class="menu-socials">
+      {socials.map(link => (
+        <li>
+          <a href={link.href} aria-label={link.label} {...linkAttrs(link.href)}>
+            <SocialIcon href={link.href} size={26} />
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="mono">
+      © {new Date().getFullYear()} {settings.name}
+    </p>
+  </div>
 </nav>
 
 <script>
@@ -274,6 +315,74 @@ const letters = [...'daniel.jancar'];
     translate: 0 0;
   }
 
+  .socials,
+  .menu-socials {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .socials {
+    gap: 2px;
+    margin-right: 6px;
+  }
+
+  .socials a {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    color: var(--ink-soft);
+    transition:
+      color 0.2s,
+      translate 0.3s var(--ease-out);
+  }
+
+  .socials a:hover {
+    color: var(--accent-text);
+  }
+
+  .menu {
+    display: none;
+    flex-direction: column;
+  }
+
+  .menu:popover-open {
+    display: flex;
+  }
+
+  .menu-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: auto;
+    padding: 20px 0 calc(20px + env(safe-area-inset-bottom));
+    border-top: 1px solid rgb(11 13 10 / 0.3);
+  }
+
+  .menu-socials {
+    gap: 8px;
+  }
+
+  .menu-socials a {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgb(11 13 10 / 0.35);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .menu-socials a:hover {
+    background: var(--on-accent);
+    color: var(--accent);
+  }
+
   .actions {
     display: flex;
     gap: 8px;
@@ -437,7 +546,8 @@ const letters = [...'daniel.jancar'];
       grid-template-columns: 1fr auto;
     }
 
-    .desktop {
+    .desktop,
+    .socials {
       display: none;
     }
 

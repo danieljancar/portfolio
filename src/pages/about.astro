@@ -4,10 +4,13 @@ import Experience from '~/components/experience/Experience.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getSettings } from '~/lib/content';
-import { getRoles } from '~/lib/experience';
+import { getCompanies } from '~/lib/experience';
 import { linkAttrs } from '~/lib/links';
 
-const [settings, roles] = await Promise.all([getSettings(), getRoles()]);
+const [settings, companies] = await Promise.all([
+  getSettings(),
+  getCompanies(),
+]);
 const paragraphs = settings.about.split(/\n\s*\n/);
 ---
 
@@ -42,7 +45,7 @@ const paragraphs = settings.about.split(/\n\s*\n/);
   </section>
 
   <SectionHead title="Experience" id="experience" />
-  <Experience roles={roles} />
+  <Experience companies={companies} />
 
   <SectionHead title="Skills" />
   <div class="skills wrap">

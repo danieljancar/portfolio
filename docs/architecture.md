@@ -110,7 +110,15 @@ Without WebGL or with reduced motion the CSS photo ring stays in place.
 
 `src/components/layout/Cursor.astro` replaces the pointer on devices with a
 fine pointer. Any element can set `data-cursor="Label"` to show a label, and
-`data-magnetic` pulls an element slightly towards the pointer.
+`data-magnetic` pulls an element slightly towards the pointer. While a popover such as
+the mobile menu is open, the cursor moves into the top layer so it stays
+visible above it.
+
+Experience entries are grouped by company in `src/lib/experience.ts`. Current
+roles open by default and older roles expand on click.
+
+Social icons come from Remix Icon (`@iconify-json/ri`) and are inlined as SVG
+at build time by `src/components/ui/SocialIcon.astro`.
 
 Vite's default CSS minifier (lightningcss) folds `animation-timeline` into the
 `animation` shorthand, which browsers reject. `astro.config.mjs` therefore uses

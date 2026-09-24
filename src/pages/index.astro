@@ -15,19 +15,26 @@ import {
   getRecommendations,
   getSettings,
 } from '~/lib/content';
-import { getRoles } from '~/lib/experience';
+import { getCompanies } from '~/lib/experience';
 import { getAlbums, getHighlights, type Photo } from '~/lib/photos';
 
-const [settings, events, posts, recommendations, albums, roles, highlights] =
-  await Promise.all([
-    getSettings(),
-    getEvents(),
-    getPosts(),
-    getRecommendations(),
-    getAlbums(),
-    getRoles(),
-    getHighlights(),
-  ]);
+const [
+  settings,
+  events,
+  posts,
+  recommendations,
+  albums,
+  companies,
+  highlights,
+] = await Promise.all([
+  getSettings(),
+  getEvents(),
+  getPosts(),
+  getRecommendations(),
+  getAlbums(),
+  getCompanies(),
+  getHighlights(),
+]);
 
 const wide = (photo: Photo) => photo.meta.width > photo.meta.height;
 const landscapeAlbums = new Set(
@@ -61,7 +68,7 @@ const [latestEvent] = events;
   <IndexGrid links={links} recommendations={recommendations.length > 0} />
 
   <SectionHead title="Experience" href="/about#experience" linkLabel="About" />
-  <Experience roles={roles} />
+  <Experience companies={companies} />
 
   {zoomCenter && (
     <ZoomIn

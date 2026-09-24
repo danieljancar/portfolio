@@ -1,6 +1,7 @@
 ---
 import Photo from '~/components/media/Photo.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getSettings } from '~/lib/content';
 import { themeStyle } from '~/lib/color';
 import { formatDate } from '~/lib/dates';
 import { cameraLine, getAlbums, takenAt } from '~/lib/photos';
@@ -24,6 +25,10 @@ export async function getStaticPaths() {
 
 const { photo, album, position, total, prev, next } = Astro.props;
 const date = takenAt(photo);
+const settings = await getSettings();
+const takedown = `mailto:${settings.email}?subject=${encodeURIComponent(
+  `Photo removal: ${new URL(photo.href, Astro.site)}`,
+)}`;
 const camera = cameraLine(photo);
 const swatches = Object.entries(photo.meta.palette).filter(
   (entry): entry is [string, string] =>
@@ -67,6 +72,9 @@ const swatches = Object.entries(photo.meta.palette).filter(
           <span style={`background:${hex}`}></span>
         ))}
       </div>
+      <a class="mono takedown" href={takedown}>
+        In this photo? Ask me to take it down →
+      </a>
       <nav class="pager mono" aria-label="More photos">
         <a href={prev.href} data-prev>
           ← Previous
@@ -169,6 +177,14 @@ const swatches = Object.entries(photo.meta.palette).filter(
 
   a:hover {
     color: var(--wash);
+  }
+
+  .takedown {
+    opacity: 0.7;
+  }
+
+  .takedown:hover {
+    opacity: 1;
   }
 
   .pager {

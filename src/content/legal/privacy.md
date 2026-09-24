@@ -1,8 +1,8 @@
 ---
 title: Privacy Policy
 description: Privacy policy is a statement or a legal document that discloses some or all of the ways a party gathers, uses, discloses, and manages a client's data.
-version: 1.0.0
-updated: 2024-01-08
+version: 1.1.0
+updated: 2026-09-24
 ---
 
 ## 1. Introduction
@@ -32,3 +32,9 @@ I reserve the right to update this policy at any time. Any changes will be poste
 ## 7. Third-Party Links
 
 My website may include links to third-party websites or services provided by third-party companies, such as my social media profiles, blog related references or services like Cloudflare or similar. Please be aware that I have no control over the content and practices of these companies or sites, and cannot accept responsibility or liability for their respective privacy policies.
+
+## 8. Photos of People
+
+Some photos on this website show people, for example at events or in public places in Lucerne. The photos are published without location data.
+
+If you are in one of these photos and don't want it on my website, write to me at daniel@danieljancar.dev and include the link to the photo. I will remove it or replace it, without asking for a reason.

@@ -16,7 +16,7 @@ const { title, description, published, cover, tags } = post.data;
   <a class="card" href={`/blog/${post.id}`} data-cursor="Read">
     <div class="visual">
       <span class="disc" aria-hidden="true"></span>
-      <div class="shape">
+      <div class="thumb">
         {cover && (
           <Cover
             src={cover}
@@ -26,20 +26,6 @@ const { title, description, published, cover, tags } = post.data;
           />
         )}
       </div>
-      <svg class="badge" viewBox="0 0 200 200" aria-hidden="true">
-        <defs>
-          <path
-            id="latest-badge"
-            d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"
-          />
-        </defs>
-        <circle cx="100" cy="100" r="98" />
-        <text>
-          <textPath href="#latest-badge" textLength="462">
-            Latest post ✦ Latest post ✦ Latest post ✦
-          </textPath>
-        </text>
-      </svg>
     </div>
     <div class="text">
       <ul class="meta mono">
@@ -61,7 +47,7 @@ const { title, description, published, cover, tags } = post.data;
 <style>
   .card {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
     gap: clamp(32px, 6vw, 96px);
     align-items: center;
   }
@@ -72,14 +58,13 @@ const { title, description, published, cover, tags } = post.data;
 
   .visual {
     position: relative;
-    aspect-ratio: 4 / 5;
   }
 
   .disc {
     position: absolute;
-    right: -8%;
-    bottom: -6%;
-    width: 64%;
+    right: -6%;
+    bottom: -10%;
+    width: 42%;
     aspect-ratio: 1;
     border-radius: 50%;
     background: var(--accent);
@@ -87,42 +72,22 @@ const { title, description, published, cover, tags } = post.data;
   }
 
   .card:hover .disc {
-    translate: 6% -4%;
+    translate: 4% -6%;
   }
 
-  .shape {
-    position: absolute;
-    inset: 0;
+  .thumb {
+    position: relative;
+    aspect-ratio: 3 / 2;
     overflow: hidden;
-    clip-path: inset(0 round 999px 999px 0 0);
+    background: var(--surface-2);
   }
 
-  .shape :global(img) {
+  .thumb :global(img) {
     transition: transform 0.8s var(--ease-out);
   }
 
-  .card:hover .shape :global(img) {
-    transform: scale(1.06);
-  }
-
-  .badge {
-    position: absolute;
-    top: -6%;
-    left: -8%;
-    width: 34%;
-    animation: spin 22s linear infinite;
-  }
-
-  .badge circle {
-    fill: var(--ink);
-  }
-
-  .badge text {
-    fill: var(--ground);
-    font-family: var(--font-mono);
-    font-size: 17px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  .card:hover .thumb :global(img) {
+    transform: scale(1.05);
   }
 
   .text {
@@ -150,17 +115,18 @@ const { title, description, published, cover, tags } = post.data;
   }
 
   h3 {
-    font-size: clamp(40px, 5.6vw, 96px);
-    transition: font-stretch 0.5s var(--ease-out);
+    font-size: clamp(36px, 4.2vw, 68px);
+    font-stretch: 62%;
+    line-height: 0.92;
   }
 
   .card:hover h3 {
-    font-stretch: 62%;
+    color: var(--accent-text);
   }
 
   p {
     max-width: 52ch;
-    font-size: 20px;
+    font-size: 19px;
     line-height: 1.45;
   }
 
@@ -181,16 +147,16 @@ const { title, description, published, cover, tags } = post.data;
   }
 
   @supports (animation-timeline: view()) {
-    .shape {
+    .thumb {
       animation: reveal linear both;
       animation-timeline: view();
-      animation-range: entry 0% cover 45%;
+      animation-range: entry 0% cover 40%;
     }
 
     .disc {
       animation: roll linear both;
       animation-timeline: view();
-      animation-range: entry 10% cover 50%;
+      animation-range: entry 10% cover 45%;
     }
 
     .text > * {
@@ -202,16 +168,16 @@ const { title, description, published, cover, tags } = post.data;
 
   @keyframes reveal {
     from {
-      clip-path: inset(12% 18% round 999px);
+      clip-path: inset(0 100% 0 0);
     }
     to {
-      clip-path: inset(0 round 999px 999px 0 0);
+      clip-path: inset(0);
     }
   }
 
   @keyframes roll {
     from {
-      transform: translate(-60%, 30%) scale(0.2);
+      transform: translate(-80%, 20%) scale(0.2) rotate(-90deg);
     }
   }
 
@@ -222,20 +188,9 @@ const { title, description, published, cover, tags } = post.data;
     }
   }
 
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   @media (max-width: 900px) {
     .card {
       grid-template-columns: 1fr;
-    }
-
-    .visual {
-      width: min(100%, 420px);
-      margin-inline: auto;
     }
   }
 </style>

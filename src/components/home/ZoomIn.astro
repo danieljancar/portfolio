@@ -72,11 +72,6 @@ const flyers = around
 
 <section class="zoom-in" aria-label="Featured photo">
   <div class="stick">
-    <p class="words display" aria-hidden="true">
-      Look
-      <br />
-      closer
-    </p>
     {flyers.map(f => (
       <div
         class="flyer"
@@ -110,20 +105,6 @@ const flyers = around
     height: 100vh;
     overflow: hidden;
     perspective: 1200px;
-  }
-
-  .words {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-content: center;
-    margin: 0;
-    font-size: 16vw;
-    line-height: 0.82;
-    text-align: center;
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--ink);
-    opacity: 0.35;
   }
 
   .flyer {
@@ -173,12 +154,6 @@ const flyers = around
   }
 
   @supports (animation-timeline: view()) {
-    .words {
-      animation: through linear both;
-      animation-timeline: --zoom-in;
-      animation-range: contain 0% contain 45%;
-    }
-
     .flyer {
       animation: fly linear both;
       animation-timeline: --zoom-in;
@@ -214,7 +189,6 @@ const flyers = around
       height: 80vh;
     }
 
-    .words,
     .flyer,
     .lens {
       display: none;
@@ -222,13 +196,6 @@ const flyers = around
 
     .center {
       clip-path: none;
-    }
-  }
-
-  @keyframes through {
-    to {
-      transform: scale(9);
-      opacity: 0;
     }
   }
 

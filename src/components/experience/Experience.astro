@@ -1,139 +1,247 @@
 ---
-import type { Role } from '~/lib/experience';
+import type { Company } from '~/lib/experience';
 import { linkAttrs } from '~/lib/links';
 
 interface Props {
-  roles: Role[];
+  companies: Company[];
 }
 
-const { roles } = Astro.props;
+const { companies } = Astro.props;
 ---
 
-<ol class="xp wrap">
-  {roles.map(({ entry, current, period }) => (
-    <li class:list={['role', current && 'current']}>
-      <span class="node" aria-hidden="true"></span>
-      <p class="mono period">{period}</p>
-      <div class="body">
-        <h3 class="display company">
-          {entry.data.companyUrl ? (
-            <a
-              href={entry.data.companyUrl}
-              data-cursor="Visit"
-              {...linkAttrs(entry.data.companyUrl)}
-            >
-              {entry.data.company}
-            </a>
-          ) : (
-            entry.data.company
-          )}
-        </h3>
-        <p class="title">{entry.data.role}</p>
-        {entry.data.summary && <p class="summary">{entry.data.summary}</p>}
+<ol class="companies wrap">
+  {companies.map(company => (
+    <li class:list={['company', company.current && 'current']}>
+      <div class="head">
+        <span class="mark display" aria-hidden="true">
+          {company.name.slice(0, 1)}
+        </span>
+        <div>
+          <h3>
+            {company.url ? (
+              <a
+                href={company.url}
+                data-cursor="Visit"
+                {...linkAttrs(company.url)}
+              >
+                {company.name} ↗
+              </a>
+            ) : (
+              company.name
+            )}
+          </h3>
+          <p class="mono soft">{company.period}</p>
+        </div>
       </div>
+      <ol class="roles">
+        {company.roles.map(({ entry, current, period }) => (
+          <li class:list={['role', current && 'now']}>
+            {entry.data.summary ? (
+              <details open={current}>
+                <summary>
+                  <span class="title">{entry.data.role}</span>
+                  <span class="mono period">{period}</span>
+                  <span class="toggle" aria-hidden="true"></span>
+                </summary>
+                <p class="summary">{entry.data.summary}</p>
+              </details>
+            ) : (
+              <div class="plain">
+                <span class="title">{entry.data.role}</span>
+                <span class="mono period">{period}</span>
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
     </li>
   ))}
 </ol>
 
 <style>
-  .xp {
-    position: relative;
+  .companies {
     margin: 0;
     list-style: none;
-    view-timeline-name: --xp;
+    interpolate-size: allow-keywords;
   }
 
-  .xp::before,
-  .xp::after {
+  .company {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 16px 48px;
+    padding: 32px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .company:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .head {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .mark {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid var(--line);
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .current .mark {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  h3 {
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  h3 a:hover {
+    color: var(--accent-text);
+  }
+
+  .head .mono {
+    margin-top: 6px;
+  }
+
+  .roles {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .roles::before {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: calc(var(--gutter) + 7px);
+    top: 14px;
+    bottom: 14px;
+    left: 6px;
     width: 2px;
     background: var(--line);
   }
 
-  .xp::after {
-    background: var(--accent);
-    transform-origin: 50% 0;
-  }
-
   .role {
     position: relative;
-    display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: 8px 32px;
-    padding: 36px 0 36px 44px;
-    border-bottom: 1px solid var(--line-soft);
+    padding-left: 32px;
   }
 
-  .node {
+  .role + .role {
+    margin-top: 8px;
+  }
+
+  .role::before {
+    content: '';
     position: absolute;
-    top: 42px;
+    top: 9px;
     left: 0;
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--accent);
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--ink-soft);
     border-radius: 50%;
     background: var(--ground);
   }
 
-  .current .node {
+  .now::before {
+    border-color: var(--accent);
     background: var(--accent);
   }
 
-  .period {
-    padding-top: 6px;
-    color: var(--ink-soft);
+  summary,
+  .plain {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 4px 16px;
+    align-items: baseline;
+    padding: 4px 0;
   }
 
-  .current .period {
-    color: var(--accent-text);
+  summary {
+    list-style: none;
+    cursor: pointer;
   }
 
-  .company {
-    font-size: clamp(28px, 3.4vw, 52px);
-    line-height: 0.95;
-  }
-
-  .company a {
-    transition: font-stretch 0.45s var(--ease-out);
-  }
-
-  .company a:hover {
-    font-stretch: 62%;
+  summary::-webkit-details-marker {
+    display: none;
   }
 
   .title {
-    margin-top: 10px;
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 600;
   }
 
+  summary:hover .title {
+    color: var(--accent-text);
+  }
+
+  .period {
+    color: var(--ink-soft);
+  }
+
+  .now .period {
+    color: var(--accent-text);
+  }
+
+  .toggle {
+    position: relative;
+    width: 12px;
+    height: 12px;
+  }
+
+  .toggle::before,
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 12px;
+    height: 2px;
+    background: currentColor;
+    transition: rotate 0.3s var(--ease-out);
+  }
+
+  .toggle::after {
+    rotate: 90deg;
+  }
+
+  details[open] .toggle::after {
+    rotate: 0deg;
+  }
+
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 0.4s var(--ease-out),
+      content-visibility 0.4s allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+  }
+
   .summary {
-    max-width: 64ch;
-    margin-top: 10px;
+    max-width: 62ch;
+    padding: 8px 0 12px;
     color: var(--ink-soft);
   }
 
   @supports (animation-timeline: view()) {
-    .xp::after {
-      animation: fill linear both;
-      animation-timeline: --xp;
-      animation-range: entry 50% exit 50%;
-    }
-
-    .role {
+    .company {
       animation: rise linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 70%;
-    }
-  }
-
-  @keyframes fill {
-    from {
-      transform: scaleY(0);
     }
   }
 
@@ -145,13 +253,17 @@ const { roles } = Astro.props;
   }
 
   @media (max-width: 800px) {
-    .role {
+    .company {
       grid-template-columns: 1fr;
-      padding-left: 36px;
     }
 
-    .node {
-      top: 38px;
+    summary,
+    .plain {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .period {
+      grid-row: 2;
     }
   }
 </style>
