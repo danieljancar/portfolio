@@ -1,4 +1,4 @@
-import { getEvents, getPosts, getProjects } from './content';
+import { getEvents, getPosts, getProjects, getRecipes } from './content';
 import { getAlbums } from './photos';
 import {
   rankRelated,
@@ -25,11 +25,12 @@ export function getItems(): Promise<Item[]> {
 }
 
 async function loadItems(): Promise<Item[]> {
-  const [posts, projects, events, albums] = await Promise.all([
+  const [posts, projects, events, albums, recipes] = await Promise.all([
     getPosts(),
     getProjects(),
     getEvents(),
     getAlbums(),
+    getRecipes(),
   ]);
   return [
     ...posts.map((p): Item => ({
@@ -73,6 +74,16 @@ async function loadItems(): Promise<Item[]> {
       tags: a.data.tags,
       links: [],
       image: a.data.cover,
+    })),
+    ...recipes.map((r): Item => ({
+      kind: 'recipe',
+      id: r.id,
+      title: r.data.title,
+      href: `/recipes/${r.id}`,
+      date: r.data.published,
+      tags: r.data.tags,
+      links: [],
+      image: r.data.cover,
     })),
   ];
 }

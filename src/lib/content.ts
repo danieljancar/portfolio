@@ -16,6 +16,16 @@ export async function getPosts() {
   );
 }
 
+export async function getRecipes() {
+  const recipes = await getCollection(
+    'recipes',
+    ({ data }) => import.meta.env.DEV || !data.draft,
+  );
+  return recipes.sort(
+    (a, b) => b.data.published.getTime() - a.data.published.getTime(),
+  );
+}
+
 export async function getProjects() {
   const projects = await getCollection('projects');
   return projects.sort(
