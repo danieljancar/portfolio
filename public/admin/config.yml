@@ -498,6 +498,11 @@ collections:
       - name: url
         label: URL
         widget: string
+      - name: image
+        label: Cover image URL
+        widget: string
+        required: false
+        hint: Leave empty to use the preview image of the link.
       - name: topic
         label: Topic
         widget: string
