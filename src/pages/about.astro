@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import MeBento from '~/components/about/MeBento.astro';
 import Experience from '~/components/experience/Experience.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
@@ -14,24 +13,17 @@ const [settings, companies, me] = await Promise.all([
   getCompanies(),
   getAlbum('me'),
 ]);
-const stack = me && me.photos.length > 0 ? me : undefined;
+const portrait = settings.portrait
+  ? { src: settings.portrait, alt: settings.portraitAlt }
+  : undefined;
+const photos = me && me.photos.length > 0 ? me : undefined;
+const bento = Boolean(portrait || photos);
 const paragraphs = settings.about.split(/\n\s*\n/);
 ---
 
 <BaseLayout title="About" description={settings.description}>
   <SectionHead title="About" as="h1" />
-  <section class:list={['intro', 'wrap', stack && 'with-me']}>
-    {!stack && settings.portrait && (
-      <div class="portrait">
-        <Image
-          src={settings.portrait}
-          alt={settings.portraitAlt}
-          widths={[200, 400]}
-          sizes="160px"
-          loading="eager"
-        />
-      </div>
-    )}
+  <section class:list={['intro', 'wrap', bento && 'with-me']}>
     <div class="text">
       {paragraphs.map(paragraph => (
         <p>{paragraph}</p>
@@ -44,7 +36,7 @@ const paragraphs = settings.about.split(/\n\s*\n/);
         ))}
       </ul>
     </div>
-    {stack && <MeBento album={stack} />}
+    {bento && <MeBento portrait={portrait} album={photos} />}
   </section>
 
   <SectionHead title="Experience" id="experience" />
@@ -68,7 +60,7 @@ const paragraphs = settings.about.split(/\n\s*\n/);
 <style>
   .intro {
     display: grid;
-    grid-template-columns: 160px minmax(0, 62ch);
+    grid-template-columns: minmax(0, 62ch);
     gap: 32px;
     align-items: start;
   }
@@ -77,17 +69,6 @@ const paragraphs = settings.about.split(/\n\s*\n/);
     grid-template-columns: minmax(0, 62ch) minmax(320px, 1fr);
     gap: 64px;
     align-items: stretch;
-  }
-
-  .portrait {
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-  }
-
-  .portrait :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
 
   .text p:first-child {
@@ -198,10 +179,6 @@ const paragraphs = settings.about.split(/\n\s*\n/);
   @media (max-width: 600px) {
     .intro {
       grid-template-columns: 1fr;
-    }
-
-    .portrait {
-      width: 120px;
     }
   }
 </style>
