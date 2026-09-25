@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/danieljancar/portfolio/compare/v2.0.0...v2.0.1) (2026-09-25)
+
+
+### Bug Fixes
+
+* mobile line breaks, steady hovers and a new about text ([#92](https://github.com/danieljancar/portfolio/issues/92)) ([#93](https://github.com/danieljancar/portfolio/issues/93)) ([37ffac9](https://github.com/danieljancar/portfolio/commit/37ffac95a30862a973eb7aa6bf1957a96a58ee54))
+
 # [2.0.0](https://github.com/danieljancar/portfolio/compare/v1.3.1...v2.0.0) (2026-09-24)
 
 
