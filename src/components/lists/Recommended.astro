@@ -1,12 +1,24 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { linkProps } from '~/lib/links';
+import { previewImage } from '~/lib/preview';
 
 interface Props {
   items: CollectionEntry<'recommendations'>[];
 }
 
 const { items } = Astro.props;
+const covers = new Map(
+  await Promise.all(
+    items.map(
+      async item =>
+        [
+          item.id,
+          item.data.image ?? (await previewImage(item.data.url)),
+        ] as const,
+    ),
+  ),
+);
 const columns = [
   {
     id: 'listening',
@@ -28,7 +40,22 @@ const columns = [
       <ul>
         {column.items.map(item => (
           <li>
-            <a class="rec" {...linkProps(item.data.url)}>
+            <a
+              class:list={['rec', covers.get(item.id) && 'with-cover']}
+              {...linkProps(item.data.url)}
+            >
+              {covers.get(item.id) && (
+                <img
+                  class="cover"
+                  src={covers.get(item.id)}
+                  alt=""
+                  width="72"
+                  height="72"
+                  loading="lazy"
+                  referrerpolicy="no-referrer"
+                  decoding="async"
+                />
+              )}
               <div>
                 <b>{item.data.name}</b>
                 <div class="mono soft">{item.data.topic}</div>
@@ -75,9 +102,13 @@ const columns = [
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 16px;
-    align-items: baseline;
+    align-items: center;
     padding: 16px 0;
     border-bottom: 1px solid var(--line-soft);
+  }
+
+  .with-cover {
+    grid-template-columns: 72px 1fr auto;
   }
 
   .rec:hover {
@@ -86,6 +117,13 @@ const columns = [
 
   .rec:hover b {
     color: var(--accent-text);
+  }
+
+  .cover {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    background: var(--surface-2);
   }
 
   b {
