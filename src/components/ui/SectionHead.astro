@@ -1,4 +1,5 @@
 ---
+import { fit } from '~/lib/fit';
 interface Props {
   title: string;
   as?: 'h1' | 'h2';
@@ -11,7 +12,9 @@ const { title, as: Tag = 'h2', id, href, linkLabel = 'All' } = Astro.props;
 ---
 
 <div class="head wrap" id={id}>
-  <Tag class="display">{title}</Tag>
+  <Tag class="display" style={fit(title)}>
+    {title}
+  </Tag>
   <div class="meta mono">
     <slot />
     {href && <a href={href}>{linkLabel} →</a>}
@@ -20,6 +23,7 @@ const { title, as: Tag = 'h2', id, href, linkLabel = 'All' } = Astro.props;
 
 <style>
   .head {
+    container-type: inline-size;
     display: flex;
     justify-content: space-between;
     align-items: end;
@@ -29,7 +33,7 @@ const { title, as: Tag = 'h2', id, href, linkLabel = 'All' } = Astro.props;
   }
 
   .display {
-    font-size: clamp(32px, 9vw, 150px);
+    font-size: min(clamp(32px, 9vw, 150px), 100cqi / (var(--chars, 1) * 1.06));
   }
 
   .meta {
