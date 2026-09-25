@@ -1,52 +1,45 @@
 ---
-import { fit } from '~/lib/fit';
 import { getImage } from 'astro:assets';
-import Photo from '~/components/media/Photo.astro';
+import { fit } from '~/lib/fit';
 import { linkProps } from '~/lib/links';
-import type { Photo as PhotoType } from '~/lib/photos';
-import type { Tile } from '~/scripts/helix';
+import type { Photo } from '~/lib/photos';
 
 interface Props {
-  photos: PhotoType[];
+  photos: Photo[];
   tagline: string;
   links: { label: string; href: string }[];
 }
 
 const { photos, tagline, links } = Astro.props;
-const ring = photos.slice(0, 10);
-const step = 360 / Math.max(ring.length, 1);
-const tiles: Tile[] = await Promise.all(
-  photos.slice(0, 18).map(async photo => ({
-    src: (await getImage({ src: photo.image, width: 720, format: 'webp' })).src,
-    href: photo.href,
-    aspect: photo.meta.width / Math.max(photo.meta.height, 1),
-  })),
+const pool = await Promise.all(
+  photos
+    .slice(0, 24)
+    .map(
+      async photo =>
+        (await getImage({ src: photo.image, width: 720, format: 'webp' })).src,
+    ),
 );
+const tiles = pool.slice(0, 8);
 ---
 
 <section class="hero" aria-label="Intro" data-hero>
-  <canvas class="scene" data-scene aria-hidden="true"></canvas>
+  <ul class="wall" aria-hidden="true" data-wall>
+    {tiles.map((src, i) => (
+      <li>
+        <img
+          src={src}
+          alt=""
+          loading={i < 4 ? 'eager' : 'lazy'}
+          decoding="async"
+        />
+      </li>
+    ))}
+  </ul>
   <script
     type="application/json"
-    data-tiles
-    set:html={JSON.stringify(tiles)}
+    data-pool
+    set:html={JSON.stringify(pool)}
   ></script>
-  <div class="stage" aria-hidden="true">
-    <div class="tilt">
-      <div class="ring">
-        {ring.map((photo, i) => (
-          <div class="card" style={`--angle:${i * step}deg`}>
-            <Photo
-              photo={photo}
-              widths={[240, 360]}
-              sizes="180px"
-              loading="eager"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
   <div class="name">
     <div class="meta">
       <p>{tagline}</p>
@@ -67,18 +60,61 @@ const tiles: Tile[] = await Promise.all(
 </section>
 
 <script>
-  import type { Tile } from '~/scripts/helix';
-
   const root = document.querySelector<HTMLElement>('[data-hero]');
-  const canvas = root?.querySelector<HTMLCanvasElement>('[data-scene]');
-  const data = root?.querySelector('[data-tiles]')?.textContent;
+  const wall = root?.querySelector<HTMLElement>('[data-wall]');
+  const data = root?.querySelector('[data-pool]')?.textContent;
   const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (root && canvas && data && !still) {
-    const tiles = JSON.parse(data) as Tile[];
-    import('~/scripts/helix')
-      .then(({ mountHelix }) => mountHelix(root, canvas, tiles))
-      .catch(() => root.classList.remove('is-3d'));
+  if (root && wall && data && !still) {
+    const pool = JSON.parse(data) as string[];
+    const tiles = [...wall.children] as HTMLElement[];
+    let visible = true;
+    let last: HTMLElement | undefined;
+
+    new IntersectionObserver(([entry]) => {
+      visible = Boolean(entry?.isIntersecting);
+    }).observe(root);
+
+    const shown = () =>
+      new Set(
+        tiles.map(tile =>
+          tile.querySelector('img:last-child')?.getAttribute('src'),
+        ),
+      );
+
+    const swap = () => {
+      if (!visible || document.hidden) return;
+      const options = tiles.filter(
+        tile => tile.offsetParent && tile !== last && !tile.dataset.busy,
+      );
+      const tile = options[Math.floor(Math.random() * options.length)];
+      const used = shown();
+      const next = pool.filter(src => !used.has(src));
+      const src = next[Math.floor(Math.random() * next.length)];
+      if (!tile || !src) return;
+      last = tile;
+      tile.dataset.busy = 'true';
+      const incoming = new Image();
+      incoming.alt = '';
+      incoming.decoding = 'async';
+      incoming.src = src;
+      incoming.decode().then(
+        () => {
+          const outgoing = tile.querySelector('img');
+          tile.append(incoming);
+          incoming.getBoundingClientRect();
+          tile.classList.add('rolling');
+          setTimeout(() => {
+            outgoing?.remove();
+            tile.classList.remove('rolling');
+            delete tile.dataset.busy;
+          }, 1500);
+        },
+        () => delete tile.dataset.busy,
+      );
+    };
+
+    setInterval(swap, 2200);
   }
 </script>
 
@@ -88,66 +124,63 @@ const tiles: Tile[] = await Promise.all(
     height: calc(100svh - var(--bar-height));
     min-height: 620px;
     overflow: hidden;
-    background: var(--ground);
-    color: var(--ink);
+    background: var(--night);
+    color: #fff;
   }
 
-  .scene {
+  .wall {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .wall::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, rgb(6 7 5 / 0.9), rgb(6 7 5 / 0.3) 65%),
+      rgb(6 7 5 / 0.45);
+  }
+
+  .wall li {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wall :global(img) {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 1.2s var(--ease-out);
+    object-fit: cover;
+    transition: translate 1.4s cubic-bezier(0.7, 0, 0.2, 1);
   }
 
-  .is-3d .scene {
-    opacity: 1;
+  .wall :global(img + img) {
+    translate: 0 100%;
   }
 
-  .is-3d .stage {
-    display: none;
+  .rolling :global(img:first-child) {
+    translate: 0 -100%;
   }
 
-  .stage {
-    position: absolute;
-    left: 50%;
-    top: 44%;
-    perspective: 1400px;
-  }
-
-  .tilt,
-  .ring {
-    transform-style: preserve-3d;
-  }
-
-  .tilt {
-    transform: rotateX(-8deg);
-  }
-
-  .ring {
-    animation: turn 48s linear infinite;
-  }
-
-  .card {
-    position: absolute;
-    left: -90px;
-    top: -120px;
-    width: 180px;
-    height: 240px;
-    transform: rotateY(var(--angle)) translateZ(430px);
-    outline: 1px solid rgb(255 255 255 / 0.15);
+  .rolling :global(img + img) {
+    translate: 0 0;
   }
 
   .name {
-    container-type: inline-size;
     position: absolute;
     inset: auto 0 0;
     z-index: 2;
     padding: 0 var(--gutter) var(--gutter);
-    color: #fff;
-    mix-blend-mode: difference;
-    pointer-events: none;
+    container-type: inline-size;
   }
 
   .links {
@@ -157,7 +190,6 @@ const tiles: Tile[] = await Promise.all(
     margin: 0;
     padding: 0;
     list-style: none;
-    pointer-events: auto;
   }
 
   .links a {
@@ -192,28 +224,10 @@ const tiles: Tile[] = await Promise.all(
   }
 
   @supports (animation-timeline: scroll()) {
-    .tilt {
-      animation: tilt-away linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 100vh;
-    }
-
     .name {
       animation: lift linear both;
       animation-timeline: scroll(root);
       animation-range: 0 90vh;
-    }
-  }
-
-  @keyframes turn {
-    to {
-      transform: rotateY(-360deg);
-    }
-  }
-
-  @keyframes tilt-away {
-    to {
-      transform: rotateX(-38deg) scale(0.7);
     }
   }
 
@@ -224,12 +238,13 @@ const tiles: Tile[] = await Promise.all(
   }
 
   @media (max-width: 700px) {
-    .card {
-      left: -60px;
-      top: -80px;
-      width: 120px;
-      height: 160px;
-      transform: rotateY(var(--angle)) translateZ(260px);
+    .wall {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(3, minmax(0, 1fr));
+    }
+
+    .wall li:nth-child(n + 7) {
+      display: none;
     }
 
     .meta {
