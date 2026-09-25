@@ -1,3 +1,31 @@
+# [2.3.0](https://github.com/danieljancar/portfolio/compare/v2.2.0...v2.3.0) (2026-09-25)
+
+
+### Bug Fixes
+
+* **blog:** post titles fit without breaking words ([43d0f4d](https://github.com/danieljancar/portfolio/commit/43d0f4d95f843e6a856afda449b1fc4655f027d8))
+* **events:** fitting titles and clipped tickets ([03f32e8](https://github.com/danieljancar/portfolio/commit/03f32e801ca917e2e3ab7f40584d113e2522b322))
+* fitting 404 title and a clipped event ticket on home ([aeb2372](https://github.com/danieljancar/portfolio/commit/aeb237275f20631847ab4ee5c89633b2fced413d))
+* **home:** name and index tiles fit without breaking words ([4298139](https://github.com/danieljancar/portfolio/commit/429813909021a1a8979ed5a4618b03011b260340))
+* no hyphens in headings and no sideways scroll ([b937223](https://github.com/danieljancar/portfolio/commit/b9372237c66767de3f2916e4e877f7d8362b2d17))
+* **photos:** album titles fit the page ([e88d9c2](https://github.com/danieljancar/portfolio/commit/e88d9c24acc664c5d4869380bb3489a8bc217fd1))
+* **photos:** album titles fit their card ([0c21c55](https://github.com/danieljancar/portfolio/commit/0c21c556b301f6ef45989172e2ef61a45df09a88))
+* **recipes:** titles fit the page ([8408243](https://github.com/danieljancar/portfolio/commit/84082431d62fd8863287176f9255df276e7e2615))
+* section titles fit their longest word ([9497f3e](https://github.com/danieljancar/portfolio/commit/9497f3e4f82f770f640f7505f596914161c03067))
+* **work:** tile names fit their tile ([ab3874b](https://github.com/danieljancar/portfolio/commit/ab3874b14b7a08a78ba0d0365ae2a31bd7a7cc1b))
+* **work:** titles fit the page ([ec82548](https://github.com/danieljancar/portfolio/commit/ec82548d6f0ba643e843b8247f32a49cc270be97))
+
+
+### Features
+
+* **about:** bento grid of the me album ([171758a](https://github.com/danieljancar/portfolio/commit/171758ac46e139214d5c35a0400a018deb7eaaf1))
+* **about:** use the bento grid next to the text ([73f2383](https://github.com/danieljancar/portfolio/commit/73f23831b2e4165039cbd914f5fae7092cad988f))
+* **cms:** pick album highlights from the photos ([f3efa1f](https://github.com/danieljancar/portfolio/commit/f3efa1f3bc58de29353d0738972e39d2604ad60b))
+* fit helper for display headings ([614f284](https://github.com/danieljancar/portfolio/commit/614f284fec69485e5e341dc6aedd1c028344d239))
+* **photos:** album cards ([6d8d0d1](https://github.com/danieljancar/portfolio/commit/6d8d0d1359167b3a72d36317c66462e9c2fe938a))
+* **photos:** latest albums, all photos and an albums page ([2272a39](https://github.com/danieljancar/portfolio/commit/2272a399516afd0c4b1a786e7dd67dd838776031))
+* **photos:** read highlights picked as photos in the CMS ([435ba41](https://github.com/danieljancar/portfolio/commit/435ba4132fe23be1d11a9b48f69ed3b68c4bb81a))
+
 # [2.2.0](https://github.com/danieljancar/portfolio/compare/v2.1.0...v2.2.0) (2026-09-25)
 
 
