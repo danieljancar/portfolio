@@ -1,4 +1,5 @@
 ---
+import { fit } from '~/lib/fit';
 import Cover from '~/components/media/Cover.astro';
 import { formatMonth } from '~/lib/dates';
 import type { Album } from '~/lib/photos';
@@ -33,7 +34,9 @@ const meta = [
     />
   </div>
   <div class="text">
-    <h3 class="display">{title}</h3>
+    <h3 class="display" style={fit(title)}>
+      {title}
+    </h3>
     <ul class="meta mono">
       {meta.map(item => (
         <li>{item}</li>
@@ -77,17 +80,21 @@ const meta = [
   }
 
   h3 {
-    font-size: clamp(24px, 2.4vw, 36px);
+    font-size: min(clamp(24px, 2.4vw, 36px), 100cqi / (var(--chars, 1) * 1.06));
     overflow-wrap: anywhere;
     transition: translate 0.45s var(--ease-out);
   }
 
   .large h3 {
-    font-size: clamp(32px, 4.4vw, 72px);
+    font-size: min(clamp(32px, 4.4vw, 72px), 100cqi / (var(--chars, 1) * 1.06));
   }
 
   .album:hover h3 {
     translate: 8px 0;
+  }
+
+  .text {
+    container-type: inline-size;
   }
 
   .meta {
