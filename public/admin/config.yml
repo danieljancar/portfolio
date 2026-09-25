@@ -68,9 +68,11 @@ collections:
         widget: boolean
         default: false
       - name: highlights
-        label: Highlights (file names, in order)
-        widget: list
+        label: Highlights on the home page
+        widget: image
+        multiple: true
         required: false
+        hint: Pick the photos from this album that show up on the home page, in order.
       - name: tags
         label: Tags
         widget: list
