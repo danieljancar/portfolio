@@ -1,3 +1,15 @@
+# [2.5.0](https://github.com/danieljancar/portfolio/compare/v2.4.0...v2.5.0) (2026-09-25)
+
+
+### Features
+
+* **about:** smaller portrait in a two column grid ([e8d9902](https://github.com/danieljancar/portfolio/commit/e8d99025b6bee9e553f11081fd86db861c4a6fc8))
+* **cms:** cover image field for recommendations ([5cf8eb8](https://github.com/danieljancar/portfolio/commit/5cf8eb8fde71bfce8407bd465b99ae44213fdd4e))
+* **home:** photo wall hero that rolls through photos ([2485e69](https://github.com/danieljancar/portfolio/commit/2485e69d4f4d7d035d3a42572b0359f0d8cd94b5))
+* **recommended:** cover images next to each pick ([a6f2c41](https://github.com/danieljancar/portfolio/commit/a6f2c413fbc1bc3a54be79ccbe038e69be0cb5ca))
+* **recommended:** optional cover image ([7f2dff8](https://github.com/danieljancar/portfolio/commit/7f2dff8b8a5a0b34e0ccdb0b414b6f1ee9d4e9e8))
+* **recommended:** preview images from the linked page ([da2d724](https://github.com/danieljancar/portfolio/commit/da2d7247d7950f39d6232668d8ca8fd2e6f1049d))
+
 # [2.4.0](https://github.com/danieljancar/portfolio/compare/v2.3.0...v2.4.0) (2026-09-25)
 
 
