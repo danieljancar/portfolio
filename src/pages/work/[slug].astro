@@ -49,8 +49,8 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
         ))}
       </ul>
     </div>
-    <div class:list={['image', !project.data.cover && 'empty']}>
-      {project.data.cover && (
+    {project.data.cover && (
+      <div class="image">
         <Cover
           src={project.data.cover}
           alt={project.data.coverAlt}
@@ -58,8 +58,8 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
           sizes="(max-width: 900px) 100vw, 480px"
           loading="eager"
         />
-      )}
-    </div>
+      </div>
+    )}
   </header>
   <div class="body wrap">
     <div class="prose">
@@ -102,12 +102,16 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
 <style>
   .head {
     display: grid;
-    grid-template-columns: 1fr 480px;
+    grid-template-columns: 1fr;
     gap: 40px;
     align-items: end;
     padding-top: 48px;
     padding-bottom: 40px;
     border-bottom: 1px solid var(--line);
+  }
+
+  .head:has(.image) {
+    grid-template-columns: 1fr 480px;
   }
 
   .back {
@@ -137,10 +141,6 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
   .image {
     aspect-ratio: 4 / 3;
     overflow: hidden;
-  }
-
-  .empty {
-    background: var(--accent);
   }
 
   .body {
@@ -184,6 +184,7 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
 
   @media (max-width: 900px) {
     .head,
+    .head:has(.image),
     .body {
       grid-template-columns: 1fr;
     }

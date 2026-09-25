@@ -18,18 +18,16 @@ const { items, title = 'Related' } = Astro.props;
       {items.map(item => (
         <li>
           <a class="card" href={item.href}>
-            <div class="thumb">
-              {item.image ? (
+            {item.image && (
+              <div class="thumb">
                 <Cover
                   src={item.image}
                   alt=""
                   widths={[400, 700]}
                   sizes="(max-width: 700px) 100vw, 25vw"
                 />
-              ) : (
-                <span class="display letter">{item.title.slice(0, 1)}</span>
-              )}
-            </div>
+              </div>
+            )}
             <div class="line mono">
               <span>{kindLabels[item.kind]}</span>
               {item.date && <span>{formatMonth(item.date)}</span>}
@@ -83,15 +81,6 @@ const { items, title = 'Related' } = Astro.props;
 
   .card:hover .thumb :global(img) {
     transform: scale(1.04);
-  }
-
-  .letter {
-    display: grid;
-    place-items: center;
-    height: 100%;
-    font-size: 96px;
-    background: var(--accent);
-    color: var(--on-accent);
   }
 
   .line {

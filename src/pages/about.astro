@@ -1,23 +1,27 @@
 ---
 import { Image } from 'astro:assets';
+import MeStack from '~/components/about/MeStack.astro';
 import Experience from '~/components/experience/Experience.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getSettings } from '~/lib/content';
 import { getCompanies } from '~/lib/experience';
 import { linkProps } from '~/lib/links';
+import { getAlbum } from '~/lib/photos';
 
-const [settings, companies] = await Promise.all([
+const [settings, companies, me] = await Promise.all([
   getSettings(),
   getCompanies(),
+  getAlbum('me'),
 ]);
+const stack = me && me.photos.length > 0 ? me : undefined;
 const paragraphs = settings.about.split(/\n\s*\n/);
 ---
 
 <BaseLayout title="About" description={settings.description}>
   <SectionHead title="About" as="h1" />
-  <section class="intro wrap">
-    {settings.portrait && (
+  <section class:list={['intro', 'wrap', stack && 'with-me']}>
+    {!stack && settings.portrait && (
       <div class="portrait">
         <Image
           src={settings.portrait}
@@ -40,6 +44,7 @@ const paragraphs = settings.about.split(/\n\s*\n/);
         ))}
       </ul>
     </div>
+    {stack && <MeStack album={stack} />}
   </section>
 
   <SectionHead title="Experience" id="experience" />
@@ -66,6 +71,12 @@ const paragraphs = settings.about.split(/\n\s*\n/);
     grid-template-columns: 160px minmax(0, 62ch);
     gap: 32px;
     align-items: start;
+  }
+
+  .with-me {
+    grid-template-columns: minmax(0, 62ch) minmax(320px, 1fr);
+    gap: 64px;
+    align-items: center;
   }
 
   .portrait {
@@ -169,6 +180,11 @@ const paragraphs = settings.about.split(/\n\s*\n/);
   }
 
   @media (max-width: 900px) {
+    .with-me {
+      grid-template-columns: 1fr;
+      gap: 56px;
+    }
+
     .skills {
       grid-template-columns: 1fr;
     }
