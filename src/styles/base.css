@@ -16,6 +16,7 @@ html {
 
 body {
   margin: 0;
+  overflow-x: clip;
   background: var(--ground);
   color: var(--ink);
   font-family: var(--font-sans);
@@ -72,6 +73,8 @@ p {
   text-transform: uppercase;
   letter-spacing: -0.03em;
   line-height: 0.86;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .mono {

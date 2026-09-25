@@ -78,12 +78,15 @@ const handle = (href: string) =>
   }
 
   .name {
-    font-size: clamp(40px, 8vw, 128px);
-    transition: font-stretch 0.45s var(--ease-out);
+    font-size: clamp(32px, 8vw, 128px);
+    transition:
+      translate 0.45s var(--ease-out),
+      color 0.2s;
   }
 
   li a:hover .name {
-    font-stretch: 62%;
+    translate: 12px 0;
+    color: var(--ground);
   }
 
   .row {

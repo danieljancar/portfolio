@@ -79,6 +79,14 @@ const paragraphs = settings.about.split(/\n\s*\n/);
     object-fit: cover;
   }
 
+  .text p:first-child {
+    font-size: clamp(30px, 3.4vw, 44px);
+    font-weight: 800;
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
   .text {
     display: flex;
     flex-direction: column;

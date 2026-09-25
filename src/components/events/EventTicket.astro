@@ -11,31 +11,29 @@ const { event } = Astro.props;
 const { title, date, place, cover, coverAlt } = event.data;
 ---
 
-<div class="wrap">
-  <a class="ticket" href={`/events/${event.id}`} data-cursor="Open">
-    <div class="stub">
-      <span class="display day">{formatDay(date)}</span>
-      <span class="mono">{formatMonth(date)}</span>
+<a class="ticket" href={`/events/${event.id}`} data-cursor="Open">
+  <div class="stub">
+    <span class="display day">{formatDay(date)}</span>
+    <span class="mono">{formatMonth(date)}</span>
+  </div>
+  <div class="rest">
+    <div class="main">
+      {place && <span class="mono soft">{place}</span>}
+      <h3 class="display">{title}</h3>
+      <span class="more mono">Story and photos →</span>
     </div>
-    <div class="rest">
-      <div class="main">
-        {place && <span class="mono soft">{place}</span>}
-        <h3 class="display">{title}</h3>
-        <span class="more mono">Story and photos →</span>
-      </div>
-      <div class="image">
-        {cover && (
-          <Cover
-            src={cover}
-            alt={coverAlt}
-            widths={[500, 900, 1200]}
-            sizes="(max-width: 900px) 100vw, 40vw"
-          />
-        )}
-      </div>
+    <div class="image">
+      {cover && (
+        <Cover
+          src={cover}
+          alt={coverAlt}
+          widths={[500, 900, 1200]}
+          sizes="(max-width: 900px) 100vw, 40vw"
+        />
+      )}
     </div>
-  </a>
-</div>
+  </div>
+</a>
 
 <style>
   .ticket {
@@ -64,11 +62,13 @@ const { title, date, place, cover, coverAlt } = event.data;
         var(--tooth) calc(var(--tooth) * 2) repeat-y;
     transform-origin: 0 100%;
     transition:
-      translate 0.55s var(--ease-out),
-      rotate 0.55s var(--ease-out);
+      translate 0.6s cubic-bezier(0.3, 1.5, 0.5, 1),
+      rotate 0.6s cubic-bezier(0.3, 1.5, 0.5, 1);
   }
 
   .rest {
+    min-width: 0;
+    transition: translate 0.5s var(--ease-out);
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
     margin-left: calc(-1 * var(--tooth));
@@ -81,11 +81,16 @@ const { title, date, place, cover, coverAlt } = event.data;
   }
 
   .ticket:hover .stub {
-    translate: -18px 10px;
-    rotate: -7deg;
+    translate: -22px 14px;
+    rotate: -8deg;
+  }
+
+  .ticket:hover .rest {
+    translate: 6px -4px;
   }
 
   .day {
+    white-space: nowrap;
     font-size: clamp(88px, 9vw, 150px);
   }
 
@@ -138,7 +143,15 @@ const { title, date, place, cover, coverAlt } = event.data;
 
   @media (max-width: 900px) {
     .ticket {
-      grid-template-columns: 110px minmax(0, 1fr);
+      grid-template-columns: 104px minmax(0, 1fr);
+    }
+
+    .stub {
+      padding: 16px calc(12px + var(--tooth)) 16px 14px;
+    }
+
+    h3 {
+      font-size: clamp(22px, 6.4vw, 32px);
     }
 
     .rest {
@@ -150,7 +163,7 @@ const { title, date, place, cover, coverAlt } = event.data;
     }
 
     .day {
-      font-size: 56px;
+      font-size: 38px;
     }
 
     .main {

@@ -169,7 +169,7 @@ const schema = [
   h1 {
     max-width: 1100px;
     margin-top: 16px;
-    font-size: clamp(40px, 6.4vw, 104px);
+    font-size: clamp(30px, 7.4vw, 104px);
   }
 
   .layout {
@@ -220,7 +220,7 @@ const schema = [
 
   .next .display {
     font-size: clamp(36px, 5vw, 72px);
-    transition: font-stretch 0.45s var(--ease-out);
+    transition: translate 0.45s var(--ease-out);
   }
 
   .next:hover {
@@ -228,7 +228,7 @@ const schema = [
   }
 
   .next:hover .display {
-    font-stretch: 62%;
+    translate: 12px 0;
   }
 
   @supports (animation-timeline: scroll()) {
