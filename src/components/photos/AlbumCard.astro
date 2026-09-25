@@ -1,0 +1,109 @@
+---
+import { fit } from '~/lib/fit';
+import Cover from '~/components/media/Cover.astro';
+import { formatMonth } from '~/lib/dates';
+import type { Album } from '~/lib/photos';
+
+interface Props {
+  album: Album;
+  size?: 'large' | 'normal';
+  sizes?: string;
+}
+
+const {
+  album,
+  size = 'normal',
+  sizes = '(max-width: 700px) 100vw, 33vw',
+} = Astro.props;
+const { title, date, place, cover } = album.data;
+const count = album.photos.length;
+const meta = [
+  formatMonth(date),
+  place,
+  `${count} ${count === 1 ? 'photo' : 'photos'}`,
+].filter(Boolean);
+---
+
+<a class:list={['album', size]} href={`/photos/${album.id}`} data-cursor="Open">
+  <div class="cover">
+    <Cover
+      src={cover}
+      alt=""
+      widths={size === 'large' ? [700, 1200, 1800] : [400, 700, 1000]}
+      sizes={sizes}
+    />
+  </div>
+  <div class="text">
+    <h3 class="display" style={fit(title)}>
+      {title}
+    </h3>
+    <ul class="meta mono">
+      {meta.map(item => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </div>
+</a>
+
+<style>
+  .album {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .large {
+    height: 100%;
+  }
+
+  .album:hover {
+    color: inherit;
+  }
+
+  .cover {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+  }
+
+  .large .cover {
+    flex: 1;
+    min-height: 320px;
+    aspect-ratio: auto;
+  }
+
+  .cover :global(img) {
+    transition: transform 0.8s var(--ease-out);
+  }
+
+  .album:hover .cover :global(img) {
+    transform: scale(1.05);
+  }
+
+  h3 {
+    font-size: min(clamp(24px, 2.4vw, 36px), 100cqi / (var(--chars, 1) * 1.06));
+    overflow-wrap: anywhere;
+    transition: translate 0.45s var(--ease-out);
+  }
+
+  .large h3 {
+    font-size: min(clamp(32px, 4.4vw, 72px), 100cqi / (var(--chars, 1) * 1.06));
+  }
+
+  .album:hover h3 {
+    translate: 8px 0;
+  }
+
+  .text {
+    container-type: inline-size;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-soft);
+  }
+</style>

@@ -1,4 +1,5 @@
 ---
+import { fit } from '~/lib/fit';
 import { getImage } from 'astro:assets';
 import Photo from '~/components/media/Photo.astro';
 import { linkProps } from '~/lib/links';
@@ -57,7 +58,7 @@ const tiles: Tile[] = await Promise.all(
         ))}
       </ul>
     </div>
-    <h1 class="display">
+    <h1 class="display" style={fit('Daniel Jancar')}>
       Daniel
       <br />
       Jancar
@@ -139,6 +140,7 @@ const tiles: Tile[] = await Promise.all(
   }
 
   .name {
+    container-type: inline-size;
     position: absolute;
     inset: auto 0 0;
     z-index: 2;
@@ -186,7 +188,7 @@ const tiles: Tile[] = await Promise.all(
   }
 
   h1 {
-    font-size: 17.5vw;
+    font-size: min(17.5vw, 100cqi / (var(--chars, 1) * 1.06));
   }
 
   @supports (animation-timeline: scroll()) {

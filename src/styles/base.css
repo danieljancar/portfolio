@@ -10,6 +10,7 @@
 }
 
 html {
+  overflow-x: clip;
   scroll-padding-top: calc(var(--bar-height) + 16px);
   -webkit-text-size-adjust: 100%;
 }
@@ -74,7 +75,6 @@ p {
   letter-spacing: -0.03em;
   line-height: 0.86;
   overflow-wrap: break-word;
-  hyphens: auto;
 }
 
 .mono {

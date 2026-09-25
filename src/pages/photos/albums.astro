@@ -1,0 +1,53 @@
+---
+import AlbumCard from '~/components/photos/AlbumCard.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getAlbums } from '~/lib/photos';
+
+const albums = await getAlbums();
+const years = Map.groupBy(albums, album => album.data.date.getFullYear());
+---
+
+<BaseLayout
+  title="Albums"
+  description="Every photo album by Daniel Jancar."
+  image={albums[0]?.data.cover}
+>
+  <SectionHead title="Albums" as="h1" href="/photos" linkLabel="Photos" />
+  {[...years].map(([year, list]) => (
+    <section class="year wrap" aria-label={String(year)}>
+      <h2 class="mono">
+        {year} · {list.length} {list.length === 1 ? 'album' : 'albums'}
+      </h2>
+      <ul>
+        {list.map(album => (
+          <li>
+            <AlbumCard album={album} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .year + .year {
+    margin-top: 64px;
+  }
+
+  h2 {
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 40px 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

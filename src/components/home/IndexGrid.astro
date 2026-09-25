@@ -1,4 +1,5 @@
 ---
+import { fit } from '~/lib/fit';
 import { linkProps } from '~/lib/links';
 
 interface Props {
@@ -33,7 +34,9 @@ const sections = [
       <span class="arrow" aria-hidden="true">
         →
       </span>
-      <h3 class="display">{section.label}</h3>
+      <h3 class="display" style={fit(section.label)}>
+        {section.label}
+      </h3>
     </a>
   ))}
 
@@ -43,13 +46,17 @@ const sections = [
         <span class="arrow" aria-hidden="true">
           →
         </span>
-        <h3 class="display small">Listen</h3>
+        <h3 class="display small" style={fit('Listen Read')}>
+          Listen
+        </h3>
       </a>
       <a class="cell c6" href="/recommended#reading">
         <span class="arrow" aria-hidden="true">
           →
         </span>
-        <h3 class="display small">Read</h3>
+        <h3 class="display small" style={fit('Listen Read')}>
+          Read
+        </h3>
       </a>
     </>
   )}
@@ -60,7 +67,12 @@ const sections = [
         ↗
       </span>
       <span class="mono">{handle(link.href)}</span>
-      <h3 class="display small">{link.label}</h3>
+      <h3
+        class="display small"
+        style={fit(links.map(item => item.label).join(' '))}
+      >
+        {link.label}
+      </h3>
     </a>
   ))}
 </section>
@@ -74,6 +86,7 @@ const sections = [
   }
 
   .cell {
+    container-type: inline-size;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -120,7 +133,7 @@ const sections = [
   }
 
   h3 {
-    font-size: clamp(36px, 4.2vw, 64px);
+    font-size: min(clamp(36px, 4.2vw, 64px), 100cqi / (var(--chars, 1) * 1.06));
     transition: translate 0.45s var(--ease-out);
   }
 
@@ -129,11 +142,11 @@ const sections = [
   }
 
   .huge h3 {
-    font-size: clamp(64px, 10vw, 168px);
+    font-size: min(clamp(64px, 10vw, 168px), 100cqi / (var(--chars, 1) * 1.06));
   }
 
   h3.small {
-    font-size: clamp(30px, 3vw, 40px);
+    font-size: min(clamp(30px, 3vw, 40px), 100cqi / (var(--chars, 1) * 1.06));
   }
 
   .arrow {
@@ -203,15 +216,24 @@ const sections = [
 
     h3,
     h3.small {
-      font-size: clamp(24px, 7.4vw, 40px);
+      font-size: min(
+        clamp(24px, 7.4vw, 40px),
+        100cqi / (var(--chars, 1) * 1.06)
+      );
     }
 
     .huge h3 {
-      font-size: clamp(56px, 18vw, 96px);
+      font-size: min(
+        clamp(56px, 18vw, 96px),
+        100cqi / (var(--chars, 1) * 1.06)
+      );
     }
 
     .social h3.small {
-      font-size: clamp(18px, 5.2vw, 30px);
+      font-size: min(
+        clamp(18px, 5.2vw, 30px),
+        100cqi / (var(--chars, 1) * 1.06)
+      );
     }
 
     .social {

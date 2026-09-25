@@ -1,4 +1,5 @@
 ---
+import { fit } from '~/lib/fit';
 import { render } from 'astro:content';
 import Cover from '~/components/media/Cover.astro';
 import RelatedList from '~/components/ui/RelatedList.astro';
@@ -37,11 +38,13 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
   imageAlt={project.data.coverAlt || name}
 >
   <header class="head wrap">
-    <div>
+    <div class="title">
       <a class="mono back" href="/work">
         ← Work
       </a>
-      <h1 class="display">{name}</h1>
+      <h1 class="display" style={fit(name)}>
+        {name}
+      </h1>
       <p class="tagline">{tagline}</p>
       <ul class="facts mono">
         {facts.map(fact => (
@@ -114,13 +117,17 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
     grid-template-columns: 1fr 480px;
   }
 
+  .title {
+    container-type: inline-size;
+  }
+
   .back {
     color: var(--ink-soft);
   }
 
   h1 {
     margin-top: 28px;
-    font-size: clamp(34px, 9vw, 160px);
+    font-size: min(clamp(34px, 9vw, 160px), 100cqi / (var(--chars, 1) * 1.06));
   }
 
   .tagline {

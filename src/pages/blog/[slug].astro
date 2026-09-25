@@ -1,4 +1,5 @@
 ---
+import { fit } from '~/lib/fit';
 import { getEntry, render } from 'astro:content';
 import Toc from '~/components/blog/Toc.astro';
 import Cover from '~/components/media/Cover.astro';
@@ -77,7 +78,9 @@ const schema = [
           <li>{item}</li>
         ))}
       </ul>
-      <h1 class="display">{title}</h1>
+      <h1 class="display" style={fit(title)}>
+        {title}
+      </h1>
     </div>
   </header>
 
@@ -145,6 +148,7 @@ const schema = [
   }
 
   .cover-text {
+    container-type: inline-size;
     position: absolute;
     inset: auto 0 0;
     padding: 0 var(--gutter) 48px;
@@ -169,7 +173,10 @@ const schema = [
   h1 {
     max-width: 1100px;
     margin-top: 16px;
-    font-size: clamp(30px, 7.4vw, 104px);
+    font-size: min(
+      clamp(30px, 7.4vw, 104px),
+      100cqi / (var(--chars, 1) * 1.06)
+    );
   }
 
   .layout {

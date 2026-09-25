@@ -1,11 +1,14 @@
 ---
+import { fit } from '~/lib/fit';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Not found" noindex>
   <section class="wrap">
     <span class="mono">404</span>
-    <h1 class="display">Nothing here</h1>
+    <h1 class="display" style={fit('Nothing here')}>
+      Nothing here
+    </h1>
     <p>This page moved or never existed.</p>
     <a class="mono" href="/">
       Back to the start →
@@ -15,6 +18,7 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
 
 <style>
   section {
+    container-type: inline-size;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -23,6 +27,6 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
   }
 
   h1 {
-    font-size: clamp(40px, 12vw, 200px);
+    font-size: min(clamp(40px, 12vw, 200px), 100cqi / (var(--chars, 1) * 1.06));
   }
 </style>

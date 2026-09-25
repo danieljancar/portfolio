@@ -89,7 +89,7 @@ const [latestEvent] = events;
   {latestEvent && (
     <>
       <SectionHead title="Events" href="/events" linkLabel="All events" />
-      <div class="wrap">
+      <div class="wrap ticket">
         <EventTicket event={latestEvent} />
       </div>
     </>
@@ -102,3 +102,9 @@ const [latestEvent] = events;
     </>
   )}
 </BaseLayout>
+
+<style>
+  .ticket {
+    overflow-x: clip;
+  }
+</style>

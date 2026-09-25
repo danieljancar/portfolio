@@ -83,6 +83,7 @@ export async function getHighlights(limit?: number): Promise<Photo[]> {
   const albums = (await getAlbums()).filter(album => album.data.featured);
   const lists = albums.map(album =>
     album.data.highlights
+      .map(path => path.split('/').pop())
       .map(file => album.photos.find(photo => photo.file === file))
       .filter((photo): photo is Photo => photo !== undefined),
   );

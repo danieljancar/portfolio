@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import MeStack from '~/components/about/MeStack.astro';
+import MeBento from '~/components/about/MeBento.astro';
 import Experience from '~/components/experience/Experience.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
@@ -44,7 +44,7 @@ const paragraphs = settings.about.split(/\n\s*\n/);
         ))}
       </ul>
     </div>
-    {stack && <MeStack album={stack} />}
+    {stack && <MeBento album={stack} />}
   </section>
 
   <SectionHead title="Experience" id="experience" />
@@ -76,7 +76,7 @@ const paragraphs = settings.about.split(/\n\s*\n/);
   .with-me {
     grid-template-columns: minmax(0, 62ch) minmax(320px, 1fr);
     gap: 64px;
-    align-items: center;
+    align-items: stretch;
   }
 
   .portrait {
