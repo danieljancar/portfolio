@@ -24,7 +24,7 @@ links:
     href: https://the-cranny.com
   - label: Cranny's Instagram
     href: https://www.instagram.com/thecrannycom/
-cover: ./cranny-cover.png
+cover: ./images/pasted-image-1790337465368.webp
 coverAlt: The Cranny logo next to phones showing spots in the app
 featured: true
 order: 1
