@@ -16,7 +16,7 @@ const size = (count: number) =>
       <li>
         <a
           href={`/tags/${tag.slug}`}
-          style={`font-size:${size(tag.items.length)}px`}
+          style={`--size:${size(tag.items.length)}px`}
         >
           <span class="display">{tag.label}</span>
           <sup class="mono">{tag.items.length}</sup>
@@ -36,8 +36,13 @@ const size = (count: number) =>
     list-style: none;
   }
 
+  li {
+    min-width: 0;
+  }
+
   a {
     display: inline-block;
+    font-size: min(var(--size), 9vw);
     line-height: 1;
   }
 

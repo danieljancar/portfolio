@@ -1,5 +1,5 @@
 ---
-import EventTickets from '~/components/lists/EventTickets.astro';
+import EventTicket from '~/components/events/EventTicket.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getEvents } from '~/lib/content';
@@ -9,5 +9,21 @@ const events = await getEvents();
 
 <BaseLayout title="Events" description="Events Daniel Jancar was part of.">
   <SectionHead title="Events" as="h1" />
-  <EventTickets events={events} />
+  <ul class="events wrap">
+    {events.map(event => (
+      <li>
+        <EventTicket event={event} />
+      </li>
+    ))}
+  </ul>
 </BaseLayout>
+
+<style>
+  .events {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0;
+    list-style: none;
+  }
+</style>

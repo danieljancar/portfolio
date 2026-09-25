@@ -222,14 +222,11 @@ const home = path === '/';
 
   .char span {
     grid-area: 1 / 1;
-    transition:
-      translate 0.5s var(--ease-out) calc(var(--c) * 22ms),
-      font-stretch 0.5s var(--ease-out) calc(var(--c) * 22ms);
+    transition: translate 0.5s var(--ease-out) calc(var(--c) * 22ms);
   }
 
   .char span + span {
     translate: 0 110%;
-    font-stretch: 62%;
     color: var(--accent);
   }
 
@@ -239,7 +236,6 @@ const home = path === '/';
 
   .wordmark:hover .char span + span {
     translate: 0 0;
-    font-stretch: 125%;
   }
 
   .dot,
@@ -505,12 +501,12 @@ const home = path === '/';
     transform: translateY(110%);
     transition:
       transform 0.6s var(--ease-out) calc(0.15s + var(--i) * 0.06s),
-      font-stretch 0.4s var(--ease-out);
+      translate 0.4s var(--ease-out);
   }
 
   .menu li a:hover {
     color: inherit;
-    font-stretch: 62%;
+    translate: 12px 0;
   }
 
   .menu:popover-open li a {
