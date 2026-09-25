@@ -1,10 +1,12 @@
 ---
+import AlbumCard from '~/components/photos/AlbumCard.astro';
 import PhotoGrid from '~/components/media/PhotoGrid.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getAlbums } from '~/lib/photos';
 
 const albums = await getAlbums();
+const latest = albums.slice(0, 3);
 const photos = albums.flatMap(album => album.photos);
 ---
 
@@ -13,19 +15,29 @@ const photos = albums.flatMap(album => album.photos);
   description="Photos by Daniel Jancar."
   image={albums[0]?.data.cover}
 >
-  <SectionHead title="Photos" as="h1" />
-  <div class="filters wrap" role="group" aria-label="Albums">
-    <button type="button" data-filter="all" aria-pressed="true">
-      All
-    </button>
-    {albums.map(album => (
-      <button type="button" data-filter={album.id} aria-pressed="false">
-        {album.data.title}
-      </button>
+  <SectionHead
+    title="Photos"
+    as="h1"
+    href="/photos/albums"
+    linkLabel={`All ${albums.length} albums`}
+  />
+  <ul class="latest wrap" aria-label="Latest albums">
+    {latest.map((album, i) => (
+      <li class:list={[i === 0 && 'first']}>
+        <AlbumCard
+          album={album}
+          size={i === 0 ? 'large' : 'normal'}
+          sizes={
+            i === 0
+              ? '(max-width: 900px) 100vw, 60vw'
+              : '(max-width: 900px) 100vw, 35vw'
+          }
+        />
+      </li>
     ))}
-    <a class="mono open" href="/photos" data-open hidden>
-      Open album →
-    </a>
+  </ul>
+  <div class="bar wrap">
+    <h2 class="display">All photos</h2>
     <label class="sort">
       <span class="visually-hidden">Order</span>
       <select data-sort>
@@ -39,9 +51,7 @@ const photos = albums.flatMap(album => album.photos);
 </BaseLayout>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
   const items = document.querySelectorAll<HTMLElement>('[data-album]');
-  const open = document.querySelector<HTMLAnchorElement>('[data-open]');
   const sort = document.querySelector<HTMLSelectElement>('[data-sort]');
   const grid = items[0]?.parentElement;
 
@@ -65,27 +75,34 @@ const photos = albums.flatMap(album => album.photos);
 
   sort?.addEventListener('change', () => order(sort.value));
   order(sort?.value ?? 'shuffle');
-
-  for (const button of buttons) {
-    button.addEventListener('click', () => {
-      const filter = button.dataset.filter ?? 'all';
-      for (const other of buttons) {
-        other.setAttribute('aria-pressed', String(other === button));
-      }
-      for (const item of items) {
-        item.hidden = filter !== 'all' && item.dataset.album !== filter;
-      }
-      if (open) {
-        open.hidden = filter === 'all';
-        open.href = `/photos/${filter}`;
-      }
-    });
-  }
 </script>
 
 <style>
-  .sort {
-    margin-left: auto;
+  .latest {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-rows: auto auto;
+    gap: 32px;
+    margin: 0 0 24px;
+    list-style: none;
+  }
+
+  .first {
+    grid-row: span 2;
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: end;
+    gap: 16px;
+    padding-top: clamp(48px, 6vw, 80px);
+    padding-bottom: 24px;
+  }
+
+  h2 {
+    font-size: clamp(32px, 5vw, 72px);
   }
 
   select {
@@ -106,34 +123,13 @@ const photos = albums.flatMap(album => album.photos);
     border-color: var(--ink);
   }
 
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
+  @media (max-width: 900px) {
+    .latest {
+      grid-template-columns: 1fr;
+    }
 
-  button {
-    min-height: 44px;
-    padding: 0 16px;
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--ink);
-    font: 500 14px var(--font-sans);
-    cursor: pointer;
-    transition:
-      background-color 0.2s,
-      color 0.2s;
-  }
-
-  button[aria-pressed='true'],
-  button:hover {
-    background: var(--ink);
-    color: var(--ground);
-  }
-
-  .open {
-    margin-left: 8px;
+    .first {
+      grid-row: auto;
+    }
   }
 </style>
