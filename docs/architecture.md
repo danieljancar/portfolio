@@ -146,6 +146,8 @@ builds both text files.
   creates a release with semantic-release. Pages must use "GitHub Actions" as
   its source in the repository settings.
 - CMS saves go straight to `master`, so content is live a few minutes later.
+- `back-merge.yml` merges `master` back into `develop` after every release run,
+  so CMS content and release commits never go missing on `develop`.
 
 ## Dependencies
 
