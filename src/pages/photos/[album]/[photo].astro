@@ -2,7 +2,6 @@
 import Photo from '~/components/media/Photo.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getSettings } from '~/lib/content';
-import { themeStyle } from '~/lib/color';
 import { formatDate } from '~/lib/dates';
 import { cameraLine, getAlbums, takenAt } from '~/lib/photos';
 
@@ -41,10 +40,9 @@ const swatches = Object.entries(photo.meta.palette).filter(
   description={`Photo from ${album.title} by Daniel Jancar.`}
   image={photo.image}
   imageAlt={`${album.title}, photo by Daniel Jancar`}
-  themeStyle={themeStyle(photo.theme)}
 >
   <section class="page">
-    <div class="frame">
+    <div class="frame" data-swipe>
       <Photo
         photo={photo}
         alt={`${album.title}, photo ${position} of ${total}`}
@@ -76,16 +74,16 @@ const swatches = Object.entries(photo.meta.palette).filter(
       <a class="mono takedown" href={takedown}>
         In this photo? Ask me to take it down →
       </a>
-      <nav class="pager mono" aria-label="More photos">
-        <a href={prev.href} data-prev>
-          ← Previous
-        </a>
-        <a href={`/photos/${album.id}`}>Album</a>
-        <a href={next.href} data-next>
-          Next →
-        </a>
-      </nav>
     </div>
+    <nav class="pager mono" aria-label="More photos">
+      <a href={prev.href} data-prev>
+        ← Previous
+      </a>
+      <a href={`/photos/${album.id}`}>Album</a>
+      <a href={next.href} data-next>
+        Next →
+      </a>
+    </nav>
   </section>
 </BaseLayout>
 
@@ -101,22 +99,47 @@ const swatches = Object.entries(photo.meta.palette).filter(
     if (!target) return;
     document.querySelector<HTMLAnchorElement>(target)?.click();
   });
+
+  const frame = document.querySelector<HTMLElement>('[data-swipe]');
+  let start: { x: number; y: number } | undefined;
+  frame?.addEventListener(
+    'touchstart',
+    event => {
+      const touch = event.touches[0];
+      start =
+        event.touches.length === 1 && touch
+          ? { x: touch.clientX, y: touch.clientY }
+          : undefined;
+    },
+    { passive: true },
+  );
+  frame?.addEventListener('touchend', event => {
+    const touch = event.changedTouches[0];
+    if (!start || !touch) return;
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    start = undefined;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    document
+      .querySelector<HTMLAnchorElement>(dx < 0 ? '[data-next]' : '[data-prev]')
+      ?.click();
+  });
 </script>
 
 <style>
   .page {
     display: grid;
     grid-template-columns: minmax(0, 7fr) minmax(260px, 3fr);
-    gap: 32px;
+    grid-template-rows: 1fr auto;
+    gap: 16px 32px;
     min-height: calc(100svh - var(--bar-height));
     margin-bottom: calc(-1 * clamp(64px, 8vw, 120px));
     padding: var(--gutter);
-    background: var(--tint);
-    color: var(--tint-ink);
     --dim-strength: 0;
   }
 
   .frame {
+    grid-row: span 2;
     display: grid;
     place-items: center;
   }
@@ -142,8 +165,7 @@ const swatches = Object.entries(photo.meta.palette).filter(
   }
 
   .album:hover {
-    color: inherit;
-    color: var(--wash);
+    color: var(--accent-text);
   }
 
   .camera {
@@ -153,7 +175,7 @@ const swatches = Object.entries(photo.meta.palette).filter(
     margin: 0;
     padding: 0;
     list-style: none;
-    opacity: 0.75;
+    color: var(--ink-soft);
   }
 
   .swatches {
@@ -165,36 +187,48 @@ const swatches = Object.entries(photo.meta.palette).filter(
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    border: 1px solid rgb(255 255 255 / 0.3);
-  }
-
-  a {
-    color: inherit;
-  }
-
-  a:hover {
-    color: var(--wash);
+    border: 1px solid var(--line);
   }
 
   .takedown {
-    opacity: 0.7;
-  }
-
-  .takedown:hover {
-    opacity: 1;
+    color: var(--ink-soft);
   }
 
   .pager {
     display: flex;
     justify-content: space-between;
     padding-top: 16px;
-    border-top: 1px solid currentColor;
+    border-top: 1px solid var(--line);
+  }
+
+  .pager a {
+    padding-block: 8px;
   }
 
   @media (max-width: 900px) {
     .page {
       grid-template-columns: 1fr;
       align-content: start;
+      gap: 20px;
+      padding-bottom: 0;
+    }
+
+    .frame :global(img) {
+      max-height: 62svh;
+    }
+
+    .frame {
+      grid-row: auto;
+    }
+
+    .pager {
+      position: sticky;
+      bottom: 0;
+      z-index: 40;
+      margin-inline: calc(-1 * var(--gutter));
+      padding: 12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
+      background: color-mix(in srgb, var(--ground) 90%, transparent);
+      backdrop-filter: blur(12px);
     }
   }
 </style>
