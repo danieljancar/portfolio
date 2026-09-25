@@ -1,3 +1,20 @@
+# [2.1.0](https://github.com/danieljancar/portfolio/compare/v2.0.1...v2.1.0) (2026-09-25)
+
+
+### Bug Fixes
+
+* **content:** accept empty optional fields from the CMS ([8d53598](https://github.com/danieljancar/portfolio/commit/8d53598d97f37c594b61ebab7e0d62870fa39d2d))
+* drop the letter placeholder on related cards without an image ([e1f0fc3](https://github.com/danieljancar/portfolio/commit/e1f0fc363a667276a608e09f87cc4ac7a59c616f))
+* hide the image block on work without a cover ([ad2f501](https://github.com/danieljancar/portfolio/commit/ad2f5015afbc9c318c49ae688fff0e45ba2c36ba))
+* mobile line breaks, steady hovers and a new about text ([#92](https://github.com/danieljancar/portfolio/issues/92)) ([5ea4bd5](https://github.com/danieljancar/portfolio/commit/5ea4bd50ab2aa1998251c70d7aae76fa98163edb))
+
+
+### Features
+
+* **about:** a stack of photos from the me album ([c725a7c](https://github.com/danieljancar/portfolio/commit/c725a7c937ffd24976d02042b85351f704416da5))
+* **about:** show the me album next to the text ([0dbc0e6](https://github.com/danieljancar/portfolio/commit/0dbc0e631071e3017a27c34e2dda5f9206b43439))
+* **photos:** a me album for portraits ([d91484f](https://github.com/danieljancar/portfolio/commit/d91484fa6cb30482677426c6645565a68ecf08cb))
+
 ## [2.0.1](https://github.com/danieljancar/portfolio/compare/v2.0.0...v2.0.1) (2026-09-25)
 
 
