@@ -14,6 +14,7 @@
 | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | Post photos                              | Photos → pick or create an album, upload. Uploads are converted to webp and lose their location data. Tick "Featured" for the home page. |
 | Write a blog post                        | Posts → New. Images dragged into the text are stored next to the post.                                                                   |
+| Add a recipe                             | Recipes → New. Amounts are for the default servings, the page scales them. Write the steps as a numbered list.                           |
 | Add an event                             | Events → New, and pick the album with its photos.                                                                                        |
 | Add work                                 | Work → New. Tick "Ongoing" for long-running work, leave it off for one-offs.                                                             |
 | Change a role                            | Experience. Roles of the same company are grouped; leave "End" empty while it's current.                                                 |

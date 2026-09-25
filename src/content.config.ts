@@ -163,8 +163,39 @@ const site = defineCollection({
     ),
 });
 
+const ingredient = withoutBlanks(
+  z.object({
+    section: z.string().nullish(),
+    amount: z.number().positive().nullish(),
+    unit: z.string().nullish(),
+    item: z.string(),
+    note: z.string().nullish(),
+  }),
+);
+
+const recipes = defineCollection({
+  loader: glob({ pattern: '*/index.md', base: './src/content/recipes' }),
+  schema: ({ image }) =>
+    withoutBlanks(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        published: z.coerce.date(),
+        cover: image().optional(),
+        coverAlt: z.string().default(''),
+        servings: z.number().int().positive().default(2),
+        prep: z.number().int().nonnegative().optional(),
+        cook: z.number().int().nonnegative().optional(),
+        tags: z.array(z.string()).default([]),
+        ingredients: z.array(ingredient).default([]),
+        draft: z.boolean().default(false),
+      }),
+    ),
+});
+
 export const collections = {
   posts,
+  recipes,
   projects,
   albums,
   events,

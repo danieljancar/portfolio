@@ -79,6 +79,98 @@ collections:
         label: Text
         widget: markdown
         required: false
+  - name: recipes
+    label: Recipes
+    label_singular: Recipe
+    description: One recipe per folder. Photos for the cover and the steps are stored next to it.
+    folder: src/content/recipes
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    slug: '{{title}}'
+    summary: "{{title}} · {{published | date('YYYY-MM-DD')}}"
+    thumbnail: cover
+    sortable_fields:
+      - published
+      - title
+    fields:
+      - name: title
+        label: Title
+        widget: string
+      - name: description
+        label: Description
+        widget: text
+      - name: published
+        label: Published
+        widget: datetime
+        time_format: false
+        date_format: YYYY-MM-DD
+        format: YYYY-MM-DD
+      - name: cover
+        label: Cover photo
+        widget: image
+        required: false
+      - name: coverAlt
+        label: Cover description
+        widget: string
+        required: false
+      - name: servings
+        label: Servings
+        widget: number
+        value_type: int
+        default: 2
+        min: 1
+      - name: prep
+        label: Prep time (minutes)
+        widget: number
+        value_type: int
+        required: false
+        min: 0
+      - name: cook
+        label: Cook time (minutes)
+        widget: number
+        value_type: int
+        required: false
+        min: 0
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+      - name: ingredients
+        label: Ingredients
+        label_singular: Ingredient
+        widget: list
+        summary: '{{amount}} {{unit}} {{item}}'
+        fields:
+          - name: section
+            label: Section (e.g. Dough, only on the first ingredient of a group)
+            widget: string
+            required: false
+          - name: amount
+            label: Amount (for the default servings)
+            widget: number
+            value_type: float
+            required: false
+          - name: unit
+            label: Unit
+            widget: string
+            required: false
+          - name: item
+            label: Ingredient
+            widget: string
+          - name: note
+            label: Note
+            widget: string
+            required: false
+      - name: draft
+        label: Draft
+        widget: boolean
+        default: false
+      - name: body
+        label: Method
+        widget: markdown
+        hint: Write the steps as a numbered list (1. 2. 3.). Photos can go between the steps.
   - name: posts
     label: Posts
     label_singular: Post

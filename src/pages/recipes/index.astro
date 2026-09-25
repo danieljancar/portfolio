@@ -1,0 +1,154 @@
+---
+import Cover from '~/components/media/Cover.astro';
+import SectionHead from '~/components/ui/SectionHead.astro';
+import TagList from '~/components/ui/TagList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getRecipes } from '~/lib/content';
+import { formatMinutes, totalMinutes } from '~/lib/recipes';
+
+const recipes = await getRecipes();
+const tags = [...new Set(recipes.flatMap(recipe => recipe.data.tags))].slice(
+  0,
+  16,
+);
+---
+
+<BaseLayout
+  title="Recipes"
+  description="Recipes Daniel Jancar cooks himself, with photos."
+>
+  <SectionHead title="Recipes" as="h1" />
+  {tags.length > 0 && (
+    <div class="wrap topics">
+      <TagList tags={tags} label="Topics" />
+    </div>
+  )}
+  {recipes.length > 0 ? (
+    <ul class="grid wrap">
+      {recipes.map((recipe, i) => {
+        const total = totalMinutes(recipe.data);
+        return (
+          <li style={`--tilt:${i % 2 ? 1.5 : -1.5}deg`}>
+            <a class="card" href={`/recipes/${recipe.id}`} data-cursor="Cook">
+              {recipe.data.cover && (
+                <div class="image">
+                  <Cover
+                    src={recipe.data.cover}
+                    alt={recipe.data.coverAlt}
+                    widths={[400, 700, 1000]}
+                    sizes="(max-width: 700px) 100vw, 33vw"
+                  />
+                  {total !== undefined && (
+                    <span class="badge mono">{formatMinutes(total)}</span>
+                  )}
+                </div>
+              )}
+              <h2 class="display">{recipe.data.title}</h2>
+              <p>{recipe.data.description}</p>
+              <span class="mono meta">
+                {[
+                  !recipe.data.cover &&
+                    total !== undefined &&
+                    formatMinutes(total),
+                  `Serves ${recipe.data.servings}`,
+                  `${recipe.data.ingredients.length} ingredients`,
+                ]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  ) : (
+    <p class="wrap empty">No recipes yet.</p>
+  )}
+</BaseLayout>
+
+<style>
+  .topics {
+    margin-bottom: 32px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 48px 32px;
+    margin: 0;
+    padding-top: 16px;
+    list-style: none;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card:hover {
+    color: inherit;
+  }
+
+  .image {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--surface-2);
+    rotate: var(--tilt);
+    transition:
+      rotate 0.5s var(--ease-out),
+      scale 0.5s var(--ease-out);
+  }
+
+  .card:hover .image {
+    rotate: 0deg;
+    scale: 1.02;
+  }
+
+  .image :global(img) {
+    transition: transform 0.8s var(--ease-out);
+  }
+
+  .card:hover .image :global(img) {
+    transform: scale(1.06);
+  }
+
+  .badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    padding: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    text-align: center;
+    line-height: 1.1;
+    rotate: 12deg;
+  }
+
+  h2 {
+    margin-top: 12px;
+    font-size: clamp(28px, 3vw, 40px);
+    transition: translate 0.45s var(--ease-out);
+  }
+
+  .card:hover h2 {
+    translate: 8px 0;
+  }
+
+  p {
+    max-width: 44ch;
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
+  .meta,
+  .empty {
+    color: var(--ink-soft);
+  }
+</style>

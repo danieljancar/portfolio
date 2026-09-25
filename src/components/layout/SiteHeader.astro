@@ -1,10 +1,10 @@
 ---
 import SocialIcon from '~/components/ui/SocialIcon.astro';
-import { getSettings } from '~/lib/content';
+import { getRecipes, getSettings } from '~/lib/content';
 import { linkProps } from '~/lib/links';
 import ThemeToggle from './ThemeToggle.astro';
 
-const settings = await getSettings();
+const [settings, recipes] = await Promise.all([getSettings(), getRecipes()]);
 const socials = [
   ...settings.socials,
   { label: 'Email', href: `mailto:${settings.email}` },
@@ -15,6 +15,7 @@ const links = [
   { href: '/photos', label: 'Photos' },
   { href: '/events', label: 'Events' },
   { href: '/blog', label: 'Blog' },
+  ...(recipes.length > 0 ? [{ href: '/recipes', label: 'Recipes' }] : []),
   { href: '/about', label: 'About' },
 ];
 const path = Astro.url.pathname;

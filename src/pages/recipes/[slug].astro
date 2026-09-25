@@ -1,0 +1,577 @@
+---
+import { render } from 'astro:content';
+import Cover from '~/components/media/Cover.astro';
+import RelatedList from '~/components/ui/RelatedList.astro';
+import TagList from '~/components/ui/TagList.astro';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { getRecipes } from '~/lib/content';
+import {
+  formatAmount,
+  formatMinutes,
+  ingredientText,
+  isoDuration,
+  sections,
+  steps,
+  totalMinutes,
+} from '~/lib/recipes';
+import { personId } from '~/lib/seo';
+import { getRelated } from '~/lib/tags';
+import '~/styles/prose.css';
+
+export async function getStaticPaths() {
+  const recipes = await getRecipes();
+  return recipes.map((recipe, i) => ({
+    params: { slug: recipe.id },
+    props: { recipe, next: recipes[i + 1] ?? recipes[0] },
+  }));
+}
+
+const { recipe, next } = Astro.props;
+const { Content } = await render(recipe);
+const {
+  title,
+  description,
+  published,
+  cover,
+  coverAlt,
+  servings,
+  prep,
+  cook,
+  tags,
+  ingredients,
+} = recipe.data;
+const total = totalMinutes(recipe.data);
+const facts = [
+  prep !== undefined && { label: 'Prep', value: formatMinutes(prep) },
+  cook !== undefined && { label: 'Cook', value: formatMinutes(cook) },
+  total !== undefined && { label: 'Total', value: formatMinutes(total) },
+].filter(fact => fact !== false);
+const related = await getRelated('recipe', recipe.id, { limit: 4 });
+const site = Astro.site ?? new URL('https://danieljancar.dev');
+const url = new URL(`/recipes/${recipe.id}/`, site).href;
+const method = steps(recipe.body);
+const schema = [
+  {
+    '@type': 'Recipe',
+    '@id': `${url}#recipe`,
+    url,
+    name: title,
+    description,
+    datePublished: published.toISOString(),
+    author: { '@id': personId(site) },
+    keywords: tags.join(', '),
+    recipeYield: `${servings} servings`,
+    recipeIngredient: ingredients.map(item => ingredientText(item)),
+    ...(prep !== undefined && { prepTime: isoDuration(prep) }),
+    ...(cook !== undefined && { cookTime: isoDuration(cook) }),
+    ...(total !== undefined && { totalTime: isoDuration(total) }),
+    ...(method.length > 0 && {
+      recipeInstructions: method.map(text => ({ '@type': 'HowToStep', text })),
+    }),
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={cover}
+  imageAlt={coverAlt || title}
+  article={{ published, tags }}
+  schema={schema}
+>
+  <header class:list={['hero', 'wrap', cover && 'with-cover']}>
+    <div class="intro">
+      <a class="mono back" href="/recipes">
+        ← Recipes
+      </a>
+      <h1 class="display">{title}</h1>
+      <p class="lead">{description}</p>
+      {facts.length > 0 && (
+        <dl class="facts">
+          {facts.map(fact => (
+            <div>
+              <dt class="mono">{fact.label}</dt>
+              <dd class="display">{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      <TagList tags={tags} />
+    </div>
+    {cover && (
+      <div class="cover">
+        <Cover
+          src={cover}
+          alt={coverAlt}
+          widths={[600, 1000, 1400]}
+          sizes="(max-width: 900px) 100vw, 45vw"
+          loading="eager"
+        />
+      </div>
+    )}
+  </header>
+
+  <div class="tools wrap mono">
+    <button type="button" data-print>
+      Print or save as PDF
+    </button>
+    <button type="button" data-copy>
+      Copy shopping list
+    </button>
+    <button type="button" data-wake aria-pressed="false" hidden>
+      Keep screen on
+    </button>
+  </div>
+
+  <div class="cook wrap" data-recipe data-servings={servings}>
+    {ingredients.length > 0 && (
+      <aside class="ingredients">
+        <div class="head">
+          <h2 class="display">Ingredients</h2>
+          <div class="servings mono" role="group" aria-label="Servings">
+            <button type="button" data-step="-1" aria-label="Fewer servings">
+              −
+            </button>
+            <output data-count>{servings}</output>
+            <span>servings</span>
+            <button type="button" data-step="1" aria-label="More servings">
+              +
+            </button>
+          </div>
+        </div>
+        {sections(ingredients).map(section => (
+          <div class="section">
+            {section.title && <h3 class="mono">{section.title}</h3>}
+            <ul>
+              {section.items.map(item => (
+                <li>
+                  <label>
+                    <input type="checkbox" />
+                    <span class="amount mono">
+                      {item.amount && (
+                        <span data-amount={item.amount}>
+                          {formatAmount(item.amount)}
+                        </span>
+                      )}{' '}
+                      {item.unit}
+                    </span>
+                    <span class="item">
+                      {item.item}
+                      {item.note && <em>, {item.note}</em>}
+                    </span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </aside>
+    )}
+    <article class="prose method">
+      <h2 class="display">Method</h2>
+      <Content />
+    </article>
+  </div>
+
+  <RelatedList items={related} />
+
+  {next.id !== recipe.id && (
+    <a class="next wrap" href={`/recipes/${next.id}`}>
+      <span class="mono">Next recipe</span>
+      <span class="display">{next.data.title}</span>
+    </a>
+  )}
+</BaseLayout>
+
+<script>
+  import { formatAmount } from '~/lib/recipes';
+
+  const root = document.querySelector<HTMLElement>('[data-recipe]');
+  const base = Number(root?.dataset.servings ?? 1);
+  let servings = base;
+  const count = document.querySelector<HTMLOutputElement>('[data-count]');
+  const amounts = [...document.querySelectorAll<HTMLElement>('[data-amount]')];
+
+  document.querySelectorAll<HTMLButtonElement>('[data-step]').forEach(button =>
+    button.addEventListener('click', () => {
+      servings = Math.max(1, servings + Number(button.dataset.step));
+      if (count) count.value = String(servings);
+      for (const amount of amounts) {
+        const value = (Number(amount.dataset.amount) * servings) / base;
+        amount.textContent = formatAmount(value);
+      }
+    }),
+  );
+
+  document
+    .querySelector('[data-print]')
+    ?.addEventListener('click', () => window.print());
+
+  const copy = document.querySelector<HTMLButtonElement>('[data-copy]');
+  copy?.addEventListener('click', async () => {
+    const lines = [...document.querySelectorAll('.ingredients label')].map(
+      label =>
+        `- ${[...label.querySelectorAll('.amount, .item')]
+          .map(part => part.textContent?.replace(/\s+/g, ' ').trim())
+          .filter(Boolean)
+          .join(' ')}`,
+    );
+    await navigator.clipboard.writeText(lines.join('\n'));
+    const label = copy.textContent;
+    copy.textContent = 'Copied';
+    setTimeout(() => (copy.textContent = label), 1600);
+  });
+
+  const wake = document.querySelector<HTMLButtonElement>('[data-wake]');
+  if (wake && 'wakeLock' in navigator) {
+    let lock: WakeLockSentinel | undefined;
+    const request = async () => {
+      lock = await navigator.wakeLock.request('screen');
+      lock.addEventListener('release', () => {
+        if (document.visibilityState === 'visible') return;
+        wake.setAttribute('aria-pressed', 'false');
+      });
+    };
+    wake.hidden = false;
+    wake.addEventListener('click', async () => {
+      const on = wake.getAttribute('aria-pressed') === 'true';
+      if (on) await lock?.release();
+      else await request();
+      wake.setAttribute('aria-pressed', String(!on));
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (
+        document.visibilityState === 'visible' &&
+        wake.getAttribute('aria-pressed') === 'true'
+      )
+        request();
+    });
+  }
+</script>
+
+<style>
+  .hero {
+    display: grid;
+    gap: 40px;
+    align-items: end;
+    padding-top: 48px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .with-cover {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 44%);
+  }
+
+  .back {
+    color: var(--ink-soft);
+  }
+
+  h1 {
+    margin-top: 28px;
+    font-size: clamp(40px, 6.4vw, 112px);
+  }
+
+  .lead {
+    max-width: 46ch;
+    margin: 20px 0 28px;
+    font-size: clamp(19px, 1.6vw, 24px);
+    line-height: 1.4;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0 0 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .facts div {
+    padding: 14px 28px 14px 0;
+    margin-right: 28px;
+    border-right: 1px solid var(--line);
+  }
+
+  .facts div:last-child {
+    border-right: 0;
+  }
+
+  dt {
+    color: var(--ink-soft);
+  }
+
+  dd {
+    margin: 6px 0 0;
+    font-size: clamp(24px, 2.4vw, 36px);
+  }
+
+  .cover {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    rotate: 1.5deg;
+    box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.5);
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 20px;
+  }
+
+  .tools button,
+  .servings button {
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .tools button:hover,
+  .tools button[aria-pressed='true'],
+  .servings button:hover {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  .cook {
+    display: grid;
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+    padding-top: 40px;
+  }
+
+  .ingredients {
+    position: sticky;
+    top: calc(var(--bar-height) + 20px);
+    padding: 24px;
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid currentColor;
+  }
+
+  .ingredients h2,
+  .method h2 {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: clamp(28px, 2.6vw, 40px);
+  }
+
+  .method h2 {
+    padding-bottom: 16px;
+  }
+
+  .servings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .servings button {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-color: currentColor;
+  }
+
+  .servings button:hover {
+    background: var(--on-accent);
+    color: var(--accent);
+  }
+
+  output {
+    min-width: 2ch;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .section h3 {
+    margin-top: 20px;
+    text-transform: uppercase;
+  }
+
+  .ingredients ul {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ingredients li + li {
+    border-top: 1px solid rgb(11 13 10 / 0.2);
+  }
+
+  label {
+    display: grid;
+    grid-template-columns: auto 7ch minmax(0, 1fr);
+    gap: 12px;
+    align-items: baseline;
+    padding: 10px 0;
+    cursor: pointer;
+  }
+
+  input {
+    accent-color: var(--on-accent);
+  }
+
+  label:has(input:checked) {
+    opacity: 0.45;
+    text-decoration: line-through;
+  }
+
+  em {
+    font-style: normal;
+    opacity: 0.75;
+  }
+
+  .method :global(ol) {
+    counter-reset: step;
+    padding: 0;
+    list-style: none;
+  }
+
+  .method :global(ol > li) {
+    position: relative;
+    padding: 20px 0 20px 72px;
+    border-top: 1px solid var(--line);
+    counter-increment: step;
+  }
+
+  .method :global(ol > li + li) {
+    margin-top: 0;
+  }
+
+  .method :global(ol > li)::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    top: 14px;
+    left: 0;
+    font-size: 40px;
+    font-weight: 800;
+    font-stretch: 125%;
+    line-height: 1;
+    color: var(--accent-text);
+  }
+
+  .next {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 64px;
+    padding-block: 40px;
+    border-top: 1px solid var(--line);
+  }
+
+  .next .display {
+    font-size: clamp(36px, 6vw, 96px);
+    transition: translate 0.45s var(--ease-out);
+  }
+
+  .next:hover {
+    color: inherit;
+  }
+
+  .next:hover .display {
+    translate: 12px 0;
+  }
+
+  @media (max-width: 900px) {
+    .with-cover,
+    .cook {
+      grid-template-columns: 1fr;
+    }
+
+    .cover {
+      order: -1;
+      rotate: 0deg;
+    }
+
+    .ingredients {
+      position: static;
+    }
+
+    .cook {
+      gap: 40px;
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .facts div {
+      margin-right: 12px;
+      padding-right: 12px;
+    }
+
+    dd {
+      font-size: 20px;
+    }
+  }
+
+  @media print {
+    :global(.bar),
+    :global(.menu),
+    :global(.foot),
+    :global(.cursor),
+    .tools,
+    .servings button,
+    .next,
+    .back,
+    :global(.related) {
+      display: none !important;
+    }
+
+    .hero {
+      grid-template-columns: 1fr 30%;
+      padding-top: 0;
+    }
+
+    h1 {
+      font-size: 40px;
+    }
+
+    .cover {
+      rotate: 0deg;
+      box-shadow: none;
+    }
+
+    .cook {
+      grid-template-columns: 35% 1fr;
+      gap: 32px;
+    }
+
+    .ingredients {
+      position: static;
+      padding: 0;
+      background: none;
+      color: inherit;
+    }
+
+    input {
+      display: none;
+    }
+
+    label {
+      grid-template-columns: 7ch 1fr;
+      padding: 4px 0;
+    }
+  }
+</style>
