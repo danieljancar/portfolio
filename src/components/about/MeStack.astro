@@ -1,0 +1,115 @@
+---
+import Photo from '~/components/media/Photo.astro';
+import type { Album } from '~/lib/photos';
+
+interface Props {
+  album: Album;
+}
+
+const { album } = Astro.props;
+const photos = album.photos.slice(-5).reverse();
+const middle = (photos.length - 1) / 2;
+const count = album.photos.length;
+---
+
+<figure class="me">
+  <ul class="stack" style={`--n:${photos.length}`}>
+    {photos.map((photo, i) => (
+      <li style={`--i:${i - middle};--z:${photos.length - i}`}>
+        <a href={photo.href} aria-label={`${album.data.title}, photo ${i + 1}`}>
+          <Photo
+            photo={photo}
+            widths={[300, 600]}
+            sizes="260px"
+            loading="eager"
+          />
+        </a>
+      </li>
+    ))}
+  </ul>
+  <figcaption>
+    <a class="mono" href={`/photos/${album.id}`}>
+      {album.data.title} · {count} {count === 1 ? 'photo' : 'photos'} →
+    </a>
+  </figcaption>
+</figure>
+
+<style>
+  .me {
+    --card: 260px;
+    --spread: 22px;
+    --tilt: 4deg;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    margin: 0;
+  }
+
+  .me:hover,
+  .me:focus-within {
+    --spread: 90px;
+    --tilt: 8deg;
+  }
+
+  .stack {
+    position: relative;
+    width: var(--card);
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z);
+    padding: 8px;
+    background: var(--ground);
+    border: 1px solid var(--line);
+    box-shadow: 0 18px 40px -20px rgb(0 0 0 / 0.5);
+    translate: calc(var(--i) * var(--spread)) calc(var(--i) * var(--i) * 4px);
+    rotate: calc(var(--i) * var(--tilt));
+    transition:
+      translate 0.6s var(--ease-out),
+      rotate 0.6s var(--ease-out),
+      scale 0.3s var(--ease-out);
+  }
+
+  li:hover {
+    z-index: 10;
+    scale: 1.06;
+    rotate: 0deg;
+  }
+
+  li a {
+    display: block;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  figcaption a {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  figcaption a:hover {
+    background: var(--ink);
+    color: var(--ground);
+  }
+
+  @media (hover: none), (max-width: 600px) {
+    .me,
+    .me:hover,
+    .me:focus-within {
+      --card: min(200px, 48vw);
+      --spread: min(56px, 11vw);
+      --tilt: 6deg;
+    }
+  }
+</style>
