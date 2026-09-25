@@ -2,6 +2,7 @@
 title: Developing a Mobile App from Scratch with Expo and React Native
 description: In this post, I'm sharing my experience of developing a mobile app from scratch and end-to-end - from the initial idea, to the software architecture, the CI/CD strategy and the submission to the app stores.
 published: 2026-06-05
+updated: ''
 tags:
   - expo
   - react-native
@@ -11,7 +12,9 @@ tags:
 cover: ./mobile-app-development-expo-react-native.jpeg
 coverAlt: Picture of the Cranny app infront of a bench in a forest
 project: cranny
+canonical: ''
 featured: true
+draft: false
 ---
 
 My developer friends and I kept running into the same small problem: we always ended up at the places we already knew. Whether it was a night out, a quiet corner to read a book, somewhere to drive on a weekend, or just a bench with a great view, we wanted to discover new places that other people love. We couldn't find a tool that did this well, so we decided to build one ourselves. We called it Cranny, a platform where anyone can share their favourite spots.
@@ -95,6 +98,8 @@ Cranny is, as I mentioned, built with Expo and React Native. To build, submit an
 ![Cranny app delivery strategy](./eas-submit-process.png)
 
 Getting the app into the stores was a bit tedious and time-consuming, but the EAS services made it far easier than it would have been otherwise. Our automated workflow is fairly straightforward, and we mostly just had to set a few things up in the app store portals to get it running.
+
+![Testflight Overview](/src/assets/uploads/app-store-connect-testflight.webp)
 
 The portals needed the usual configuration like app descriptions, screenshots and other metadata, plus a set of legal questions about your app and its content that can be tricky the first time around.
 
