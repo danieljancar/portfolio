@@ -6,10 +6,12 @@ cover: ./DSCF1139.jpg
 featured: true
 highlights:
   - DSCF1139.jpg
-  - DSCF1157.jpg
   - DSCF1123.jpg
   - DSCF1133.jpg
   - DSCF1160.jpg
   - DSCF1149.jpg
-tags: [lucerne, city]
+  - DSCF1119.jpg
+tags:
+  - lucerne
+  - city
 ---
