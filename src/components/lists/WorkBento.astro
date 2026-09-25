@@ -1,4 +1,5 @@
 ---
+import { fit } from '~/lib/fit';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -24,7 +25,9 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
         <span class="arrow" aria-hidden="true">
           →
         </span>
-        <h3 class="display">{item.data.name}</h3>
+        <h3 class="display" style={fit(item.data.name)}>
+          {item.data.name}
+        </h3>
         <p>{item.data.tagline}</p>
       </a>
     </li>
@@ -64,6 +67,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
   }
 
   .tile {
+    container-type: inline-size;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -128,16 +132,16 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
 
   h3 {
     margin-top: auto;
-    font-size: clamp(36px, 4.4vw, 72px);
+    font-size: min(clamp(36px, 4.4vw, 72px), 100cqi / (var(--chars, 1) * 1.06));
     transition: translate 0.45s var(--ease-out);
   }
 
   li[data-slot='0'] h3 {
-    font-size: clamp(56px, 9vw, 150px);
+    font-size: min(clamp(56px, 9vw, 150px), 100cqi / (var(--chars, 1) * 1.06));
   }
 
   li[data-slot='3'] h3 {
-    font-size: clamp(44px, 6vw, 104px);
+    font-size: min(clamp(44px, 6vw, 104px), 100cqi / (var(--chars, 1) * 1.06));
   }
 
   .tile:hover h3 {
@@ -182,7 +186,10 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
     h3,
     li[data-slot='0'] h3,
     li[data-slot='3'] h3 {
-      font-size: clamp(30px, 10vw, 56px);
+      font-size: min(
+        clamp(30px, 10vw, 56px),
+        100cqi / (var(--chars, 1) * 1.06)
+      );
     }
   }
 </style>
