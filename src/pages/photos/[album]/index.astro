@@ -1,4 +1,5 @@
 ---
+import { fit } from '~/lib/fit';
 import { getCollection, render } from 'astro:content';
 import PhotoGrid from '~/components/media/PhotoGrid.astro';
 import RelatedList from '~/components/ui/RelatedList.astro';
@@ -37,7 +38,9 @@ const { title, date, place, cover } = album.data;
     <a class="mono soft" href="/photos">
       ← Photos
     </a>
-    <h1 class="display">{title}</h1>
+    <h1 class="display" style={fit(title)}>
+      {title}
+    </h1>
     <ul class="meta mono">
       <li>{formatMonth(date)}</li>
       {place && <li>{place}</li>}
@@ -57,6 +60,7 @@ const { title, date, place, cover } = album.data;
 
 <style>
   .head {
+    container-type: inline-size;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -67,7 +71,7 @@ const { title, date, place, cover } = album.data;
 
   h1 {
     margin-top: 12px;
-    font-size: clamp(32px, 9vw, 150px);
+    font-size: min(clamp(32px, 9vw, 150px), 100cqi / (var(--chars, 1) * 1.06));
   }
 
   .meta {
