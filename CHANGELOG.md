@@ -1,3 +1,11 @@
+# [2.4.0](https://github.com/danieljancar/portfolio/compare/v2.3.0...v2.4.0) (2026-09-25)
+
+
+### Features
+
+* **about:** portrait as the lead tile of the bento grid ([3d44417](https://github.com/danieljancar/portfolio/commit/3d44417f1339302d223aca6c00eb3c79ff2465c4))
+* **about:** show the portrait in the bento grid ([2f814e9](https://github.com/danieljancar/portfolio/commit/2f814e98ec21a1fb0713f6296b40bcdd94cba4a3))
+
 # [2.3.0](https://github.com/danieljancar/portfolio/compare/v2.2.0...v2.3.0) (2026-09-25)
 
 
