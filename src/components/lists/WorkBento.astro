@@ -129,8 +129,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
   h3 {
     margin-top: auto;
     font-size: clamp(36px, 4.4vw, 72px);
-    overflow-wrap: anywhere;
-    transition: font-stretch 0.5s var(--ease-out);
+    transition: translate 0.45s var(--ease-out);
   }
 
   li[data-slot='0'] h3 {
@@ -142,7 +141,7 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
   }
 
   .tile:hover h3 {
-    font-stretch: 62%;
+    translate: 10px 0;
   }
 
   p {
@@ -178,6 +177,12 @@ const when = ({ ongoing, year }: CollectionEntry<'projects'>['data']) =>
     li[data-slot='2'] {
       grid-column: auto;
       grid-row: auto;
+    }
+
+    h3,
+    li[data-slot='0'] h3,
+    li[data-slot='3'] h3 {
+      font-size: clamp(30px, 10vw, 56px);
     }
   }
 </style>
