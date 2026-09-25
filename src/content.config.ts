@@ -105,6 +105,7 @@ const recommendations = defineCollection({
       name: z.string(),
       kind: z.enum(['podcast', 'site', 'newsletter', 'book', 'tool']),
       url: z.url(),
+      image: z.url().optional(),
       topic: z.string(),
       note: z.string().optional(),
       order: z.number().default(100),
