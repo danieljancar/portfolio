@@ -1,3 +1,19 @@
+# [2.2.0](https://github.com/danieljancar/portfolio/compare/v2.1.0...v2.2.0) (2026-09-25)
+
+
+### Bug Fixes
+
+* **photos:** neutral background and a pager that stays on screen ([749fa53](https://github.com/danieljancar/portfolio/commit/749fa53ca6328675ebac709a7b70500ae611b4b9))
+
+
+### Features
+
+* **cms:** edit recipes ([0b2a898](https://github.com/danieljancar/portfolio/commit/0b2a89872418d9207c23b9b9a07c8facb83593d4))
+* **recipes:** recipe data, helpers and tags ([2a4a8a4](https://github.com/danieljancar/portfolio/commit/2a4a8a46af327930db5e9a507dadfa5d4cd3163c))
+* **recipes:** recipe pages with scaling, print and shopping list ([fa3223f](https://github.com/danieljancar/portfolio/commit/fa3223ffdf17194a0937209acc61aefe4aa4f4ce))
+* **recipes:** recipes collection ([72d7ee4](https://github.com/danieljancar/portfolio/commit/72d7ee4842e7c3520b9584d8e0da3f7b3db2a0e7))
+* **recipes:** recipes in the menu once there are any ([8bd5919](https://github.com/danieljancar/portfolio/commit/8bd59192d46695bd2a7b29883964835b2660e90d))
+
 # [2.1.0](https://github.com/danieljancar/portfolio/compare/v2.0.1...v2.1.0) (2026-09-25)
 
 
