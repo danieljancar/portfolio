@@ -1,0 +1,248 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+type Shot = CollectionEntry<'projects'>['data']['shots'][number];
+
+interface Props {
+  shots: Shot[];
+}
+
+const { shots } = Astro.props;
+const marks = ['✦', '✳', '↗', '◎', '✺', '+'];
+---
+
+{shots.length > 0 && (
+  <section class="shots wrap" aria-label="Screens">
+    <ul>
+      {shots.map((shot, i) => (
+        <li class:list={['shot', shot.frame]} style={`--i:${i}`}>
+          <figure>
+            <div class="frame">
+              {shot.frame === 'browser' && (
+                <div class="chrome" aria-hidden="true">
+                  <span class="dots">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  {shot.url && <span class="url mono">{shot.url}</span>}
+                </div>
+              )}
+              <Image
+                src={shot.image}
+                alt={shot.alt}
+                widths={shot.frame === 'phone' ? [300, 600] : [600, 1000, 1600]}
+                sizes={
+                  shot.frame === 'phone'
+                    ? '(max-width: 700px) 60vw, 280px'
+                    : '(max-width: 700px) 100vw, 60vw'
+                }
+              />
+            </div>
+            {shot.caption && (
+              <figcaption class="mono">{shot.caption}</figcaption>
+            )}
+          </figure>
+          <span class="mark" aria-hidden="true">
+            {marks[i % marks.length]}
+          </span>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .shots {
+    padding-top: 80px;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 72px 56px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .shot {
+    position: relative;
+    width: min(100%, 620px);
+    transition:
+      rotate 0.6s var(--ease-out),
+      translate 0.6s var(--ease-out);
+  }
+
+  .shot:nth-child(even) {
+    rotate: 1.5deg;
+    margin-top: 64px;
+  }
+
+  .shot:nth-child(odd) {
+    rotate: -1.5deg;
+  }
+
+  .shot:hover {
+    rotate: 0deg;
+    translate: 0 -6px;
+  }
+
+  .browser {
+    width: min(100%, 760px);
+  }
+
+  .phone {
+    width: min(64%, 280px);
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .frame {
+    overflow: hidden;
+    background: var(--surface-2);
+    box-shadow:
+      0 1px 0 var(--line),
+      0 40px 80px -40px rgb(0 0 0 / 0.55);
+  }
+
+  .frame :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .browser .frame {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--ground);
+  }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+
+  .dots i:first-child {
+    background: var(--accent);
+  }
+
+  .url {
+    flex: 1;
+    max-width: 320px;
+    margin-inline: auto;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--ink-soft);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .phone .frame {
+    padding: 10px;
+    border-radius: 40px;
+    background: var(--ink);
+  }
+
+  .phone .frame :global(img) {
+    aspect-ratio: 9 / 19.5;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 30px;
+  }
+
+  .plain .frame {
+    padding: 12px;
+    border: 1px solid var(--line);
+    background: var(--ground);
+  }
+
+  figcaption {
+    max-width: 52ch;
+    margin-top: 16px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .mark {
+    position: absolute;
+    z-index: 1;
+    top: -28px;
+    right: -18px;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--accent);
+    pointer-events: none;
+    animation: spin 18s linear infinite;
+  }
+
+  .shot:nth-child(3n + 2) .mark {
+    top: auto;
+    right: auto;
+    bottom: 36px;
+    left: -26px;
+  }
+
+  .shot:nth-child(3n) .mark {
+    right: 24%;
+    top: -34px;
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mark {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .shots {
+      padding-top: 56px;
+    }
+
+    ul {
+      gap: 56px;
+    }
+
+    .shot:nth-child(even) {
+      margin-top: 0;
+    }
+
+    .mark {
+      font-size: 32px;
+      right: -4px;
+    }
+
+    .shot:nth-child(3n + 2) .mark {
+      left: -4px;
+    }
+  }
+</style>

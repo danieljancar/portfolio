@@ -2,6 +2,7 @@
 import { fit } from '~/lib/fit';
 import { render } from 'astro:content';
 import Cover from '~/components/media/Cover.astro';
+import Shots from '~/components/work/Shots.astro';
 import RelatedList from '~/components/ui/RelatedList.astro';
 import TagList from '~/components/ui/TagList.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
@@ -99,6 +100,7 @@ const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
       )}
     </aside>
   </div>
+  <Shots shots={project.data.shots} />
   <RelatedList items={related} title="Connected" />
 </BaseLayout>
 
