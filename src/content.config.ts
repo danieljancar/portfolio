@@ -57,6 +57,19 @@ const projects = defineCollection({
         links: z.array(link).default([]),
         cover: image().optional(),
         coverAlt: z.string().default(''),
+        shots: z
+          .array(
+            withoutBlanks(
+              z.object({
+                image: image(),
+                alt: z.string().default(''),
+                caption: z.string().optional(),
+                frame: z.enum(['browser', 'phone', 'plain']).default('plain'),
+                url: z.string().optional(),
+              }),
+            ),
+          )
+          .default([]),
         featured: z.boolean().default(false),
         order: z.number().default(100),
       }),
