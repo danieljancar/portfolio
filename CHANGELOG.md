@@ -1,3 +1,13 @@
+# [2.7.0](https://github.com/danieljancar/portfolio/compare/v2.6.0...v2.7.0) (2026-09-29)
+
+
+### Features
+
+* **cms:** add screenshots to work entries ([a097307](https://github.com/danieljancar/portfolio/commit/a097307644ed77911aa077dac66296b1caadb60a))
+* **work:** framed screenshots with marks around them ([6af5863](https://github.com/danieljancar/portfolio/commit/6af586368ded02f0fdd884747fe27289092d8fd1))
+* **work:** screenshots for work entries ([fa05a24](https://github.com/danieljancar/portfolio/commit/fa05a24390c7c83060fc25eb3f703598c9c311a7))
+* **work:** show screenshots on the work page ([dcc71ed](https://github.com/danieljancar/portfolio/commit/dcc71edf5deec5102ca0a2222962fb299cc56d90))
+
 # [2.6.0](https://github.com/danieljancar/portfolio/compare/v2.5.0...v2.6.0) (2026-09-29)
 
 
