@@ -7,25 +7,22 @@ My personal website, built with [Astro](https://astro.build) and live at [daniel
 
 ## About
 
-This is where I share my work, photos, events and writing. Content is edited through the CMS at [/admin](https://danieljancar.dev/admin). How it fits together is in [docs/architecture.md](docs/architecture.md), how to add content in [docs/editing.md](docs/editing.md).
+This is where I share my work, photos, events and writing.
 
 ## Getting started
 
 You'll need [Node.js](https://nodejs.org) and Git installed.
 
 ```bash
-# clone the repo
 git clone https://github.com/danieljancar/portfolio.git
 cd portfolio
 
-# install dependencies
 npm install
 
-# run it locally at http://localhost:4321
 npm run dev
 ```
 
-## Handy commands
+## Commands
 
 ```bash
 npm run dev        # run the dev server
