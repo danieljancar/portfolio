@@ -2,14 +2,14 @@
 title: Y2K vintage pop-up
 date: 2026-09-12
 place: Friedentalstrasse 41A, Lucerne
-cover: ./DSCF1473.jpg
+cover: ./pop-up-visitors-1473.jpg
 featured: true
 highlights:
-  - DSCF1473.jpg
-  - DSCF1370.jpg
-  - DSCF1377.jpg
-  - DSCF1394.jpg
-  - DSCF1351.jpg
-  - DSCF1381.jpg
+  - pop-up-visitors-1473.jpg
+  - pop-up-decor-1370.jpg
+  - pop-up-dj-1377.jpg
+  - pop-up-racks-1394.jpg
+  - pop-up-racks-1351.jpg
+  - pop-up-decor-1381.jpg
 tags: [vintage, pop-up, event]
 ---

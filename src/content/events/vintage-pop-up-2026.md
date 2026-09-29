@@ -10,7 +10,7 @@ tags:
   - photography
   - lovers
 project: ''
-cover: ../albums/vintage-pop-up/DSCF1473.jpg
+cover: ../albums/vintage-pop-up/pop-up-visitors-1473.jpg
 coverAlt: Two visitors with their shopping bags at the entrance of the pop-up
 album: vintage-pop-up
 links:
