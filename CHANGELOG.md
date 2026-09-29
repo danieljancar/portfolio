@@ -1,3 +1,10 @@
+# [2.9.0](https://github.com/danieljancar/portfolio/compare/v2.8.0...v2.9.0) (2026-09-29)
+
+
+### Features
+
+* **seo:** page schema, breadcrumbs and better descriptions ([8b97beb](https://github.com/danieljancar/portfolio/commit/8b97bebc5be8ad3334de50eace99c9768b385ef7))
+
 # [2.8.0](https://github.com/danieljancar/portfolio/compare/v2.7.0...v2.8.0) (2026-09-29)
 
 
