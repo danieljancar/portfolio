@@ -8,13 +8,6 @@ interface Props {
 }
 
 const { links, recommendations } = Astro.props;
-const handle = (href: string) =>
-  href.startsWith('mailto:')
-    ? href.slice(7)
-    : href
-        .replace(/^https?:\/\/(www\.)?/, '')
-        .replace(/\/$/, '')
-        .replace(/^[^/]+\/(in\/)?/, '@');
 const sections = [
   { href: '/work', label: 'Work', span: 'c5 m2 tall huge' },
   { href: '/photos', label: 'Photos', span: 'c4' },
@@ -66,7 +59,6 @@ const sections = [
       <span class="arrow out" aria-hidden="true">
         ↗
       </span>
-      <span class="mono">{handle(link.href)}</span>
       <h3
         class="display small"
         style={fit(links.map(item => item.label).join(' '))}
@@ -162,13 +154,7 @@ const sections = [
   }
 
   .social {
-    justify-content: space-between;
     min-height: 150px;
-  }
-
-  .social .mono {
-    padding-right: 24px;
-    overflow-wrap: anywhere;
   }
 
   .cell:hover .out {

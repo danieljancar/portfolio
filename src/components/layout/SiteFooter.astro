@@ -20,10 +20,6 @@ const more = [
   { href: '/rss.xml', label: 'RSS' },
   ...legal.map(doc => ({ href: `/legal/${doc.id}`, label: doc.data.title })),
 ];
-const handle = (href: string) =>
-  href.startsWith('mailto:')
-    ? href.slice(7)
-    : href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---
 
 <footer class="foot" id="links">
@@ -33,7 +29,6 @@ const handle = (href: string) =>
       <li>
         <a {...linkProps(link.href)}>
           <span class="display name">{link.label}</span>
-          <span class="mono">{handle(link.href)}</span>
         </a>
       </li>
     ))}
@@ -66,9 +61,6 @@ const handle = (href: string) =>
 
   li a {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
     padding: 6px 0;
     border-bottom: 1px solid rgb(11 13 10 / 0.3);
   }
@@ -108,12 +100,5 @@ const handle = (href: string) =>
     color: var(--on-accent);
     text-decoration: underline;
     text-underline-offset: 3px;
-  }
-
-  @media (max-width: 600px) {
-    li a {
-      flex-direction: column;
-      gap: 0;
-    }
   }
 </style>
