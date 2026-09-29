@@ -16,6 +16,15 @@ links:
     href: https://www.instagram.com/lovers.lucerne/
 cover: ''
 coverAlt: ''
+shots:
+  - image: ./images/lovers-home.webp
+    frame: browser
+    alt: Lovers website start page with the hand-drawn logo over a photo of the room
+    caption: The logo on the start page is traced from the lettering on their window.
+  - image: ./images/lovers-coffee.webp
+    frame: browser
+    alt: Coffee page with Jerry holding out two cups
+    caption: Jerry's coffee page with his story and the menu.
 featured: false
 order: 2
 ---
