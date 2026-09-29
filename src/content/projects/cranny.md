@@ -30,21 +30,27 @@ shots:
   - image: ./images/cranny-site.webp
     frame: browser
     url: the-cranny.com
-    alt: Cranny website start page with the app on a phone
     caption: The website runs on Next.js and also handles sign-in for the app.
+    alt: Cranny website start page with the app on a phone
   - image: ./images/cranny-post-benches.webp
     frame: plain
+    url: ''
+    caption: ''
     alt: Instagram post titled Benches worth the walk, with a bench under a rock overhang
-    caption: First carousel on Instagram and TikTok, posted on 29 September 2026 and designed in Figma.
   - image: ./images/cranny-post-yellow-bench.webp
     frame: plain
+    url: ''
+    caption: ''
     alt: Instagram slide of a yellow bench in a field north of Lucerne with the Alps behind
   - image: ./images/cranny-post-chile.webp
     frame: plain
+    url: ''
+    caption: ''
     alt: Instagram post comparing benches in Switzerland and Chile
-    caption: Benches in Chile, the other post from the first day.
   - image: ./images/cranny-post-end.webp
     frame: plain
+    url: ''
+    caption: ''
     alt: Last slide of the carousel with the Cranny logo and the line Find the spots locals love
 featured: true
 order: 1
