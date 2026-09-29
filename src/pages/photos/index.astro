@@ -4,15 +4,20 @@ import PhotoGrid from '~/components/media/PhotoGrid.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getAlbums } from '~/lib/photos';
+import { clip } from '~/lib/seo';
 
 const albums = await getAlbums();
 const latest = albums.slice(0, 3);
 const photos = albums.flatMap(album => album.photos);
+const description = clip(
+  `Photo albums by Daniel Jancar: ${albums.map(album => album.data.title).join(', ')}.`,
+);
 ---
 
 <BaseLayout
   title="Photos"
-  description="Photos by Daniel Jancar."
+  description={description}
+  pageType="CollectionPage"
   image={albums[0]?.data.cover}
 >
   <SectionHead

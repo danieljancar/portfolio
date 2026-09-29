@@ -63,6 +63,7 @@ export async function identity(site: URL): Promise<Schema[]> {
       '@type': 'Person',
       '@id': personId(site),
       name: settings.name,
+      description: settings.description,
       url: site.href,
       image: portrait,
       email: `mailto:${settings.email}`,
@@ -76,4 +77,47 @@ export async function identity(site: URL): Promise<Schema[]> {
       sameAs: settings.socials.map(link => link.href),
     },
   ];
+}
+
+export interface Crumb {
+  name: string;
+  path: string;
+}
+
+const sections: Record<string, string> = {
+  about: 'About',
+  blog: 'Blog',
+  events: 'Events',
+  photos: 'Photos',
+  recipes: 'Recipes',
+  recommended: 'Recommended',
+  tags: 'Tags',
+  work: 'Work',
+};
+
+export function crumbsFor(pathname: string, title?: string): Crumb[] {
+  const parts = pathname.split('/').filter(Boolean);
+  const trail: Crumb[] = [{ name: 'Home', path: '/' }];
+  const section = sections[parts[0] ?? ''];
+  if (section) trail.push({ name: section, path: `/${parts[0]}/` });
+  if (parts.length > 1 && title) trail.push({ name: title, path: pathname });
+  return trail;
+}
+
+export function clip(text: string, max = 160): string {
+  const flat = text.replace(/\s+/g, ' ').trim();
+  if (flat.length <= max) return flat;
+  const cut = flat.slice(0, max - 1);
+  return `${cut.slice(0, cut.lastIndexOf(' '))}…`;
+}
+
+export function excerpt(markdown = ''): string {
+  const paragraph = markdown
+    .split(/\n\s*\n/)
+    .map(block => block.trim())
+    .find(block => block && !/^(#|!\[|<|```|[-*>|] )/.test(block));
+  return (paragraph ?? '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[*_`]/g, '');
 }

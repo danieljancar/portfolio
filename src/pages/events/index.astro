@@ -3,11 +3,15 @@ import EventTicket from '~/components/events/EventTicket.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getEvents } from '~/lib/content';
+import { clip } from '~/lib/seo';
 
 const events = await getEvents();
+const description = clip(
+  `Events Daniel Jancar was part of: ${events.map(event => event.data.title).join(', ')}.`,
+);
 ---
 
-<BaseLayout title="Events" description="Events Daniel Jancar was part of.">
+<BaseLayout title="Events" description={description} pageType="CollectionPage">
   <SectionHead title="Events" as="h1" />
   <ul class="events wrap">
     {events.map(event => (

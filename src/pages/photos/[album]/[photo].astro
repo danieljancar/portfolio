@@ -1,9 +1,11 @@
 ---
+import { getImage } from 'astro:assets';
 import Photo from '~/components/media/Photo.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getSettings } from '~/lib/content';
 import { formatDate } from '~/lib/dates';
 import { cameraLine, getAlbums, takenAt } from '~/lib/photos';
+import { personId } from '~/lib/seo';
 
 export async function getStaticPaths() {
   const albums = await getAlbums();
@@ -33,11 +35,45 @@ const swatches = Object.entries(photo.meta.palette).filter(
   (entry): entry is [string, string] =>
     entry[0] !== 'dominant' && entry[1] !== null,
 );
+const title = `${album.title}, photo ${position} of ${total}`;
+const description = [
+  `Photo ${position} of ${total} from ${album.title} by ${settings.name}`,
+  date && `taken ${formatDate(date)}`,
+  camera[0] && `with a ${camera[0]}`,
+]
+  .filter(Boolean)
+  .join(', ')
+  .concat('.');
+const site = Astro.site ?? new URL('https://danieljancar.dev');
+const url = new URL(`${photo.href}/`, site).href;
+const full = await getImage({ src: photo.image, width: 1400 });
+const schema = [
+  {
+    '@type': 'ImageObject',
+    '@id': `${url}#photo`,
+    url,
+    contentUrl: new URL(full.src, site).href,
+    name: title,
+    description,
+    dateCreated: date?.toISOString(),
+    creator: { '@id': personId(site) },
+    creditText: settings.name,
+    copyrightNotice: `© ${settings.name}`,
+  },
+];
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Photos', path: '/photos/' },
+  { name: album.title, path: `/photos/${album.id}/` },
+  { name: `Photo ${position}`, path: `${photo.href}/` },
+];
 ---
 
 <BaseLayout
-  title={album.title}
-  description={`Photo from ${album.title} by Daniel Jancar.`}
+  title={title}
+  description={description}
+  schema={schema}
+  crumbs={crumbs}
   image={photo.image}
   imageAlt={`${album.title}, photo by Daniel Jancar`}
 >

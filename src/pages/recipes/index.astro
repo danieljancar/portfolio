@@ -16,6 +16,7 @@ const tags = [...new Set(recipes.flatMap(recipe => recipe.data.tags))].slice(
 <BaseLayout
   title="Recipes"
   description="Recipes Daniel Jancar cooks himself, with photos."
+  pageType="CollectionPage"
 >
   <SectionHead title="Recipes" as="h1" />
   {tags.length > 0 && (

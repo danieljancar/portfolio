@@ -9,7 +9,7 @@ const size = (count: number) =>
   18 + Math.round(((count - 1) / Math.max(max - 1, 1)) * 42);
 ---
 
-<BaseLayout title="Tags" description="Everything on the site by topic.">
+<BaseLayout title="Tags" description="Everything on the site by topic." noindex>
   <SectionHead title="Tags" as="h1" />
   <ul class="cloud wrap">
     {tags.map(tag => (

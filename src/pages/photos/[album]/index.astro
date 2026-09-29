@@ -6,6 +6,7 @@ import RelatedList from '~/components/ui/RelatedList.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { formatMonth } from '~/lib/dates';
 import { getAlbums } from '~/lib/photos';
+import { clip, excerpt } from '~/lib/seo';
 import { getRelated } from '~/lib/tags';
 
 export async function getStaticPaths() {
@@ -27,11 +28,18 @@ const related = await getRelated('album', album.id, {
   kinds: ['post', 'project', 'album'],
 });
 const { title, date, place, cover } = album.data;
+const description = clip(
+  [
+    `${album.photos.length} photos from ${title}`,
+    [place, formatMonth(date)].filter(Boolean).join(', '),
+  ].join(', ') + `. ${excerpt(album.body)}`,
+);
 ---
 
 <BaseLayout
   title={title}
-  description={`Photos from ${title}, ${formatMonth(date)}.`}
+  description={description}
+  pageType="ImageGallery"
   image={cover}
 >
   <header class="head wrap">

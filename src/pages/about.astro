@@ -21,7 +21,11 @@ const bento = Boolean(portrait || photos);
 const paragraphs = settings.about.split(/\n\s*\n/);
 ---
 
-<BaseLayout title="About" description={settings.description}>
+<BaseLayout
+  title="About"
+  description={settings.description}
+  pageType="ProfilePage"
+>
   <SectionHead title="About" as="h1" />
   <section class:list={['intro', 'wrap', bento && 'with-me']}>
     <div class="text">

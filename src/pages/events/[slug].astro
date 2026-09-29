@@ -11,6 +11,7 @@ import { getEvents } from '~/lib/content';
 import { formatDate } from '~/lib/dates';
 import { linkProps } from '~/lib/links';
 import { getAlbum } from '~/lib/photos';
+import { clip, excerpt } from '~/lib/seo';
 import { getRelated } from '~/lib/tags';
 import '~/styles/prose.css';
 
@@ -41,10 +42,16 @@ const when = endDate
   : formatDate(date);
 const theme = album?.photos[0] ? themeStyle(album.photos[0].theme) : undefined;
 const site = Astro.site ?? new URL('https://danieljancar.dev');
+const description = clip(
+  [[when, place].filter(Boolean).join(', '), excerpt(event.body)]
+    .filter(Boolean)
+    .join('. '),
+);
 const schema = [
   {
     '@type': 'Event',
     name: title,
+    description,
     url: new URL(`/events/${event.id}/`, site).href,
     startDate: date.toISOString().slice(0, 10),
     endDate: (endDate ?? date).toISOString().slice(0, 10),
@@ -56,7 +63,7 @@ const schema = [
 
 <BaseLayout
   title={title}
-  description={place ? `${when}, ${place}` : when}
+  description={description}
   image={cover}
   imageAlt={coverAlt || title}
   schema={schema}

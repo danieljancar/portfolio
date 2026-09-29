@@ -12,6 +12,7 @@ const tags = [...new Set(posts.flatMap(post => post.data.tags))].slice(0, 16);
 <BaseLayout
   title="Blog"
   description="Notes on things I've built, learned or found worth sharing."
+  pageType="CollectionPage"
 >
   <SectionHead title="Blog" as="h1">
     <a href="/rss.xml">RSS</a>

@@ -1,4 +1,11 @@
-import { getEvents, getPosts, getProjects, getSettings } from './content';
+import {
+  getEvents,
+  getPosts,
+  getProjects,
+  getRecipes,
+  getRecommendations,
+  getSettings,
+} from './content';
 import { formatDate } from './dates';
 import { getCompanies } from './experience';
 import { getAlbums } from './photos';
@@ -7,26 +14,58 @@ const link = (site: URL, path: string, label: string, note?: string) =>
   `- [${label}](${new URL(path, site).href})${note ? `: ${note}` : ''}`;
 
 async function collect() {
-  const [settings, posts, work, events, companies, albums] = await Promise.all([
+  const [
+    settings,
+    posts,
+    work,
+    events,
+    companies,
+    albums,
+    recipes,
+    recommendations,
+  ] = await Promise.all([
     getSettings(),
     getPosts(),
     getProjects(),
     getEvents(),
     getCompanies(),
     getAlbums(),
+    getRecipes(),
+    getRecommendations(),
   ]);
-  return { settings, posts, work, events, companies, albums };
+  return {
+    settings,
+    posts,
+    work,
+    events,
+    companies,
+    albums,
+    recipes,
+    recommendations,
+  };
 }
 
 function summary(
   site: URL,
   data: Awaited<ReturnType<typeof collect>>,
 ): Block[] {
-  const { settings, posts, work, events, companies, albums } = data;
+  const {
+    settings,
+    posts,
+    work,
+    events,
+    companies,
+    albums,
+    recipes,
+    recommendations,
+  } = data;
   return [
     `# ${settings.name}`,
     `> ${settings.description}`,
     settings.about,
+    link(site, '/about/', 'About', 'background, skills and experience'),
+    '## Skills',
+    settings.skills.map(group => `- ${group.group}: ${group.items.join(', ')}`),
     '## Experience',
     companies.flatMap(company =>
       company.roles.map(
@@ -65,6 +104,28 @@ function summary(
     ),
     '## Photos',
     albums.map(album => link(site, `/photos/${album.id}/`, album.data.title)),
+    ...(recipes.length > 0
+      ? [
+          '## Recipes',
+          recipes.map(recipe =>
+            link(
+              site,
+              `/recipes/${recipe.id}/`,
+              recipe.data.title,
+              recipe.data.description,
+            ),
+          ),
+        ]
+      : []),
+    ...(recommendations.length > 0
+      ? [
+          '## Recommended',
+          recommendations.map(
+            item =>
+              `- [${item.data.name}](${item.data.url}): ${item.data.kind}, ${item.data.topic}`,
+          ),
+        ]
+      : []),
     '## Contact',
     [
       `- Email: ${settings.email}`,
