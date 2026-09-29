@@ -8,6 +8,7 @@ import TagList from '~/components/ui/TagList.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getProjects } from '~/lib/content';
 import { linkProps } from '~/lib/links';
+import { clip, excerpt, personId } from '~/lib/seo';
 import { getRelated } from '~/lib/tags';
 import '~/styles/prose.css';
 
@@ -30,11 +31,31 @@ const statusLabel = {
   archived: 'Archived',
 }[status];
 const facts = [kind, statusLabel, year?.toString(), role].filter(Boolean);
+const description = clip(`${tagline}. ${excerpt(project.body)}`);
+const site = Astro.site ?? new URL('https://danieljancar.dev');
+const url = new URL(`/work/${project.id}/`, site).href;
+const schema = [
+  {
+    '@type': 'CreativeWork',
+    '@id': `${url}#work`,
+    url,
+    name,
+    headline: tagline,
+    description,
+    genre: kind,
+    dateCreated: year?.toString(),
+    keywords: [...stack, ...tags],
+    creator: { '@id': personId(site) },
+    sameAs: links.map(link => link.href),
+    mainEntityOfPage: url,
+  },
+];
 ---
 
 <BaseLayout
   title={name}
-  description={tagline}
+  description={description}
+  schema={schema}
   image={project.data.cover}
   imageAlt={project.data.coverAlt || name}
 >

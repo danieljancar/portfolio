@@ -10,7 +10,9 @@ export default defineConfig({
   build: { format: 'directory' },
   integrations: [
     photoMeta(),
-    sitemap({ filter: page => !page.includes('/admin') }),
+    sitemap({
+      filter: page => !/^\/(admin|tags)(\/|$)/.test(new URL(page).pathname),
+    }),
   ],
   image: {
     layout: 'constrained',

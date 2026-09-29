@@ -3,14 +3,19 @@ import AlbumCard from '~/components/photos/AlbumCard.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getAlbums } from '~/lib/photos';
+import { clip } from '~/lib/seo';
 
 const albums = await getAlbums();
 const years = Map.groupBy(albums, album => album.data.date.getFullYear());
+const description = clip(
+  `Photo albums by Daniel Jancar: ${albums.map(album => album.data.title).join(', ')}.`,
+);
 ---
 
 <BaseLayout
   title="Albums"
-  description="Every photo album by Daniel Jancar."
+  description={description}
+  pageType="CollectionPage"
   image={albums[0]?.data.cover}
 >
   <SectionHead title="Albums" as="h1" href="/photos" linkLabel="Photos" />

@@ -10,6 +10,7 @@ const items = await getRecommendations();
 <BaseLayout
   title="Recommended"
   description="Podcasts, sites and newsletters Daniel Jancar recommends."
+  pageType="CollectionPage"
 >
   <SectionHead title="Recommended" as="h1" />
   <Recommended items={items} />

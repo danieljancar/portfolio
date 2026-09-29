@@ -3,6 +3,7 @@ import WorkBento from '~/components/lists/WorkBento.astro';
 import SectionHead from '~/components/ui/SectionHead.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { getProjects } from '~/lib/content';
+import { clip } from '~/lib/seo';
 
 const work = await getProjects();
 const filters = [
@@ -10,9 +11,12 @@ const filters = [
   { value: 'ongoing', label: 'Ongoing' },
   { value: 'one-off', label: 'One-off' },
 ];
+const description = clip(
+  `Projects by Daniel Jancar: ${work.map(item => `${item.data.name}, ${item.data.tagline.toLowerCase()}`).join('; ')}.`,
+);
 ---
 
-<BaseLayout title="Work" description="Work by Daniel Jancar.">
+<BaseLayout title="Work" description={description} pageType="CollectionPage">
   <SectionHead title="Work" as="h1" href="/about" linkLabel="Experience" />
   <div class="filters wrap" role="group" aria-label="Filter work">
     {filters.map((filter, i) => (
