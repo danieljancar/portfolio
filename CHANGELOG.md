@@ -1,3 +1,11 @@
+# [2.8.0](https://github.com/danieljancar/portfolio/compare/v2.7.0...v2.8.0) (2026-09-29)
+
+
+### Features
+
+* **footer:** show only the social names ([6a36de8](https://github.com/danieljancar/portfolio/commit/6a36de83516f90759ea0d4ee0a2c2d6e138ea052))
+* **home:** show only the social names in the index ([58a8bf1](https://github.com/danieljancar/portfolio/commit/58a8bf108456b85e57441b3a4979844b3cba1c6b))
+
 # [2.7.0](https://github.com/danieljancar/portfolio/compare/v2.6.0...v2.7.0) (2026-09-29)
 
 
