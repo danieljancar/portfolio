@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/danieljancar/portfolio/compare/v2.5.0...v2.6.0) (2026-09-29)
+
+
+### Features
+
+* **photos:** re-edited pop-up and lucerne albums, new lovers album ([8aaf3a8](https://github.com/danieljancar/portfolio/commit/8aaf3a842b56eff993f1c03c4e00f0686c2edbab))
+
 # [2.5.0](https://github.com/danieljancar/portfolio/compare/v2.4.0...v2.5.0) (2026-09-25)
 
 
