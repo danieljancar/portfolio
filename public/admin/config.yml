@@ -320,6 +320,36 @@ collections:
         label: Cover description
         widget: string
         required: false
+      - name: shots
+        label: Screens and pictures
+        label_singular: Picture
+        widget: list
+        required: false
+        summary: '{{frame}} · {{caption}}'
+        fields:
+          - name: image
+            label: Image
+            widget: image
+          - name: frame
+            label: Frame
+            widget: select
+            default: plain
+            options:
+              - { label: Browser window, value: browser }
+              - { label: Phone, value: phone }
+              - { label: Plain, value: plain }
+          - name: url
+            label: Address shown in the browser frame
+            widget: string
+            required: false
+          - name: caption
+            label: Caption
+            widget: string
+            required: false
+          - name: alt
+            label: Description for screen readers
+            widget: string
+            required: false
       - name: featured
         label: Featured
         widget: boolean
