@@ -1,15 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", ":semanticCommits"],
-  "baseBranchPatterns": ["develop"],
+  "baseBranchPatterns": ["master"],
   "schedule": ["before 6am on monday"],
   "timezone": "Europe/Zurich",
-  "lockFileMaintenance": { "enabled": true, "automerge": true },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "automergeType": "branch"
+  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true,
-      "platformAutomerge": true
+      "automergeType": "branch"
     },
     {
       "matchPackageNames": ["astro", "@astrojs/**"],
