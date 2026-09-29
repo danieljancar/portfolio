@@ -1,10 +1,10 @@
 ---
 name: Lovers Lovers
-tagline: Building a web application and digital presence
+tagline: Building a web application, digital presence and photography
 kind: Client website
 status: in-progress
 year: 2026
-ongoing: false
+ongoing: true
 role: ''
 stack: []
 tags:
@@ -19,16 +19,18 @@ coverAlt: ''
 shots:
   - image: ./images/lovers-home.webp
     frame: browser
+    url: ''
+    caption: Landing page
     alt: Lovers website start page with the hand-drawn logo over a photo of the room
-    caption: The logo on the start page is traced from the lettering on their window.
   - image: ./images/lovers-coffee.webp
     frame: browser
+    url: ''
+    caption: ''
     alt: Coffee page with Jerry holding out two cups
-    caption: Jerry's coffee page with his story and the menu.
 featured: false
 order: 2
 ---
 
-Lovers Lovers is one room at Spitalstrasse 4 in Lucerne where four things happen at once. Someone gets tattooed, someone gets a haircut, the coffee machine is running and the vintage furniture around you is for sale. It opened in August 2026 and until now it only lived on Instagram.
+Lovers Lovers is one room at Spitalstrasse 4 in Lucerne where four things happen at once. It's a great and unique format of matching industries coming together to serve their customers tremendously.
 
 I got to know the team through Jerry, who makes the coffee there, and I took some pic's of the location. Now I'm building their first website to show off opening hours, events, images and much more.
