@@ -1,3 +1,10 @@
+## [2.9.1](https://github.com/danieljancar/portfolio/compare/v2.9.0...v2.9.1) (2026-11-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency satteri to ^0.11.0 ([5bdd20f](https://github.com/danieljancar/portfolio/commit/5bdd20f84ca316817346c92b1cd631520c8b74c7))
+
 # [2.9.0](https://github.com/danieljancar/portfolio/compare/v2.8.0...v2.9.0) (2026-09-29)
 
 
