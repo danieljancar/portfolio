@@ -52,7 +52,7 @@
     "lint-staged": "^17.5.1",
     "prettier": "^3.9.9",
     "prettier-plugin-astro": "^1.0.1",
-    "semantic-release": "^25.0.9",
+    "semantic-release": "^26.0.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.70.1",
     "vitest": "^5.0.1"
